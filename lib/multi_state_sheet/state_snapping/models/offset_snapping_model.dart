@@ -1,0 +1,37 @@
+import 'dart:collection';
+import 'dart:ui';
+
+import 'package:sheetify/sheetify.dart';
+
+/// Snapping model that calculates snapping positions based on fixed pixel positions.
+///
+/// This model defines snapping offsets as absolute positions relative to the bottom of the viewport,
+/// allowing for precise snapping states based on the pixel Offset of the bottom sheet.
+/// It is used with the bottom sheet's [SnappingBehavior] to implement fixed-Offset snapping logic.
+final class OffsetSnappingModel extends SnappingModel {
+  /// A set of pixel offsets which are defining the snapping positions.
+  /// Each position is measured from the bottom of the viewport upwards.
+  final Set<double> offsets;
+
+  /// Constructs a [OffsetSnappingModel] with the specified [offsets].
+  ///
+  /// - [Offsets]: A set of pixel values representing snapping positions.
+  ///   These values should typically be greater than or equal to `0.0` and less than or
+  ///   equal to the maximum pixel height of the bottom sheet's viewport.
+  ///
+  /// ### Usage Example:
+  /// ```dart
+  /// // Define snapping positions at 100px, 300px, and 600px from the bottom of the viewport.
+  /// final snappingModel = OffsetSnappingModel({100.0, 300.0, 600.0});
+  /// ```
+  const OffsetSnappingModel(this.offsets);
+
+  /// Calculates snapping offsets based on Offsetd pixel positions.
+  ///
+  /// - [extent]: The current state of the bottom sheet.
+  /// - Returns a sorted set of snapping offsets, where each offset is clamped within the valid range
+  ///   of the bottom sheet's configuration.
+  @override
+  SplayTreeSet<double> getOffsets<T>(MultiStateSheetExtent<T> extent) =>
+      SplayTreeSet.of(offsets.map((offset) => clampDouble(offset, extent.minOffset, extent.safeMaxOffset)));
+}

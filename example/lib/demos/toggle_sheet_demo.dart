@@ -18,7 +18,7 @@ class _ToggleSheetDemoState extends State<ToggleSheetDemo> {
   late ToggleSheetController controller;
 
   void createController() {
-    controller = ToggleSheetController();
+    controller = ToggleSheetController(onClose: (controller) => controller.open());
     controller.addListener(updateState);
   }
 

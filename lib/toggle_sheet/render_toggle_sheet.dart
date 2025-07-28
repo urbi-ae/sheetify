@@ -417,7 +417,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
     final topLayoutExtend = _layoutChild(topHeader, correctedConstraints)?.height ?? kStartOfTheViewport;
     final topOffset = topHeaderOffset ?? kStartOfTheViewport;
 
-    /// Layout bottom sheet content sliver list
+    /// Layout sheet content slivers
     final contentLayoutExtend = _layoutChild(
           content,
           correctedConstraints,
@@ -561,7 +561,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
             ),
           ));
 
-    void paintBottomSheet(PaintingContext context, Offset offset) {
+    void paintSheet(PaintingContext context, Offset offset) {
       /// Paint sheet's background
       context.canvas.drawPath(path.shift(offset), painter);
       doPaint(content, context, offset);
@@ -605,7 +605,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
     /// Paint the top header widget above the background fill color.
     doPaint(topHeader, context, offset);
 
-    /// Paint the bottom sheet as the clip path to the current layer.
+    /// Paint the sheet as the clip path to the current layer.
     if (draggedSheetOffset < constraints.maxHeight) {
       layer = context.pushClipPath(
         needsCompositing,
@@ -617,7 +617,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
           sheetHeightExtent + viewBottomPadding,
         ),
         path,
-        paintBottomSheet,
+        paintSheet,
         oldLayer: layer as ClipPathLayer?,
       );
     }

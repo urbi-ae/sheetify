@@ -1,0 +1,40 @@
+name: Build Example to GH.Pages
+on: 
+  push:
+    branches: [ main ]
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    branches:
+      - '**'
+
+permissions:
+  contents: write
+
+jobs:
+  build_github_pages_example:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install dependencies
+        run: |
+          flutter pub get
+
+      - name: Build web release
+        working-directory: example
+        run: |
+          flutter pub get
+          flutter build web --no-tree-shake-icons -t lib/main.dart --base-href="/sheetify/"
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./example/build/web

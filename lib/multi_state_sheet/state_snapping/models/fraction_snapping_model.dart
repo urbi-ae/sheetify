@@ -8,7 +8,7 @@ import 'package:sheetify/utils/round_double.dart';
 ///
 /// This model defines snapping offsets as proportions of the viewport's height,
 /// allowing for dynamic adjustments based on the available space. It is used with
-/// the bottom sheet's [SnappingBehavior] to provide fraction-based snapping states.
+/// the sheet's [SnappingBehavior] to provide fraction-based snapping states.
 final class FractionSnappingModel extends SnappingModel {
   /// A set of fraction where:
   /// - `0` represents the bottom of the viewport.
@@ -31,7 +31,7 @@ final class FractionSnappingModel extends SnappingModel {
 
   /// Calculates snapping offsets based on the fractions of the viewport.
   ///
-  /// - [extent]: The current state of the bottom sheet.
+  /// - [extent]: The current state of the sheet.
   /// - Returns a sorted set of snapping offsets, where each offset is a clamped value derived
   ///   from the fractions and the available pixels.
   @override

@@ -6,11 +6,11 @@ import 'package:sheetify/sheetify.dart';
 ///
 /// This behavior determines snapping positions by using a list of [SnapComponent] descriptions
 /// and their associated [ComponentsSnappingModel]. It provides smooth transitions between
-/// states and ensures offsets respect the available space of the bottom sheet.
+/// states and ensures offsets respect the available space of the sheet.
 final class ComponentsSnappingBehavior extends SnappingBehavior {
   /// A list of component descriptions used to calculate snapping positions.
   ///
-  /// Each [SnapComponent] represents a part of the bottom sheet (e.g., header, content, footer)
+  /// Each [SnapComponent] represents a part of the sheet (e.g., header, content, footer)
   /// and defines its snapping logic.
   final List<SnapComponent> componentDescriptions;
 

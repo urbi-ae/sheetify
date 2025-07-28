@@ -29,7 +29,7 @@ enum FourStateSheet {
   expanded,
 }
 
-/// Base interface to create new state handlers for bottom sheet pages.
+/// Base interface to create new state handlers for sheet pages.
 abstract interface class SheetStateMapper<T> {
   const SheetStateMapper();
 
@@ -39,7 +39,7 @@ abstract interface class SheetStateMapper<T> {
   /// Returns state index for a given state.
   int index(T state);
 
-  /// Controls how bottom sheet should react on `pop` events.
+  /// Controls how sheet should react on `pop` events.
   bool shouldPopOn(MultiStateSheetController<T> controller);
 }
 

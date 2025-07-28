@@ -5,7 +5,7 @@ import 'package:sheetify/sheetify.dart';
 /// A snapping behavior that combines multiple [SnappingModel] instances
 /// to calculate snapping offsets and states.
 ///
-/// This behavior enables a bottom sheet to snap to positions defined by multiple models.
+/// This behavior enables a sheet to snap to positions defined by multiple models.
 /// If the calculated offsets exceed the viewport's size, they are clamped to fit within the viewport.
 ///
 /// ### Features:

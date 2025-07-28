@@ -1,6 +1,6 @@
 import 'package:sheetify/sheetify.dart';
 
-/// A sealed class that represents a delegate for the bottom sheet.
+/// A sealed class that represents a delegate for the sheet.
 sealed class ToggleSheetDelegate<T> {
   const ToggleSheetDelegate();
 

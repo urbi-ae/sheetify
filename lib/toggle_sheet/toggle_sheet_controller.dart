@@ -2,8 +2,12 @@ part of 'package:sheetify/toggle_sheet/toggle_sheet.dart';
 
 typedef ToggleSheetOnCloseCallback = void Function(ToggleSheetController controller);
 
+/// A class that represents the extent (size) of a toggle sheet.
+///
+/// This class is typically used to define and manage the minimum, maximum,
+/// and current extents of a toggleable sheet component.
 class ToggleSheetExtent {
-  /// Diclarates how fast the bottom sheet snapping to the next position will be.
+  /// Diclarates how fast the sheet snapping to the next position will be.
   final double durationMultiplier;
 
   /// A multiplier that determines the force applied to velocity in snapping position calculations.
@@ -41,26 +45,26 @@ class ToggleSheetExtent {
   })  : snapAnimationDuration = kDefaultSheetScrollDuration,
         componentSizes = const SheetWidgetSizes.zero();
 
-  /// Height in pixels from the top of the bounding box at which the bottom sheet starts to draw.
+  /// Height in pixels from the top of the bounding box at which the sheet starts to draw.
   double _minHeight = 0.0;
 
-  /// Height in pixels from the top of the bounding box at which the bottom sheet starts to draw.
+  /// Height in pixels from the top of the bounding box at which the sheet starts to draw.
   double get minHeight => math.min(fixedHeightOffset ?? _minHeight, availablePixels);
 
-  /// Height in pixels from the top of the bounding box at which the bottom sheet starts to draw.
+  /// Height in pixels from the top of the bounding box at which the sheet starts to draw.
   set minHeight(double value) {
     if (heightModel == null) {
       _minHeight = value;
     }
   }
 
-  /// Height in pixels from the top of the bounding box at which the bottom sheet ends to draw.
+  /// Height in pixels from the top of the bounding box at which the sheet ends to draw.
   double get maxHeight => availablePixels - (clipByHeader ? (componentSizes.header) : 0.0);
 
-  /// Current height offset for bottom sheet visible view.
+  /// Current height offset for sheet visible view.
   ///
-  /// Then the this = `0` - bottom sheet is fully visible.
-  /// Then the this = [availablePixels] - bottom sheet is fully hidden
+  /// Then the this = `0` - sheet is fully visible.
+  /// Then the this = [availablePixels] - sheet is fully hidden
   double get offset => _offset;
 
   bool get isAtMin => maxHeight.roundDecimal() <= offset.roundDecimal();
@@ -99,18 +103,16 @@ class ToggleSheetExtent {
   }
 }
 
-void _defaultOnClose(ToggleSheetController controller) => controller.open();
-
 /// A controller for managing the state of a toggle sheet.
 ///
 /// This controller provides functionality for:
-/// - Opening, closing, and snapping the bottom sheet.
+/// - Opening, closing, and snapping the sheet.
 /// - Animating transitions between open and closed states.
 /// - Adjusting for user interactions and gestures.
 /// - Supporting the [ToggleSheetHeightModel].
 ///
 /// ### Key Features:
-/// - **Interactive Control**: Allows gestures to modify the bottom sheet's height and state.
+/// - **Interactive Control**: Allows gestures to modify the sheet's height and state.
 /// - **Snapping and Animation**: Smooth animations for transitioning between states.
 /// - **Customization**: Supports duration multipliers, [ToggleSheetHeightModel], and external callbacks.
 class ToggleSheetController extends ScrollController {
@@ -127,20 +129,20 @@ class ToggleSheetController extends ScrollController {
   /// and more anchored to the previous position.
   final double forceMultiplier;
 
-  /// Callback invoked when the bottom sheet is fully closed.
+  /// Callback invoked when the sheet is fully closed.
   ///
   /// This is triggered when the sheet height reaches `0.0` or when the [close] method completes.
-  final ToggleSheetOnCloseCallback onClose;
+  final ToggleSheetOnCloseCallback? onClose;
 
   /// Defines if the content scroll should reset then sheet state is hidden.
   final bool resetContentScrollOnClosed;
 
-  /// Defines if the bottom sheet should be clipped by the header in the closed state.
+  /// Defines if the sheet should be clipped by the header in the closed state.
   bool get clipByHeader => _extent.clipByHeader;
 
-  /// Indicates whether the bottom sheet can be closed interactively by dragging.
+  /// Indicates whether the sheet can be closed interactively by dragging.
   ///
-  /// When set to `false`, gestures will not affect the bottom sheet's height.
+  /// When set to `false`, gestures will not affect the sheet's height.
   bool get isInteractive => _isInteractive;
   set isInteractive(bool value) {
     _isInteractive = value;
@@ -151,21 +153,21 @@ class ToggleSheetController extends ScrollController {
 
   bool _isInteractive = true;
 
-  /// Defines the bottom sheet's state, including offsets and available space.
+  /// Defines the sheet's state, including offsets and available space.
   late final ToggleSheetExtent _extent;
 
   /// Constructs a `ToggleSheetController`.
   ///
   /// - [durationMultiplier]: Adjusts the animation speed (default is `1.0`).
-  /// - [onClose]: A callback invoked when the bottom sheet is fully closed (default is a no-op).
+  /// - [onClose]: A callback invoked when the sheet is fully closed.
   /// - [heightModel]: A custom height model for defining the fixed offset (optional).
-  /// - [isInteractive]: Whether the bottom sheet responds to gestures (default is `true`).
+  /// - [isInteractive]: Whether the sheet responds to gestures (default is `true`).
   ///
   /// ### Example:
   /// ```dart
   /// ToggleSheetController(
   ///   durationMultiplier: 1.5,
-  ///   onClose: (controller) => print('Bottom sheet closed'),
+  ///   onClose: (controller) => print('Sheet is closed'),
   ///   heightModel: ToggleSheetHeightModel.fixed(double 600),
   ///   isInteractive: true,
   /// );
@@ -173,7 +175,7 @@ class ToggleSheetController extends ScrollController {
   ToggleSheetController({
     this.durationMultiplier = 1.0,
     this.forceMultiplier = 1.25,
-    this.onClose = _defaultOnClose,
+    this.onClose,
     this.resetContentScrollOnClosed = false,
     bool clipByHeader = false,
     ToggleSheetHeightModel? heightModel,
@@ -194,7 +196,7 @@ class ToggleSheetController extends ScrollController {
   //                            Public Properties and Methods                             //
   //--------------------------------------------------------------------------------------//
 
-  /// The height of the bottom sheet's visible area.
+  /// The height of the sheet's visible area.
   ///
   /// Calculated based on the difference between the total available pixels
   /// and the current offset.
@@ -210,12 +212,18 @@ class ToggleSheetController extends ScrollController {
     return _isEnabled ? _extent.availablePixels - offsetFromTop : 0.0;
   }
 
-  /// The total viewport height available to the bottom sheet.
+  /// The total viewport height available to the sheet.
   double get viewportHeight => _extent.availablePixels;
 
-  /// Aspect ratio of the bottom sheet's visible height to its posible maximum height.
+  /// Aspect ratio of the sheet's visible height to its posible maximum height.
   double get fraction => math.max(0, sheetHeight / (_extent.maxHeight));
 
+  /// Returns the current interpolation value, typically representing
+  /// the progress between two states (e.g., expanded and collapsed)
+  /// as a double between 0.0 and 1.0.
+  ///
+  /// This value can be used for animations or to determine the visual
+  /// state of the toggle sheet.
   double get interpolation {
     if (_extent.minHeight >= _extent.maxHeight) {
       return 1.0;
@@ -230,13 +238,13 @@ class ToggleSheetController extends ScrollController {
     );
   }
 
-  /// Indicates whether the bottom sheet is currently open and visible.
+  /// Indicates whether the sheet is currently open and visible.
   bool get isEnabled => _isEnabled;
 
-  /// Indicates whether the bottom sheet is closed and fully hidden.
+  /// Indicates whether the sheet is closed and fully hidden.
   bool get isClosed => _extent.isClosed;
 
-  /// Returns model that represent a bottom sheet component sizes.
+  /// Returns model that represent a sheet component sizes.
   SheetWidgetSizes get componentSizes => _extent.componentSizes;
 
   @override
@@ -261,7 +269,7 @@ class ToggleSheetController extends ScrollController {
     }
   }
 
-  /// Animates the bottom sheet to a fully closed state.
+  /// Animates the sheet to a fully closed state.
   ///
   /// - [duration]: Optional duration for the closing animation.
   void close({Duration? duration}) {
@@ -272,7 +280,7 @@ class ToggleSheetController extends ScrollController {
     }
   }
 
-  /// Animates the bottom sheet to a fully open state.
+  /// Animates the sheet to a fully open state.
   ///
   /// - [duration]: Optional duration for the opening animation.
   void open({Duration? duration}) {
@@ -281,6 +289,12 @@ class ToggleSheetController extends ScrollController {
     }
   }
 
+  /// Updates the current height model of the toggle sheet.
+  ///
+  /// This method sets the height model to the provided [model]. If [model] is `null`,
+  /// it may reset or clear the current height configuration, depending on the implementation.
+  ///
+  /// [model] - The new [ToggleSheetHeightModel] to apply, or `null` to reset.
   void updateHeightModel(ToggleSheetHeightModel? model) {
     _extent.heightModel = model;
 
@@ -317,7 +331,7 @@ class ToggleSheetController extends ScrollController {
             if (resetContentScrollOnClosed) {
               _resetScrollPosition();
             }
-            onClose(this);
+            onClose?.call(this);
           }
         },
       );
@@ -425,7 +439,7 @@ class ToggleSheetController extends ScrollController {
     _appliedDelta = 0.0;
   }
 
-  /// Method to update size of the bottom sheet viewport then user is dragging by holding a header component.
+  /// Method to update size of the sheet viewport then user is dragging by holding a header component.
   void _dragUpdate(DragUpdateDetails details, BuildContext context) {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       if (positions.isNotEmpty) {
@@ -495,14 +509,14 @@ class ToggleSheetController extends ScrollController {
           _resetScrollPosition();
         }
 
-        onClose(this);
+        onClose?.call(this);
       }
     });
   }
 
-  /// Method used to animating bottom sheet from not visable state to initial state position.
+  /// Method used to animating sheet from not visable state to initial state position.
   void _animateOpen({Duration? duration}) {
-    /// Set new position to 0.0 instead of minHeight to ensure that the bottom sheet is fully open if content size changed.
+    /// Set new position to 0.0 instead of minHeight to ensure that the sheet is fully open if content size changed.
     const newPosition = 0.0;
     _isEnabled = true;
     _extent._offset = _extent.availablePixels;
@@ -544,12 +558,12 @@ class ToggleSheetController extends ScrollController {
           _resetScrollPosition();
         }
 
-        onClose(this);
+        onClose?.call(this);
       }
     });
   }
 
-  /// Resets the scroll position when the bottom sheet is hidden.
+  /// Resets the scroll position when the sheet is hidden.
   void _resetScrollPosition() {
     jumpTo(0);
   }
@@ -612,10 +626,10 @@ class _ToggleSheetScrollPosition extends ScrollPositionWithSingleContext {
 
   @override
   void applyUserOffset(double delta) {
-    /// Check if the scroll position of the content list is within the bounds to control bottom sheet height by scrolling.
-    final isBottomSheetAtMaxAndScrollsUp = !_extent.isAtMin && _extent.isAtMax && delta < 0;
+    /// Check if the scroll position of the content list is within the bounds to control sheet height by scrolling.
+    final isSheetAtMaxAndScrollsUp = !_extent.isAtMin && _extent.isAtMax && delta < 0;
     final canContentScrollDown = !_extent.isAtMin && pixels > 0 && delta > 0;
-    if (isBottomSheetAtMaxAndScrollsUp || canContentScrollDown) {
+    if (isSheetAtMaxAndScrollsUp || canContentScrollDown) {
       super.applyUserOffset(delta);
     } else {
       if (isInteractive) {

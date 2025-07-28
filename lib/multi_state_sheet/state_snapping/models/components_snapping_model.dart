@@ -29,14 +29,14 @@ enum Components {
 /// Represents a snapping model for calculating snapping positions and states based on the sizes of [Widget]s in a MultiStateSheet.
 /// It generates snapping positions using the provided descriptions of components.
 ///
-/// This model is used inside the bottom sheet [SnappingBehavior] UX objects.
+/// This model is used inside the sheet [SnappingBehavior] UX objects.
 final class ComponentsSnappingModel extends SnappingModel {
   final List<SnapComponent> componentsDescriptions;
 
   /// Represents a snapping model for calculating snapping positions and states based on the sizes of [Widget]s in a MultiStateSheet.
   /// It generates snapping positions using the provided descriptions of components.
   ///
-  /// This model is used inside the bottom sheet [SnappingBehavior] UX objects.
+  /// This model is used inside the sheet [SnappingBehavior] UX objects.
   ComponentsSnappingModel({required this.componentsDescriptions});
 
   double getOffsetFromDescriptor<T>(MultiStateSheetExtent<T> extent, SnapComponent descriptor) {

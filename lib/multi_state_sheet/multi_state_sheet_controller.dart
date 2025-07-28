@@ -2,6 +2,10 @@
 
 part of 'package:sheetify/multi_state_sheet/multi_state_sheet.dart';
 
+/// A class that represents the extent (size) of a multi state sheet.
+///
+/// This class is typically used to define and manage the minimum, maximum,
+/// and current extents of a multi state sheet component.
 class MultiStateSheetExtent<StateType> {
   /// Diclarates how fast the sheet snapping to the next position will be.
   final double durationMultiplier;
@@ -384,38 +388,6 @@ class MultiStateSheetController<StateType> extends ScrollController {
     _startAnimation(_extent.offset, newPosition, curve ?? mainCurve, distanceDuration);
   }
 
-  /// Updates the component sizes of the sheet.
-  ///
-  /// - [topHeaderHeight]: Height of the top header.
-  /// - [headerHeight]: Height of the header.
-  /// - [contentHeight]: Height of the content.
-  /// - [footerHeight]: Height of the footer.
-  double? _updateComponents({
-    required double topHeaderHeight,
-    required double headerHeight,
-    required double contentHeight,
-    required double footerHeight,
-  }) {
-    /// Notify listeners if the size of the top header is changed without sheet height update.
-    ///
-    /// This could happen when the the top header widget change its size on its own.
-    if (topHeaderHeight != _extent.componentSizes.topHeader) {
-      Future(() {
-        if (isEnabled) {
-          _doNotMarkNeedsLayout = true;
-          notifyListeners();
-        }
-      });
-    }
-
-    return _extent.updateComponents(
-      topHeaderHeight,
-      headerHeight,
-      contentHeight,
-      footerHeight,
-    );
-  }
-
   @override
   void attach(ScrollPosition position) {
     if (position.hasPixels &&
@@ -536,6 +508,38 @@ class MultiStateSheetController<StateType> extends ScrollController {
     if (_extent.currentState == 0) {
       jumpTo(0);
     }
+  }
+
+  /// Updates the component sizes of the sheet.
+  ///
+  /// - [topHeaderHeight]: Height of the top header.
+  /// - [headerHeight]: Height of the header.
+  /// - [contentHeight]: Height of the content.
+  /// - [footerHeight]: Height of the footer.
+  double? _updateComponents({
+    required double topHeaderHeight,
+    required double headerHeight,
+    required double contentHeight,
+    required double footerHeight,
+  }) {
+    /// Notify listeners if the size of the top header is changed without sheet height update.
+    ///
+    /// This could happen when the the top header widget change its size on its own.
+    if (topHeaderHeight != _extent.componentSizes.topHeader) {
+      Future(() {
+        if (isEnabled) {
+          _doNotMarkNeedsLayout = true;
+          notifyListeners();
+        }
+      });
+    }
+
+    return _extent.updateComponents(
+      topHeaderHeight,
+      headerHeight,
+      contentHeight,
+      footerHeight,
+    );
   }
 
   /// Handles the start of a drag gesture on the sheet.

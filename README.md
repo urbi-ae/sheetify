@@ -169,17 +169,17 @@ class FadingHeader extends SheetValueNotifierWidget<FourStateSheet> {
 |**`MultiStateSheet`** | A bottom sheet that can snap between multiple predefined states (positions). It supports draggable behavior, animated transitions, slivers, custom headers/footers, and external gesture detection. Ideal for building flexible, state-driven UIs like modals or drawers. |
 | **`MultiStateSheetController<StateType>`** | Controls the state of a `MultiStateSheet`, allowing you to programmatically snap between defined states. Requires a `SnappingBehavior` and `SheetStateMapper`.
 | **`ToggleSheet`**| A simpler sheet with two states: open and closed. Useful for expandable widgets like menus, drawers, or bottom actions. Supports slivers, headers, footers, and full customization of animation and gesture behavior.
-|**`ToggleSheetController`**|Manages the state of a `ToggleSheet`, exposing `open()`, `close()`, and `toggle()` methods. Must be initialized with a `ToggleSnappingConfig` to define snap positions.
+|**`ToggleSheetController`**|Manages the state of a `ToggleSheet`, exposing `open()` and `close()` methods and additional properties. It can be initialized with a ToggleSheetHeightModel to define a maximum height constraint for the sheet. If not provided, the sheet will size itself based on its content, up to the available viewport height.
 |**`SnappingBehavior`**|Abstract class used by `MultiStateSheetController` to define where the sheet should snap. Custom behaviors can be implemented by extending this class.
 |├─ `SizeSnappingBehavior`| Snaps the sheet to specific heights (in logical pixels).
 |├─ `FractionSnappingBehavior`|Snaps to a percentage of the viewport height.
 |├─ `ComponentsSnappingBehavior`|Calculates snap points based on the height of header/footer/components.
 |└─ `MultiSnappingBehavior`|Composes multiple snapping strategies for complex layouts.
 |**`SheetStateMapper<T>`**|Maps a logical state (e.g. `FourStateSheet.open`) to a snap index and vice versa. Required for `MultiStateSheetController`. Also defines animation delegates like `barrierColorDelegate`.
-|**`ToggleSnappingConfig`**|Defines open/closed snap points for `ToggleSheetController`. Can use pixels, fractions, or dynamic builders.
-|├─ `ToggleSnappingConfig.pixels(closed, open)`|Uses fixed pixel offsets.
-|├─ `ToggleSnappingConfig.fractional(closed, open)`|Uses fractions of the available height.
-|└─ `ToggleSnappingConfig.dynamic(...)`|Computes snap points at runtime.
+|**`ToggleSheetHeightModel`**|defines the maximum height of a ToggleSheet, allowing it to maintain a consistent layout regardless of its content.
+|├─ `ToggleSnappingConfig.fixed(double height)`|Sets the sheet height to an exact pixel value.
+|├─ `ToggleSnappingConfig.offset(double offset)`|Calculates the sheet height based on its distance from the top of the screen.
+|└─ `ToggleSnappingConfig.fraction(double fraction)`|Sets the sheet height as a fraction of the screen height.
 |**`SnapSheetStateComponent`**|Base class for widgets that react to sheet state changes (e.g. headers that fade/resize). Extend this for interpolated animations.
 |├─ `SheetAnimatedWidget<State>`|Provides `state` and `interpolation` to build animated widgets.
 |└─ `SheetValueNotifierWidget<State>`|Provides `ValueNotifier`s of state/interpolation for animated builders.

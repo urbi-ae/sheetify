@@ -72,7 +72,7 @@ class MultiStateSheet<StateType> extends StatefulWidget {
   /// For available values and their effects, see [HitTestBehavior].
   final HitTestBehavior? hitTestBehavior;
 
-  /// Defines if the bottom sheet should be animated to the initial state
+  /// Defines if the sheet should be animated to the initial state
   final bool animateOpening;
 
   /// The shape to be used for the sheet's border.
@@ -154,7 +154,7 @@ class MultiStateSheet<StateType> extends StatefulWidget {
   /// Make sure that you set `maintainBottomViewPadding: true` inside [SafeArea] widget.
   final Color? safeAreaColor;
 
-  /// Color that will be bottom sheet filled with.
+  /// Color that will be sheet's content filled with.
   final Color? backgroundColor;
 
   /// Delegate to calculate the barrier color behind the sheet page.

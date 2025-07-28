@@ -2,7 +2,7 @@ import 'package:sheetify/sheetify.dart';
 
 typedef StatefulFunctionDelegate<T, S> = T? Function(MultiStateSheetController<S> controller);
 
-/// A sealed class that represents a delegate for the bottom sheet.
+/// A sealed class that represents a delegate for the [MultiStateSheet].
 sealed class StatefulSheetDelegate<T> {
   const StatefulSheetDelegate();
 
@@ -66,7 +66,7 @@ class StatefulSheetDelegateValue<T> extends StatefulSheetDelegate<T> {
   final T value;
 }
 
-/// A delegate that holds a function that uses the [StatefulBottomSheetController] to calculate the value.
+/// A delegate that holds a function that uses the [MultiStateSheetController] to calculate the value.
 class StatefulSheetDelegateFunction<T, S> extends StatefulSheetDelegate<T> {
   const StatefulSheetDelegateFunction({required this.function});
 

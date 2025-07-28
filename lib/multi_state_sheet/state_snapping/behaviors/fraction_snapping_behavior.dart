@@ -2,9 +2,9 @@ import 'dart:collection';
 
 import 'package:sheetify/sheetify.dart';
 
-/// Controls the snapping behavior of a bottom sheet based on fractions of its bounding box.
+/// Controls the snapping behavior of a sheet based on fractions of its bounding box.
 ///
-/// This behavior defines snapping positions for the bottom sheet by calculating offsets
+/// This behavior defines snapping positions for the sheet by calculating offsets
 /// relative to specified fractions of the viewport. It ensures smooth transitions
 /// between states and provides boundaries for the minimum and maximum offsets.
 final class FractionSnappingBehavior<StateType> extends SnappingBehavior {

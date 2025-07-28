@@ -180,7 +180,7 @@ class ToggleSheet extends StatefulWidget {
   /// If `true` the sheet content should size itself to avoid the onscreen keyboard
   /// whose height is defined by the ambient [MediaQuery]'s [MediaQueryData.viewInsets] property.
   ///
-  /// This will affect viewport constraints and pixel offsets for all bottom sheet states.
+  /// This will affect viewport constraints and pixel offsets for all sheet states.
   ///
   /// If you are using [SafeArea] and [TextField]s inside [ToggleSheet] and keyboard may appear in.
   /// Make sure that you set `maintainBottomViewPadding: false` inside [SafeArea] widget
@@ -207,7 +207,7 @@ class ToggleSheet extends StatefulWidget {
   const ToggleSheet({
     required this.scrollController,
     this.physics,
-    this.hitTestBehavior,
+    this.hitTestBehavior = HitTestBehavior.opaque,
     this.startConfig = ToggleSheetStart.animate,
     this.shapeBorderDelegate,
     this.paddingDelegate,

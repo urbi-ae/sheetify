@@ -9,17 +9,17 @@ sealed class ToggleSheetHeightModel {
 
   /// Defines [ToggleSheet] height as [height] in pixels.
   ///
-  /// For example [height] = `500` means the height of bottom sheet will be `500` pixels
+  /// For example [height] = `500` means the height of sheet will be `500` pixels
   factory ToggleSheetHeightModel.fixed(double height) => FixedHeightModel(height);
 
   /// Defines [ToggleSheet] height from it's [offset] from the top of the screen.
   ///
-  /// For example [offset] = `100` then `viewport height` is `800`, the height of bottom sheet will be `700` pixels
+  /// For example [offset] = `100` then `viewport height` is `800`, the height of sheet will be `700` pixels
   factory ToggleSheetHeightModel.offset(double offset) => OffsetHeightModel(offset);
 
   /// Defines [ToggleSheet] height from [fraction] ratio of the `viewport` of the screen.
   ///
-  /// For example [fraction] = `.9` then `viewport height` is `800`, the height of bottom sheet will be `720` pixels
+  /// For example [fraction] = `.9` then `viewport height` is `800`, the height of sheet will be `720` pixels
   factory ToggleSheetHeightModel.fraction(double fraction) => FractionHeightModel(fraction);
 }
 
@@ -29,7 +29,7 @@ sealed class ToggleSheetHeightModel {
 ///
 /// Defines [ToggleSheet] height as [height] in pixels.
 ///
-/// For example [height] = `500` means the height of bottom sheet will be `500` pixels
+/// For example [height] = `500` means the height of sheet will be `500` pixels
 class FixedHeightModel implements ToggleSheetHeightModel {
   final double height;
 
@@ -47,7 +47,7 @@ class FixedHeightModel implements ToggleSheetHeightModel {
 ///
 /// Defines [ToggleSheet] height from it's [offset] from the top of the screen.
 ///
-/// For example [offset] = `100` then `viewport height` is `800`, the height of bottom sheet will be `700` pixels
+/// For example [offset] = `100` then `viewport height` is `800`, the height of sheet will be `700` pixels
 class OffsetHeightModel implements ToggleSheetHeightModel {
   final double offset;
 
@@ -65,7 +65,7 @@ class OffsetHeightModel implements ToggleSheetHeightModel {
 ///
 /// Defines [ToggleSheet] height from [fraction] ratio of the `viewport` of the screen.
 ///
-/// For example [fraction] = `.9` then `viewport height` is `800`, the height of bottom sheet will be `720` pixels
+/// For example [fraction] = `.9` then `viewport height` is `800`, the height of sheet will be `720` pixels
 class FractionHeightModel implements ToggleSheetHeightModel {
   final double fraction;
 

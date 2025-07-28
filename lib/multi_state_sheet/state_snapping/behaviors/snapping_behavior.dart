@@ -1,12 +1,12 @@
 part of 'package:sheetify/multi_state_sheet/multi_state_sheet.dart';
 
-/// Defines the snapping behavior for a bottom sheet during scrolling and dragging.
+/// Defines the snapping behavior for a sheet during scrolling and dragging.
 ///
-/// The snapping behavior determines how the bottom sheet transitions between
+/// The snapping behavior determines how the sheet transitions between
 /// different states based on user interactions and animations. It provides
 /// snapping offsets, state calculations, and interpolation between states.
 abstract base class SnappingBehavior {
-  /// Determines whether the header should clip max offset of the bottom sheet.
+  /// Determines whether the header should clip max offset of the sheet.
   ///
   /// When set to `true`, max offset should be clipped by the header height to always show header.
   ///
@@ -23,27 +23,27 @@ abstract base class SnappingBehavior {
   /// Caches the mapping of offsets to their corresponding states.
   final HashMap<double, int> cachedStateFromOffset = HashMap();
 
-  /// Stores the snapping offsets of the bottom sheet in pixels.
+  /// Stores the snapping offsets of the sheet in pixels.
   ///
-  /// These offsets represent predefined positions to which the bottom sheet can snap.
+  /// These offsets represent predefined positions to which the sheet can snap.
   SplayTreeSet<double>? snappingOffsets;
 
-  /// Available height for the bottom sheet to occupy, in pixels.
+  /// Available height for the sheet to occupy, in pixels.
   double _avaliableSpace = 0;
 
-  /// Flag to determine if the bottom sheet has valid sizes set.
+  /// Flag to determine if the sheet has valid sizes set.
   bool _hasSizes = false;
 
   /// The height of the header that is used to shift the max offset.
   double headerShiftHeight = 0.0;
 
-  /// The minimum height offset of the bottom sheet from the top boundary.
+  /// The minimum height offset of the sheet from the top boundary.
   double minOffset = 0.0;
 
-  /// The maximum height offset of the bottom sheet and padding from the top boundary.
+  /// The maximum height offset of the sheet and padding from the top boundary.
   double maxOffset = 0.0;
 
-  /// Gets the last maximum height offset of the bottom sheet and padding from the top boundary.
+  /// Gets the last maximum height offset of the sheet and padding from the top boundary.
   double lastMaxOffset = 0.0;
 
   /// Base constructor for a [SnappingBehavior] class.
@@ -57,7 +57,7 @@ abstract base class SnappingBehavior {
   //                             Properties and Accessors                                 //
   //--------------------------------------------------------------------------------------//
 
-  /// Sets the available height for the bottom sheet and updates the size flag.
+  /// Sets the available height for the sheet and updates the size flag.
   ///
   /// - [value]: The available height in pixels. Must be greater than `0`.
   set avaliableSpace(double value) {
@@ -67,10 +67,10 @@ abstract base class SnappingBehavior {
     }
   }
 
-  /// Gets the available height for the bottom sheet in pixels.
+  /// Gets the available height for the sheet in pixels.
   double get avaliableSpace => _avaliableSpace;
 
-  /// Indicates if the bottom sheet has been initialized with valid sizes.
+  /// Indicates if the sheet has been initialized with valid sizes.
   bool get hasSizes => _hasSizes;
 
   /// Indicates if the snapping behavior requires setup or reinitialization.
@@ -113,30 +113,30 @@ abstract base class SnappingBehavior {
   //                        Overridable Properties and Methods                            //
   //--------------------------------------------------------------------------------------//
 
-  /// Determines if the bottom sheet should snap to the snapping positions.
+  /// Determines if the sheet should snap to the snapping positions.
   ///
   /// Defaults to `true`. Override this to disable snapping behavior.
   bool get shouldSnap => true;
 
-  /// Sets up the snapping behavior for the bottom sheet.
+  /// Sets up the snapping behavior for the sheet.
   ///
   /// This method is responsible for configuring the snapping points for the
-  /// bottom sheet based on the provided [extent]. The snapping points are
+  /// sheet based on the provided [extent]. The snapping points are
   /// returned as a [SplayTreeSet] of doubles, which represent the positions
-  /// where the bottom sheet can snap to.
+  /// where the sheet can snap to.
   ///
   /// The generic type [T] represents the type of the extent.
   ///
   /// Returns a [SplayTreeSet] of doubles representing the snapping points,
   /// or `null` if the setup could not be performed.
   ///
-  /// - Parameter extent: The extent of the bottom sheet, which determines
+  /// - Parameter extent: The extent of the sheet, which determines
   ///   the snapping points.
   SplayTreeSet<double>? performSetup<T>(MultiStateSheetExtent<T> extent);
 
   /// Resets the cached values and state of the snapping behavior.
   ///
-  /// This method is called when the bottom sheet is disposed or reinitialized.
+  /// This method is called when the sheet is disposed or reinitialized.
   @mustCallSuper
   void reset() {
     cachedClosestOffsets.clear();
@@ -153,7 +153,7 @@ abstract base class SnappingBehavior {
 
   /// Configures the snapping behavior using the provided extent.
   ///
-  /// - [extent]: The current state and configuration of the bottom sheet.
+  /// - [extent]: The current state and configuration of the sheet.
   ///
   /// Subclasses should not override [setup] directly. Instead, they should
   /// override [performSetup] method.
@@ -169,7 +169,7 @@ abstract base class SnappingBehavior {
         ? extent.componentSizes.header
         : 0.0;
 
-    // Set the available space for the bottom sheet.
+    // Set the available space for the sheet.
     avaliableSpace = extent.availablePixels;
     final clippedMaxOffset = avaliableSpace - headerShiftHeight;
 
@@ -188,15 +188,15 @@ abstract base class SnappingBehavior {
 
   /// Determines the anchored state for the current extent offset.
   ///
-  /// - [extent]: The current extent of the bottom sheet.
+  /// - [extent]: The current extent of the sheet.
   /// - Returns: The index of the anchored state.
   int anchoredState<T>(MultiStateSheetExtent<T> extent) =>
       getStateFromOffset(getFirstOffsetAfter(extent.offset), extent);
 
   /// Calculates the interpolation value between two snapping states.
   ///
-  /// - [extent]: The current extent of the bottom sheet.
-  /// - [offset]: The current offset of the bottom sheet.
+  /// - [extent]: The current extent of the sheet.
+  /// - [offset]: The current offset of the sheet.
   /// - Returns: A value between `0` (start of the state) and `1` (end of the state).
   double getInterpolation<T>({required MultiStateSheetExtent<T> extent, required double offset}) {
     final (firstOffset, lastOffset) = getClosestOffsets(offset, extent);
@@ -214,7 +214,7 @@ abstract base class SnappingBehavior {
 
   /// Gets the state associated with the specified offset.
   ///
-  /// - [extent]: The current extent of the bottom sheet.
+  /// - [extent]: The current extent of the sheet.
   /// - [offset]: The offset value to evaluate.
   /// - Returns: The state index corresponding to the offset.
   int getState<T>({required MultiStateSheetExtent<T> extent, required double offset}) =>
@@ -230,7 +230,7 @@ abstract base class SnappingBehavior {
 
   /// Checks if the current offset is at a snapping position.
   ///
-  /// - [extent]: The current extent of the bottom sheet.
+  /// - [extent]: The current extent of the sheet.
   /// - [toleranceDistance]: The allowed tolerance for the offset to be considered at a snapping position.
   /// - Returns: `true` if the offset is close to a snapping position, `false` otherwise.
   bool isAtSnapOffset<T>({
@@ -274,9 +274,9 @@ abstract base class SnappingBehavior {
   /// - Returns: The index of the state corresponding to the offset.
   int stateOfOffset(double offset) => stateToIndex(snappingPixelOffsets.indexOf(getFirstOffsetAfter(offset)));
 
-  /// Gets the clamped position of the bottom sheet for a given state.
+  /// Gets the clamped position of the sheet for a given state.
   ///
-  /// - [extent]: The current extent of the bottom sheet.
+  /// - [extent]: The current extent of the sheet.
   /// - [state]: The state index to evaluate.
   /// - Returns: The position of the state clamped between `minOffset` and `maxOffset`.
   double statePosition<T>({
@@ -287,8 +287,8 @@ abstract base class SnappingBehavior {
 
   /// Finds the two closest snapping offsets to the given offset.
   ///
-  /// - [offset]: The current offset of the bottom sheet.
-  /// - [extent]: The current extent of the bottom sheet.
+  /// - [offset]: The current offset of the sheet.
+  /// - [extent]: The current extent of the sheet.
   /// - Returns: A record of the closest offsets before and after the given offset.
   (double first, double last) getClosestOffsets<StateType>(
     double offset,
@@ -306,7 +306,7 @@ abstract base class SnappingBehavior {
 
   /// Finds the first snapping offset greater than or equal to the given offset.
   ///
-  /// - [offset]: The current offset of the bottom sheet.
+  /// - [offset]: The current offset of the sheet.
   /// - Returns: The closest snapping offset above or equal to the given offset.
   double getFirstOffsetAfter<T>(double offset) => snappingPixelOffsets.firstWhere(
         (snapOffset) => snapOffset.roundDecimal() >= offset.roundDecimal(),
@@ -315,7 +315,7 @@ abstract base class SnappingBehavior {
 
   /// Finds the last snapping offset less than or equal to the given offset.
   ///
-  /// - [offset]: The current offset of the bottom sheet.
+  /// - [offset]: The current offset of the sheet.
   /// - Returns: The closest snapping offset below or equal to the given offset.
   double getLastOffsetBefore<T>(double offset) => snappingPixelOffsets.lastWhere(
         (snapOffset) => snapOffset.roundDecimal() <= offset.roundDecimal(),
@@ -324,8 +324,8 @@ abstract base class SnappingBehavior {
 
   /// Maps the given offset to its corresponding state index.
   ///
-  /// - [offset]: The current offset of the bottom sheet.
-  /// - [extent]: The current extent of the bottom sheet.
+  /// - [offset]: The current offset of the sheet.
+  /// - [extent]: The current extent of the sheet.
   /// - Returns: The state index corresponding to the given offset.
   int getStateFromOffset<T>(double offset, MultiStateSheetExtent<T> extent) =>
       cachedStateFromOffset.putIfAbsent(offset, () {

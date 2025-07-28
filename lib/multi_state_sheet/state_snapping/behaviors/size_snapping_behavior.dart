@@ -2,21 +2,21 @@ import 'dart:collection';
 
 import 'package:sheetify/sheetify.dart';
 
-/// Snapping behavior which is using `bottom sheet sizes` in pixels to calculate snapping offsets and it's states.
+/// Snapping behavior which is using `sheet sizes` in pixels to calculate snapping offsets and it's states.
 ///
-/// Controls the behavior of the bottom sheet when scrolling or dragging.
+/// Controls the behavior of the sheet when scrolling or dragging.
 ///
-/// It provides information to the bottom sheet to bind the sheet to a specific size for each state.
+/// It provides information to the sheet to bind the sheet to a specific size for each state.
 /// If the provided size exceeds the size of the viewport it will be clamped to the size of the viewport.
 final class SizeSnappingBehavior extends SnappingBehavior {
   final Set<double> sizes;
   final SizeSnappingModel model;
 
-  /// Snapping behavior which is using `bottom sheet sizes` in pixels to calculate snapping offsets and it's states.
+  /// Snapping behavior which is using `sheet sizes` in pixels to calculate snapping offsets and it's states.
   ///
-  /// Controls the behavior of the bottom sheet when scrolling or dragging.
+  /// Controls the behavior of the sheet when scrolling or dragging.
   ///
-  /// It provides information to the bottom sheet to bind the sheet to a specific size for each state.
+  /// It provides information to the sheet to bind the sheet to a specific size for each state.
   /// If the provided `size` exceeds the `size of the viewport` it will be clamped to the `size of the viewport`.
   ///
   /// ## Usage

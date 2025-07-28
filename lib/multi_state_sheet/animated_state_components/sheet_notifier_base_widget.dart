@@ -4,7 +4,7 @@ import 'package:sheetify/multi_state_sheet/animated_state_components/multi_state
 /// A base class for creating sheet's state aware stateless animated widgets
 /// based on [ValueNotifier].
 ///
-/// This class provides a structure for building bottom sheet components that
+/// This class provides a structure for building sheet components that
 /// respond to state changes and animations.
 abstract class SheetValueNotifierWidget<StateType> extends SheetStateNotifierStatefulWidget<StateType> {
   /// The default state used when no state is available.
@@ -18,7 +18,7 @@ abstract class SheetValueNotifierWidget<StateType> extends SheetStateNotifierSta
   /// Builds the widget based on the current state and animation interpolation.
   ///
   /// - [context]: The [BuildContext] for the widget.
-  /// - [state]: The [ValueNotifier] current state of the bottom sheet.
+  /// - [state]: The [ValueNotifier] current state of the sheet.
   /// - [interpolation]: A [ValueNotifier] with a value between `0.0` and `1.0` representing the animation progress.
   Widget build(
     BuildContext context,
@@ -32,7 +32,7 @@ abstract class SheetValueNotifierWidget<StateType> extends SheetStateNotifierSta
 
 /// The state for a stateful sheet widget.
 ///
-/// This class provides the context to access the bottom sheet's current state and interpolation.
+/// This class provides the context to access the sheet's current state and interpolation.
 class _SheetComponentState<StateType> extends _SheetNotifierBaseState<SheetValueNotifierWidget<StateType>> {
   late final ValueNotifier<StateType> _state;
   late final ValueNotifier<double> _interpolation;
@@ -66,7 +66,7 @@ class _SheetComponentState<StateType> extends _SheetNotifierBaseState<SheetValue
 /// A base class for creating sheet's state aware stateful animated widgets.
 ///
 /// This class serves as the foundation for all animated widgets that interact with
-/// the bottom sheet's state and respond to state changes.
+/// the sheet's state and respond to state changes.
 abstract class SheetStateNotifierStatefulWidget<StateType> extends StatefulWidget {
   const SheetStateNotifierStatefulWidget({super.key});
 
@@ -77,5 +77,5 @@ abstract class SheetStateNotifierStatefulWidget<StateType> extends StatefulWidge
 /// A base class for the state of sheet animated widgets.
 ///
 /// This class provides the structure for managing the state of animated widgets
-/// in the bottom sheet and allows access to the widget instance.
+/// in the sheet and allows access to the widget instance.
 abstract class _SheetNotifierBaseState<T extends SheetStateNotifierStatefulWidget<dynamic>> extends State<T> {}

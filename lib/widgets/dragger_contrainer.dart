@@ -30,7 +30,9 @@ class DraggerContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: backgroundColor ?? Theme.of(context).bottomSheetTheme.backgroundColor ?? Colors.transparent,
+      color: backgroundColor ??
+          Theme.of(context).bottomSheetTheme.backgroundColor ??
+          Colors.transparent,
       child: SizedBox(
         width: double.infinity,
         child: Align(

@@ -34,5 +34,6 @@ final class SizeSnappingBehavior extends SnappingBehavior {
   }) : model = SizeSnappingModel(sizes);
 
   @override
-  SplayTreeSet<double>? performSetup<T>(MultiStateSheetExtent<T> extent) => model.getOffsets(extent);
+  SplayTreeSet<double>? performSetup<T>(MultiStateSheetExtent<T> extent) =>
+      model.getOffsets(extent);
 }

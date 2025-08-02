@@ -32,6 +32,9 @@ final class SizeSnappingModel extends SnappingModel {
   /// - Returns a sorted set of snapping offsets, where each offset is clamped within the valid range
   ///   of the sheet's configuration.
   @override
-  SplayTreeSet<double> getOffsets<T>(MultiStateSheetExtent<T> extent) => SplayTreeSet.of(
-      sizes.map((size) => clampDouble(extent.availablePixels - size, extent.minOffset, extent.safeMaxOffset)));
+  SplayTreeSet<double> getOffsets<T>(MultiStateSheetExtent<T> extent) =>
+      SplayTreeSet.of(sizes.map((size) => clampDouble(
+          extent.availablePixels - size,
+          extent.minOffset,
+          extent.safeMaxOffset)));
 }

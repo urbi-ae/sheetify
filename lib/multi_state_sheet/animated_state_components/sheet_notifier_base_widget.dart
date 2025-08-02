@@ -6,7 +6,8 @@ import 'package:sheetify/multi_state_sheet/animated_state_components/multi_state
 ///
 /// This class provides a structure for building sheet components that
 /// respond to state changes and animations.
-abstract class SheetValueNotifierWidget<StateType> extends SheetStateNotifierStatefulWidget<StateType> {
+abstract class SheetValueNotifierWidget<StateType>
+    extends SheetStateNotifierStatefulWidget<StateType> {
   /// The default state used when no state is available.
   final StateType defaultState;
 
@@ -27,13 +28,15 @@ abstract class SheetValueNotifierWidget<StateType> extends SheetStateNotifierSta
   );
 
   @override
-  _SheetComponentState<StateType> createState() => _SheetComponentState<StateType>();
+  _SheetComponentState<StateType> createState() =>
+      _SheetComponentState<StateType>();
 }
 
 /// The state for a stateful sheet widget.
 ///
 /// This class provides the context to access the sheet's current state and interpolation.
-class _SheetComponentState<StateType> extends _SheetNotifierBaseState<SheetValueNotifierWidget<StateType>> {
+class _SheetComponentState<StateType>
+    extends _SheetNotifierBaseState<SheetValueNotifierWidget<StateType>> {
   late final ValueNotifier<StateType> _state;
   late final ValueNotifier<double> _interpolation;
 
@@ -67,7 +70,8 @@ class _SheetComponentState<StateType> extends _SheetNotifierBaseState<SheetValue
 ///
 /// This class serves as the foundation for all animated widgets that interact with
 /// the sheet's state and respond to state changes.
-abstract class SheetStateNotifierStatefulWidget<StateType> extends StatefulWidget {
+abstract class SheetStateNotifierStatefulWidget<StateType>
+    extends StatefulWidget {
   const SheetStateNotifierStatefulWidget({super.key});
 
   @override
@@ -78,4 +82,5 @@ abstract class SheetStateNotifierStatefulWidget<StateType> extends StatefulWidge
 ///
 /// This class provides the structure for managing the state of animated widgets
 /// in the sheet and allows access to the widget instance.
-abstract class _SheetNotifierBaseState<T extends SheetStateNotifierStatefulWidget<dynamic>> extends State<T> {}
+abstract class _SheetNotifierBaseState<
+    T extends SheetStateNotifierStatefulWidget<dynamic>> extends State<T> {}

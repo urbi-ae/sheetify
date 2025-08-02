@@ -80,7 +80,8 @@ void main() {
 
     test('should handle fractions outside valid range', () {
       // Arrange
-      final snappingModel = FractionSnappingModel({-0.5, 1.5}); // Invalid fractions
+      final snappingModel =
+          FractionSnappingModel({-0.5, 1.5}); // Invalid fractions
 
       final extent = MockMultiStateSheetExtent(
         availablePixels: 1000.0,
@@ -92,7 +93,8 @@ void main() {
       final offsets = snappingModel.getOffsets(extent);
 
       // Assert
-      expect(offsets, SplayTreeSet.of([1000.0, 0.0])); // Clamped to valid ranges
+      expect(
+          offsets, SplayTreeSet.of([1000.0, 0.0])); // Clamped to valid ranges
     });
   });
 }

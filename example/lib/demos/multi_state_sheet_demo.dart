@@ -56,13 +56,17 @@ class _MultiStateSheetDemoState extends State<MultiStateSheetDemo> {
                 if (!controller.isEnabled) {
                   Navigator.of(mainContext).push(TapThroughOverlayRoute(
                     builder: (context) {
-                      return Theme(data: Theme.of(mainContext), child: MultiStateSheetPage(controller: controller));
+                      return Theme(
+                          data: Theme.of(mainContext),
+                          child: MultiStateSheetPage(controller: controller));
                     },
                   ));
                 }
               },
               child: Text(
-                controller.isEnabled ? 'Sheet is being displayed' : 'Tap to open sheet',
+                controller.isEnabled
+                    ? 'Sheet is being displayed'
+                    : 'Tap to open sheet',
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
@@ -84,10 +88,12 @@ class ExpandableHeaderWidgetDemo extends StatefulWidget {
   });
 
   @override
-  State<ExpandableHeaderWidgetDemo> createState() => _ExpandableHeaderWidgetDemoState();
+  State<ExpandableHeaderWidgetDemo> createState() =>
+      _ExpandableHeaderWidgetDemoState();
 }
 
-class _ExpandableHeaderWidgetDemoState extends State<ExpandableHeaderWidgetDemo> {
+class _ExpandableHeaderWidgetDemoState
+    extends State<ExpandableHeaderWidgetDemo> {
   bool isExpanded = false;
 
   @override
@@ -101,7 +107,9 @@ class _ExpandableHeaderWidgetDemoState extends State<ExpandableHeaderWidgetDemo>
         defaultState: FourStateSheet.halfOpen,
         builder: (context, state, interpolation, _) {
           final sizeDelta = 10 * interpolation + state.index * 10;
-          final height = (widget.shrinkOnLowerState ? 80 - sizeDelta : sizeDelta) + (isExpanded ? 80 : 0);
+          final height =
+              (widget.shrinkOnLowerState ? 80 - sizeDelta : sizeDelta) +
+                  (isExpanded ? 80 : 0);
           return SizedBox(
               height: height,
               child: Row(

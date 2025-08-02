@@ -12,7 +12,8 @@ enum _ToggleSheetSlot {
 ///
 /// This widget uses a [SlottedMultiChildRenderObjectWidget] to manage different slots like
 /// `header`, `footer`, `content`, and `outside`. Each slot is represented by a child widget.
-class _ToggleSheetWidget extends SlottedMultiChildRenderObjectWidget<_ToggleSheetSlot, RenderBox> {
+class _ToggleSheetWidget
+    extends SlottedMultiChildRenderObjectWidget<_ToggleSheetSlot, RenderBox> {
   /// The controller managing the behavior of the sheet.
   final ToggleSheetController scrollController;
 
@@ -88,7 +89,8 @@ class _ToggleSheetWidget extends SlottedMultiChildRenderObjectWidget<_ToggleShee
   Iterable<_ToggleSheetSlot> get slots => _ToggleSheetSlot.values;
 
   @override
-  SlottedContainerRenderObjectMixin<_ToggleSheetSlot, RenderBox> createRenderObject(BuildContext context) {
+  SlottedContainerRenderObjectMixin<_ToggleSheetSlot, RenderBox>
+      createRenderObject(BuildContext context) {
     return _RenderToggleSheet(
       scrollController: scrollController,
       topHeaderOffset: topHeaderOffset,
@@ -99,13 +101,15 @@ class _ToggleSheetWidget extends SlottedMultiChildRenderObjectWidget<_ToggleShee
       safeAreaColor: safeAreaColor,
       viewBottomPadding: viewBottomPadding,
       offsetOutsideWidgetByTopheader: offsetOutsideWidgetByTopheader,
-      drawOutsideWidgetBehindBackgroundFill: drawOutsideWidgetBehindBackgroundFill,
+      drawOutsideWidgetBehindBackgroundFill:
+          drawOutsideWidgetBehindBackgroundFill,
       paddingDelegate: paddingDelegate,
     );
   }
 
   @override
-  void updateRenderObject(BuildContext context, _RenderToggleSheet renderObject) {
+  void updateRenderObject(
+      BuildContext context, _RenderToggleSheet renderObject) {
     renderObject
       ..scrollController = scrollController
       ..barrierColorDelegate = barrierColorDelegate
@@ -114,7 +118,8 @@ class _ToggleSheetWidget extends SlottedMultiChildRenderObjectWidget<_ToggleShee
       ..viewBottomPadding = viewBottomPadding
       ..draggedSheetOffset = scrollController._extent.offset
       ..outsideOpacityDelegate = outsideOpacityDelegate
-      ..drawOutsideWidgetBehindBackgroundFill = drawOutsideWidgetBehindBackgroundFill
+      ..drawOutsideWidgetBehindBackgroundFill =
+          drawOutsideWidgetBehindBackgroundFill
       ..paddingDelegate = paddingDelegate
       ..shaperBorderDelegate = shapeBorderDelegate;
 
@@ -126,7 +131,8 @@ class _ToggleSheetWidget extends SlottedMultiChildRenderObjectWidget<_ToggleShee
 ///
 /// This render object handles complex layout scenarios such as scrolling content, animating
 /// the height of the sheet, and adjusting for safe area padding.
-class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixin<_ToggleSheetSlot, RenderBox> {
+class _RenderToggleSheet extends RenderBox
+    with SlottedContainerRenderObjectMixin<_ToggleSheetSlot, RenderBox> {
   ToggleSheetController _scrollController;
   ToggleSheetController get scrollController => _scrollController;
   set scrollController(ToggleSheetController value) {
@@ -137,7 +143,8 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   }
 
   ToggleSheetDelegate<Color?>? _backgroundColorDelegate;
-  ToggleSheetDelegate<Color?>? get barrierColorDelegate => _backgroundColorDelegate;
+  ToggleSheetDelegate<Color?>? get barrierColorDelegate =>
+      _backgroundColorDelegate;
   set barrierColorDelegate(ToggleSheetDelegate<Color?>? value) {
     if (_backgroundColorDelegate != value) {
       _backgroundColorDelegate = value;
@@ -146,7 +153,8 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   }
 
   ToggleSheetDelegate<double>? _outsideOpacityDelegate;
-  ToggleSheetDelegate<double>? get outsideOpacityDelegate => _outsideOpacityDelegate;
+  ToggleSheetDelegate<double>? get outsideOpacityDelegate =>
+      _outsideOpacityDelegate;
   set outsideOpacityDelegate(ToggleSheetDelegate<double>? value) {
     if (_outsideOpacityDelegate != value) {
       _outsideOpacityDelegate = value;
@@ -155,7 +163,8 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   }
 
   ToggleSheetDelegate<ShapeBorder?>? _shaperBorderDelegate;
-  ToggleSheetDelegate<ShapeBorder?>? get shaperBorderDelegate => _shaperBorderDelegate;
+  ToggleSheetDelegate<ShapeBorder?>? get shaperBorderDelegate =>
+      _shaperBorderDelegate;
   set shaperBorderDelegate(ToggleSheetDelegate<ShapeBorder?>? value) {
     if (_shaperBorderDelegate != value) {
       _shaperBorderDelegate = value;
@@ -200,7 +209,8 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   }
 
   bool _drawOutsideWidgetBehindBackgroundFill;
-  bool get drawOutsideWidgetBehindBackgroundFill => _drawOutsideWidgetBehindBackgroundFill;
+  bool get drawOutsideWidgetBehindBackgroundFill =>
+      _drawOutsideWidgetBehindBackgroundFill;
   set drawOutsideWidgetBehindBackgroundFill(bool value) {
     if (_drawOutsideWidgetBehindBackgroundFill != value) {
       _drawOutsideWidgetBehindBackgroundFill = value;
@@ -251,7 +261,8 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
     bool drawOutsideWidgetBehindBackgroundFill = false,
   })  : _paddingDelegate = paddingDelegate,
         _offsetOutsideWidgetByTopheader = offsetOutsideWidgetByTopheader,
-        _drawOutsideWidgetBehindBackgroundFill = drawOutsideWidgetBehindBackgroundFill,
+        _drawOutsideWidgetBehindBackgroundFill =
+            drawOutsideWidgetBehindBackgroundFill,
         _safeAreaColor = safeAreaColor,
         _backgroundColor = backgroundColor,
         _topHeaderOffset = topHeaderOffset,
@@ -268,7 +279,8 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   RenderBox? get footer => childForSlot(_ToggleSheetSlot.footer);
   RenderBox? get outside => childForSlot(_ToggleSheetSlot.outside);
 
-  double get sheetHeightExtent => math.max(0.0, constraints.maxHeight - draggedSheetOffset);
+  double get sheetHeightExtent =>
+      math.max(0.0, constraints.maxHeight - draggedSheetOffset);
 
   @override
   bool get sizedByParent => true;
@@ -293,19 +305,24 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
 
   @override
   double computeMinIntrinsicWidth(double height) {
-    return content != null ? math.max(content!.getMinIntrinsicWidth(height), 0) : 0.0;
+    return content != null
+        ? math.max(content!.getMinIntrinsicWidth(height), 0)
+        : 0.0;
   }
 
   @override
   double computeMaxIntrinsicWidth(double height) {
-    return content != null ? math.max(content!.getMaxIntrinsicWidth(height), 0) : 0.0;
+    return content != null
+        ? math.max(content!.getMaxIntrinsicWidth(height), 0)
+        : 0.0;
   }
 
   @override
   double computeMinIntrinsicHeight(double width) {
     return math.max(
       0,
-      content!.getMinIntrinsicHeight(width) + (header?.getMinIntrinsicHeight(width) ?? 0.0),
+      content!.getMinIntrinsicHeight(width) +
+          (header?.getMinIntrinsicHeight(width) ?? 0.0),
     );
   }
 
@@ -333,7 +350,8 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
     final isOpening = scrollController._isAnimatingOpen;
 
     /// Update dragged sheet offset based on the offset from controller's extent.
-    if (currentOffset != draggedSheetOffset && (isOpening || currentOffset <= maxHeight) ||
+    if (currentOffset != draggedSheetOffset &&
+            (isOpening || currentOffset <= maxHeight) ||
         scrollController._isChangingHeightModel) {
       draggedSheetOffset = currentOffset;
       if (hasSize && !scrollController._isPreformingResize) {
@@ -344,14 +362,16 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   }
 
   @override
-  Size computeDryLayout(BoxConstraints constraints) => Size(constraints.maxWidth, constraints.maxHeight);
+  Size computeDryLayout(BoxConstraints constraints) =>
+      Size(constraints.maxWidth, constraints.maxHeight);
 
   @override
   void performResize() {
     scrollController._isPreformingResize = true;
     scrollController._extent.minHeight = 0.0;
     scrollController._extent.availablePixels = constraints.maxHeight;
-    scrollController._extent.updateSize(scrollController.isClosed ? constraints.maxHeight : 0.0);
+    scrollController._extent
+        .updateSize(scrollController.isClosed ? constraints.maxHeight : 0.0);
     super.performResize();
   }
 
@@ -385,8 +405,10 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
     );
 
     // Layout header
-    final headerLayoutExtend = _layoutChild(header, correctedConstraints)?.height ?? 0.0;
-    scrollController._extent.componentSizes = scrollController.componentSizes.copyWith(
+    final headerLayoutExtend =
+        _layoutChild(header, correctedConstraints)?.height ?? 0.0;
+    scrollController._extent.componentSizes =
+        scrollController.componentSizes.copyWith(
       header: headerLayoutExtend,
     );
 
@@ -395,15 +417,19 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
         draggedSheetOffset = avaliableHeight;
       } else {
         draggedSheetOffset =
-            scrollController._calculateInitialPositionAndSetEnabled() ?? scrollController._extent._offset;
+            scrollController._calculateInitialPositionAndSetEnabled() ??
+                scrollController._extent._offset;
       }
     }
 
     /// footerLayoutExtend
-    final footerLayoutExtend = _layoutChild(footer, correctedConstraints)?.height ?? 0.0;
+    final footerLayoutExtend =
+        _layoutChild(footer, correctedConstraints)?.height ?? 0.0;
 
     /// Layout overflow header
-    final topLayoutExtend = _layoutChild(topHeader, correctedConstraints)?.height ?? kStartOfTheViewport;
+    final topLayoutExtend =
+        _layoutChild(topHeader, correctedConstraints)?.height ??
+            kStartOfTheViewport;
     final topOffset = topHeaderOffset ?? kStartOfTheViewport;
 
     /// Layout sheet content slivers
@@ -413,7 +439,8 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
           height: math.max(
             0.0,
             (heightModel != null
-                    ? correctedConstraints.maxHeight - heightModel.getHeight(correctedConstraints.maxHeight)
+                    ? correctedConstraints.maxHeight -
+                        heightModel.getHeight(correctedConstraints.maxHeight)
                     : correctedConstraints.maxHeight) -
                 footerLayoutExtend -
                 headerLayoutExtend,
@@ -421,18 +448,21 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
         )?.height ??
         0.0;
 
-    scrollController._extent.componentSizes = scrollController.componentSizes.copyWith(
+    scrollController._extent.componentSizes =
+        scrollController.componentSizes.copyWith(
       topHeader: topLayoutExtend,
       content: contentLayoutExtend,
       footer: footerLayoutExtend,
     );
 
-    final sheetChildrenSize = headerLayoutExtend + contentLayoutExtend + footerLayoutExtend;
+    final sheetChildrenSize =
+        headerLayoutExtend + contentLayoutExtend + footerLayoutExtend;
 
     final isFirstFrame = scrollController._extent.availablePixels == 0;
     final isPreformingResize = scrollController._isPreformingResize;
     final isContentSizeUpdated =
-        avaliableHeight - sheetChildrenSize - viewBottomPadding != scrollController._extent.minHeight;
+        avaliableHeight - sheetChildrenSize - viewBottomPadding !=
+            scrollController._extent.minHeight;
 
     if (isFirstFrame || isPreformingResize || isContentSizeUpdated) {
       draggedSheetOffset = scrollController._updateHeightBoundings(
@@ -468,7 +498,8 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
     _positionChild(
       topHeader,
       correctedConstraints,
-      math.max(kStartOfTheViewport, draggedSheetOffset - topLayoutExtend - topOffset),
+      math.max(kStartOfTheViewport,
+          draggedSheetOffset - topLayoutExtend - topOffset),
       padding: leftPadding,
     );
     _positionChild(
@@ -488,7 +519,11 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
     if (outsideOpacity > 0) {
       final _ = _layoutChild(outside, constraints,
           height: math.max(
-              draggedSheetOffset - (offsetOutsideWidgetByTopheader ? topLayoutExtend : kStartOfTheViewport), 0.0));
+              draggedSheetOffset -
+                  (offsetOutsideWidgetByTopheader
+                      ? topLayoutExtend
+                      : kStartOfTheViewport),
+              0.0));
       _positionChild(outside, constraints, kStartOfTheViewport);
     }
   }
@@ -533,27 +568,28 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
 
     /// A `Path` object used to clip sheet layer and background.
 
-    final Path path = shaperBorderDelegate?.getValue(scrollController)?.getOuterPath(
-              Rect.fromLTWH(
-                kStartOfTheViewport + leftPadding,
-                draggedSheetOffset,
-                constraints.maxWidth - horizontalPadding,
-                sheetHeightExtent - bottomPadding + viewBottomPadding,
-              ),
-            ) ??
-        (Path()
-          ..addRRect(
-            RRect.fromRectAndCorners(
-              Rect.fromLTWH(
-                kStartOfTheViewport + leftPadding,
-                draggedSheetOffset,
-                constraints.maxWidth - horizontalPadding,
-                sheetHeightExtent - bottomPadding + viewBottomPadding,
-              ),
-              topLeft: const Radius.circular(kDefaultRadius),
-              topRight: const Radius.circular(kDefaultRadius),
-            ),
-          ));
+    final Path path =
+        shaperBorderDelegate?.getValue(scrollController)?.getOuterPath(
+                  Rect.fromLTWH(
+                    kStartOfTheViewport + leftPadding,
+                    draggedSheetOffset,
+                    constraints.maxWidth - horizontalPadding,
+                    sheetHeightExtent - bottomPadding + viewBottomPadding,
+                  ),
+                ) ??
+            (Path()
+              ..addRRect(
+                RRect.fromRectAndCorners(
+                  Rect.fromLTWH(
+                    kStartOfTheViewport + leftPadding,
+                    draggedSheetOffset,
+                    constraints.maxWidth - horizontalPadding,
+                    sheetHeightExtent - bottomPadding + viewBottomPadding,
+                  ),
+                  topLeft: const Radius.circular(kDefaultRadius),
+                  topRight: const Radius.circular(kDefaultRadius),
+                ),
+              ));
 
     void paintSheet(PaintingContext context, Offset offset) {
       /// Paint sheet's background
@@ -633,7 +669,8 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
         continue;
       }
       final BoxParentData parentData = child.parentData! as BoxParentData;
-      final isHit = child.hitTest(result, position: position - parentData.offset);
+      final isHit =
+          child.hitTest(result, position: position - parentData.offset);
       if (isHit) {
         return isHit;
       }
@@ -641,15 +678,21 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
     return false;
   }
 
-  Size? _layoutChild(RenderBox? child, BoxConstraints constraints, {double? height}) {
+  Size? _layoutChild(RenderBox? child, BoxConstraints constraints,
+      {double? height}) {
     if (child == null) {
       return null;
     }
-    child.layout(constraints.copyWith(minHeight: 0, maxHeight: height ?? constraints.maxHeight), parentUsesSize: true);
+    child.layout(
+        constraints.copyWith(
+            minHeight: 0, maxHeight: height ?? constraints.maxHeight),
+        parentUsesSize: true);
     return child.size;
   }
 
-  void _positionChild(RenderBox? child, BoxConstraints constraints, double offset, {double padding = 0.0}) {
+  void _positionChild(
+      RenderBox? child, BoxConstraints constraints, double offset,
+      {double padding = 0.0}) {
     if (child == null) {
       return;
     }

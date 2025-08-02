@@ -33,8 +33,10 @@ final class ComponentsSnappingBehavior extends SnappingBehavior {
   ComponentsSnappingBehavior({
     required this.componentDescriptions,
     super.clipByHeader,
-  }) : model = ComponentsSnappingModel(componentsDescriptions: componentDescriptions);
+  }) : model = ComponentsSnappingModel(
+            componentsDescriptions: componentDescriptions);
 
   @override
-  SplayTreeSet<double>? performSetup<T>(MultiStateSheetExtent<T> extent) => model.getOffsets(extent);
+  SplayTreeSet<double>? performSetup<T>(MultiStateSheetExtent<T> extent) =>
+      model.getOffsets(extent);
 }

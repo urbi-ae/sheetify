@@ -237,7 +237,8 @@ class ToggleSheet extends StatefulWidget {
   State<ToggleSheet> createState() => _StatelessSheetState();
 }
 
-class _StatelessSheetState extends State<ToggleSheet> with TickerProviderStateMixin {
+class _StatelessSheetState extends State<ToggleSheet>
+    with TickerProviderStateMixin {
   late final ToggleSheetController controller;
 
   @override
@@ -275,23 +276,29 @@ class _StatelessSheetState extends State<ToggleSheet> with TickerProviderStateMi
     final topHeader = widget.topHeader != null
         ? GestureDetector(
             behavior: widget.hitTestBehavior,
-            onVerticalDragStart: (details) => controller._dragStart(details, context),
-            onVerticalDragUpdate: (details) => controller._dragUpdate(details, context),
-            onVerticalDragEnd: (details) => controller._dragEnd(details, context),
+            onVerticalDragStart: (details) =>
+                controller._dragStart(details, context),
+            onVerticalDragUpdate: (details) =>
+                controller._dragUpdate(details, context),
+            onVerticalDragEnd: (details) =>
+                controller._dragEnd(details, context),
             child: widget.topHeader)
         : null;
 
     final header = GestureDetector(
         behavior: widget.hitTestBehavior,
-        onVerticalDragStart: (details) => controller._dragStart(details, context),
-        onVerticalDragUpdate: (details) => controller._dragUpdate(details, context),
+        onVerticalDragStart: (details) =>
+            controller._dragStart(details, context),
+        onVerticalDragUpdate: (details) =>
+            controller._dragUpdate(details, context),
         onVerticalDragEnd: (details) => controller._dragEnd(details, context),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (dragger != null) dragger,
             if (widgetHeader != null) widgetHeader,
-            if (widget.footerInsideHeaderLayer && widgetFooter != null) widgetFooter
+            if (widget.footerInsideHeaderLayer && widgetFooter != null)
+              widgetFooter
           ],
         ));
 
@@ -301,7 +308,8 @@ class _StatelessSheetState extends State<ToggleSheet> with TickerProviderStateMi
         physics: widget.physics,
         scrollBehavior: const MaterialScrollBehavior().copyWith(
             overscroll: false,
-            physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+            physics: const AlwaysScrollableScrollPhysics(
+                parent: ClampingScrollPhysics()),
             scrollbars: false,
             dragDevices: {
               PointerDeviceKind.mouse,
@@ -333,9 +341,12 @@ class _StatelessSheetState extends State<ToggleSheet> with TickerProviderStateMi
         ? null
         : GestureDetector(
             behavior: widget.hitTestBehavior,
-            onVerticalDragStart: (details) => controller._dragStart(details, context),
-            onVerticalDragUpdate: (details) => controller._dragUpdate(details, context),
-            onVerticalDragEnd: (details) => controller._dragEnd(details, context),
+            onVerticalDragStart: (details) =>
+                controller._dragStart(details, context),
+            onVerticalDragUpdate: (details) =>
+                controller._dragUpdate(details, context),
+            onVerticalDragEnd: (details) =>
+                controller._dragEnd(details, context),
             child: widgetFooter,
           );
 
@@ -350,7 +361,8 @@ class _StatelessSheetState extends State<ToggleSheet> with TickerProviderStateMi
           }
         }),
         child: Builder(builder: (context) {
-          final double? viewBottomPadding = switch (widget.resizeToAvoidBottomPadding) {
+          final double? viewBottomPadding =
+              switch (widget.resizeToAvoidBottomPadding) {
             true => MediaQuery.paddingOf(context).bottom,
             _ => null,
           };
@@ -360,15 +372,18 @@ class _StatelessSheetState extends State<ToggleSheet> with TickerProviderStateMi
             scrollController: controller,
             topHeaderOffset: widget.topHeaderOffset,
             safeAreaColor: widget.safeAreaColor,
-            offsetOutsideWidgetByTopheader: widget.offsetOutsideWidgetByTopheader,
+            offsetOutsideWidgetByTopheader:
+                widget.offsetOutsideWidgetByTopheader,
             outsideOpacityDelegate: widget.outsideOpacityDelegate,
             barrierColorDelegate: widget.barrierColorDelegate,
-            backgroundColor:
-                widget.backgroundColor ?? Theme.of(context).bottomSheetTheme.backgroundColor ?? Colors.transparent,
+            backgroundColor: widget.backgroundColor ??
+                Theme.of(context).bottomSheetTheme.backgroundColor ??
+                Colors.transparent,
             shapeBorderDelegate: widget.shapeBorderDelegate,
             paddingDelegate: widget.paddingDelegate,
             viewBottomPadding: viewBottomPadding,
-            drawOutsideWidgetBehindBackgroundFill: widget.drawOutsideWidgetBehindBackground,
+            drawOutsideWidgetBehindBackgroundFill:
+                widget.drawOutsideWidgetBehindBackground,
             topHeader: topHeader,
             outside: widget.outside,
             footer: footer,

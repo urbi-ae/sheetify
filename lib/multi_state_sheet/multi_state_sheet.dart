@@ -224,10 +224,12 @@ class MultiStateSheet<StateType> extends StatefulWidget {
   });
 
   @override
-  State<MultiStateSheet<StateType>> createState() => _MultiStateSheetState<StateType>();
+  State<MultiStateSheet<StateType>> createState() =>
+      _MultiStateSheetState<StateType>();
 }
 
-class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>> with TickerProviderStateMixin {
+class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>>
+    with TickerProviderStateMixin {
   late final MultiStateSheetController<StateType> controller;
 
   @override
@@ -263,16 +265,21 @@ class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>>
 
     final topHeader = widget.topHeader != null
         ? GestureDetector(
-            onVerticalDragStart: (details) => controller._dragStart(details, context),
-            onVerticalDragUpdate: (details) => controller._dragUpdate(details, context),
-            onVerticalDragEnd: (details) => controller._dragEnd(details, context),
+            onVerticalDragStart: (details) =>
+                controller._dragStart(details, context),
+            onVerticalDragUpdate: (details) =>
+                controller._dragUpdate(details, context),
+            onVerticalDragEnd: (details) =>
+                controller._dragEnd(details, context),
             behavior: widget.hitTestBehavior,
             child: widget.topHeader)
         : null;
 
     final header = GestureDetector(
-        onVerticalDragStart: (details) => controller._dragStart(details, context),
-        onVerticalDragUpdate: (details) => controller._dragUpdate(details, context),
+        onVerticalDragStart: (details) =>
+            controller._dragStart(details, context),
+        onVerticalDragUpdate: (details) =>
+            controller._dragUpdate(details, context),
         onVerticalDragEnd: (details) => controller._dragEnd(details, context),
         behavior: widget.hitTestBehavior,
         child: Column(
@@ -280,7 +287,8 @@ class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>>
           children: [
             if (dragger != null) dragger,
             if (widgetHeader != null) widgetHeader,
-            if (widget.footerInsideHeaderLayer && widgetFooter != null) widgetFooter
+            if (widget.footerInsideHeaderLayer && widgetFooter != null)
+              widgetFooter
           ],
         ));
 
@@ -289,7 +297,8 @@ class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>>
       physics: widget.physics,
       scrollBehavior: const MaterialScrollBehavior().copyWith(
           overscroll: false,
-          physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+          physics: const AlwaysScrollableScrollPhysics(
+              parent: ClampingScrollPhysics()),
           scrollbars: false,
           dragDevices: {
             PointerDeviceKind.mouse,
@@ -318,9 +327,12 @@ class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>>
     final footer = widget.footerInsideHeaderLayer || widgetFooter == null
         ? null
         : GestureDetector(
-            onVerticalDragStart: (details) => controller._dragStart(details, context),
-            onVerticalDragUpdate: (details) => controller._dragUpdate(details, context),
-            onVerticalDragEnd: (details) => controller._dragEnd(details, context),
+            onVerticalDragStart: (details) =>
+                controller._dragStart(details, context),
+            onVerticalDragUpdate: (details) =>
+                controller._dragUpdate(details, context),
+            onVerticalDragEnd: (details) =>
+                controller._dragEnd(details, context),
             behavior: widget.hitTestBehavior,
             child: widgetFooter,
           );
@@ -330,7 +342,8 @@ class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>>
       child: PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, result) => Future(() {
-          if (!didPop && controller._extent.stateMapper.shouldPopOn(controller)) {
+          if (!didPop &&
+              controller._extent.stateMapper.shouldPopOn(controller)) {
             Navigator.of(context).pop();
           }
         }),
@@ -348,11 +361,14 @@ class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>>
               viewBottomPadding: viewBottomPadding,
               safeAreaColor: widget.safeAreaColor,
               topHeaderOffset: widget.topHeaderOffset,
-              drawOutsideWidgetBehindBackgroundFill: widget.drawOutsideWidgetBehindBarrier,
-              offsetOutsideWidgetByTopheader: widget.offsetOutsideWidgetByTopheader,
+              drawOutsideWidgetBehindBackgroundFill:
+                  widget.drawOutsideWidgetBehindBarrier,
+              offsetOutsideWidgetByTopheader:
+                  widget.offsetOutsideWidgetByTopheader,
               outsideOpacityDelegate: widget.outsideOpacityDelegate,
-              backgroundColor:
-                  widget.backgroundColor ?? Theme.of(context).bottomSheetTheme.backgroundColor ?? Colors.transparent,
+              backgroundColor: widget.backgroundColor ??
+                  Theme.of(context).bottomSheetTheme.backgroundColor ??
+                  Colors.transparent,
               barrierColorDelegate: widget.barrierColorDelegate,
               keepContentBehindFooter: widget.keepContentBehindFooter,
               shaper: shaperBorder,
@@ -378,25 +394,30 @@ class _MultiStateSheetNotifierContainer<StateType> extends StatefulWidget {
   final MultiStateSheetController<StateType> controller;
   final Widget child;
 
-  const _MultiStateSheetNotifierContainer({required this.controller, required this.child});
+  const _MultiStateSheetNotifierContainer(
+      {required this.controller, required this.child});
 
   @override
   State<_MultiStateSheetNotifierContainer<StateType>> createState() =>
       _MultiStateSheetNotifierContainerState<StateType>();
 }
 
-class _MultiStateSheetNotifierContainerState<StateType> extends State<_MultiStateSheetNotifierContainer<StateType>> {
+class _MultiStateSheetNotifierContainerState<StateType>
+    extends State<_MultiStateSheetNotifierContainer<StateType>> {
   late final StateType initialState;
 
   @override
   Widget build(BuildContext context) => MultiStateSheetNotifier<StateType>(
-        state: widget.controller.isEnabled ? widget.controller.state : initialState,
+        state: widget.controller.isEnabled
+            ? widget.controller.state
+            : initialState,
         stateInterpolation: widget.controller.interpolation,
         child: widget.child,
       );
 
   @override
-  void didUpdateWidget(covariant _MultiStateSheetNotifierContainer<StateType> oldWidget) {
+  void didUpdateWidget(
+      covariant _MultiStateSheetNotifierContainer<StateType> oldWidget) {
     if (widget.controller != oldWidget.controller) {
       oldWidget.controller.removeListener(updateState);
       widget.controller.addListener(updateState);
@@ -408,7 +429,8 @@ class _MultiStateSheetNotifierContainerState<StateType> extends State<_MultiStat
   void initState() {
     super.initState();
     widget.controller.addListener(updateState);
-    initialState = widget.controller._extent.stateMapper.state(widget.controller._extent.initialState);
+    initialState = widget.controller._extent.stateMapper
+        .state(widget.controller._extent.initialState);
   }
 
   void updateState() {

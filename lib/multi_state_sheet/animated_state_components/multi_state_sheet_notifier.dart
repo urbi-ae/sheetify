@@ -27,9 +27,12 @@ class MultiStateSheetNotifier<StateType> extends InheritedWidget {
 
   @override
   bool updateShouldNotify(MultiStateSheetNotifier<StateType> oldWidget) =>
-      oldWidget._state != state || oldWidget.stateInterpolation != stateInterpolation;
+      oldWidget._state != state ||
+      oldWidget.stateInterpolation != stateInterpolation;
 
-  static MultiStateSheetNotifier<StateType>? of<StateType>(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<MultiStateSheetNotifier<StateType>>();
+  static MultiStateSheetNotifier<StateType>? of<StateType>(
+      BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<
+        MultiStateSheetNotifier<StateType>>();
   }
 }

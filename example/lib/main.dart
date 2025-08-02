@@ -35,7 +35,8 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-MultiStateSheetController<FourStateSheet> createMultiStateSheetController() => MultiStateSheetController(
+MultiStateSheetController<FourStateSheet> createMultiStateSheetController() =>
+    MultiStateSheetController(
       stateMapper: const FourStateMapper(),
       initialState: FourStateSheet.halfOpen,
       behavior: MultiSnappingBehavior(models: [
@@ -60,14 +61,18 @@ class MultiStateSheetPage<T> extends StatefulWidget {
   State<MultiStateSheetPage<T>> createState() => _MultiStateSheetPageState<T>();
 }
 
-class _MultiStateSheetPageState<T> extends State<MultiStateSheetPage<T>> with TickerProviderStateMixin {
-  final outsideOpacityDelegate = StatefulSheetDelegate.func((MultiStateSheetController<FourStateSheet> controller) {
+class _MultiStateSheetPageState<T> extends State<MultiStateSheetPage<T>>
+    with TickerProviderStateMixin {
+  final outsideOpacityDelegate = StatefulSheetDelegate.func(
+      (MultiStateSheetController<FourStateSheet> controller) {
     final isSheetCoversHalfOfTheScreen = controller.fraction > 0.4;
     final isSheetStateOpen = controller.state == FourStateSheet.open;
     final isSheetScrolledForHalfOfTheState = controller.interpolation > 0.4;
 
-    final isFull =
-        (!controller.isEnabled && isSheetStateOpen && isSheetScrolledForHalfOfTheState) || isSheetCoversHalfOfTheScreen;
+    final isFull = (!controller.isEnabled &&
+            isSheetStateOpen &&
+            isSheetScrolledForHalfOfTheState) ||
+        isSheetCoversHalfOfTheScreen;
 
     return !isFull ? 1.0 : max(0.0, 1 - (controller.fraction - 0.4) * 9);
   });
@@ -136,7 +141,8 @@ class _MultiStateSheetPageState<T> extends State<MultiStateSheetPage<T>> with Ti
               ),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) => PlaceholderContainer(text: 'Content $index'),
+                  (context, index) =>
+                      PlaceholderContainer(text: 'Content $index'),
                   childCount: 20,
                 ),
               ),

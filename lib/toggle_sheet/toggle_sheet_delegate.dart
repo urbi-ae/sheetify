@@ -13,7 +13,8 @@ sealed class ToggleSheetDelegate<T> {
   /// Avoid constructing it inline within `build()` to ensure consistency and performance.
   ///
   /// Returns an instance of [ToggleSheetDelegateValue] with the provided [value].
-  factory ToggleSheetDelegate.value(T value) => ToggleSheetDelegateValue<T>(value: value);
+  factory ToggleSheetDelegate.value(T value) =>
+      ToggleSheetDelegateValue<T>(value: value);
 
   /// Creates a [ToggleSheetDelegate] using a custom function that takes a [ToggleSheetController]
   /// and returns an optional value of type [T]. This allows for dynamic control of the sheet's behavior
@@ -27,7 +28,8 @@ sealed class ToggleSheetDelegate<T> {
   /// Avoid constructing it inline within `build()` to ensure consistency and performance.
   ///
   /// Returns an instance of [ToggleSheetDelegateFunction] with the provided [function].
-  factory ToggleSheetDelegate.func(T? Function(ToggleSheetController controller) function) =>
+  factory ToggleSheetDelegate.func(
+          T? Function(ToggleSheetController controller) function) =>
       ToggleSheetDelegateFunction<T>(function: function);
 
   /// We need this method to get the value of the delegate if it is a static value.
@@ -61,7 +63,8 @@ sealed class ToggleSheetDelegate<T> {
   T? getValue<K>(ToggleSheetController controller) {
     return switch (this) {
       final ToggleSheetDelegateValue<T> value => value.value,
-      final ToggleSheetDelegateFunction<T> function => function.function(controller),
+      final ToggleSheetDelegateFunction<T> function =>
+        function.function(controller),
     };
   }
 }

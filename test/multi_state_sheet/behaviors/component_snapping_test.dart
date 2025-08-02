@@ -40,7 +40,8 @@ void main() {
       // Arrange
       behavior = ComponentsSnappingBehavior(
         componentDescriptions: [
-          const SnapComponent.offset(component: Components.content, offset: 50.0),
+          const SnapComponent.offset(
+              component: Components.content, offset: 50.0),
         ],
       );
 
@@ -64,11 +65,13 @@ void main() {
       );
     });
 
-    test('should calculate snapping offsets for SnapComponent.fractionOffset', () {
+    test('should calculate snapping offsets for SnapComponent.fractionOffset',
+        () {
       // Arrange
       behavior = ComponentsSnappingBehavior(
         componentDescriptions: [
-          const SnapComponent.fractionOffset(component: Components.content, fraction: 0.2),
+          const SnapComponent.fractionOffset(
+              component: Components.content, fraction: 0.2),
         ],
       );
 
@@ -88,7 +91,9 @@ void main() {
       // Assert
       expect(
         behavior.snappingPixelOffsets,
-        [500.0], // Calculated as availablePixels - (content size + 0.2 * availablePixels)
+        [
+          500.0
+        ], // Calculated as availablePixels - (content size + 0.2 * availablePixels)
       );
     });
 
@@ -96,7 +101,8 @@ void main() {
       // Arrange
       behavior = ComponentsSnappingBehavior(
         componentDescriptions: [
-          const SnapComponent.position(component: Components.header, position: 300.0),
+          const SnapComponent.position(
+              component: Components.header, position: 300.0),
         ],
       );
 
@@ -124,7 +130,8 @@ void main() {
       // Arrange
       behavior = ComponentsSnappingBehavior(
         componentDescriptions: [
-          const SnapComponent.fraction(component: Components.content, fraction: 0.6),
+          const SnapComponent.fraction(
+              component: Components.content, fraction: 0.6),
         ],
       );
 
@@ -144,7 +151,9 @@ void main() {
       // Assert
       expect(
         behavior.snappingPixelOffsets,
-        [200.0], // Calculated as (fractionRatio * availablePixels + offsetFromTop)
+        [
+          200.0
+        ], // Calculated as (fractionRatio * availablePixels + offsetFromTop)
       );
     });
 
@@ -185,7 +194,8 @@ void main() {
         componentDescriptions: [
           SnapComponent.merge(
             a: const SnapComponent.size(component: Components.header),
-            b: const SnapComponent.offset(component: Components.footer, offset: 50.0),
+            b: const SnapComponent.offset(
+                component: Components.footer, offset: 50.0),
             merge: (a, b) => a + b,
           ),
         ],

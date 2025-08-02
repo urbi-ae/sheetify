@@ -47,13 +47,17 @@ void main() async {
 
     testWidgets('ToggleSheet sheet build', (tester) async {
       double realOffset() {
-        return tester.state<ScrollableState>(find.byType(Scrollable)).position.pixels;
+        return tester
+            .state<ScrollableState>(find.byType(Scrollable))
+            .position
+            .pixels;
       }
 
       addTearDown(() {
         controller.dispose();
       });
-      await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
+      await tester.binding
+          .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
       await tester.pumpWidget(buildToggleSheetSheet());
       await tester.pumpAndSettle();
 
@@ -66,9 +70,13 @@ void main() async {
       expect(realOffset(), 0);
     });
 
-    testWidgets('ToggleSheet sheet openning and close animation', (tester) async {
+    testWidgets('ToggleSheet sheet openning and close animation',
+        (tester) async {
       double realOffset() {
-        return tester.state<ScrollableState>(find.byType(Scrollable)).position.pixels;
+        return tester
+            .state<ScrollableState>(find.byType(Scrollable))
+            .position
+            .pixels;
       }
 
       addTearDown(() {
@@ -90,7 +98,8 @@ void main() async {
 
       expect(stateLog, isNot({'closed'}));
       expect(heightLog, contains(greaterThan(0)));
-      expect(heightLog, contains(lessThan(childCount * childHeight + footerAndHeaderHeight)));
+      expect(heightLog,
+          contains(lessThan(childCount * childHeight + footerAndHeaderHeight)));
       expect(controller.isClosed, isFalse);
       expect(enabledLog, contains(true));
       expect(realOffset(), 0);
@@ -121,13 +130,17 @@ void main() async {
 
     testWidgets('ToggleSheet sheet build', (tester) async {
       double realOffset() {
-        return tester.state<ScrollableState>(find.byType(Scrollable)).position.pixels;
+        return tester
+            .state<ScrollableState>(find.byType(Scrollable))
+            .position
+            .pixels;
       }
 
       addTearDown(() {
         controller.dispose();
       });
-      await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
+      await tester.binding
+          .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
       await tester.pumpWidget(buildToggleSheetSheet());
       await tester.pumpAndSettle();
 
@@ -140,9 +153,13 @@ void main() async {
       expect(realOffset(), 0);
     });
 
-    testWidgets('ToggleSheet sheet openning and close animation', (tester) async {
+    testWidgets('ToggleSheet sheet openning and close animation',
+        (tester) async {
       double realOffset() {
-        return tester.state<ScrollableState>(find.byType(Scrollable)).position.pixels;
+        return tester
+            .state<ScrollableState>(find.byType(Scrollable))
+            .position
+            .pixels;
       }
 
       addTearDown(() {
@@ -164,7 +181,8 @@ void main() async {
 
       expect(stateLog, isNot({'closed'}));
       expect(heightLog, contains(greaterThan(0)));
-      expect(heightLog, contains(lessThan(childCount * childHeight + footerAndHeaderHeight)));
+      expect(heightLog,
+          contains(lessThan(childCount * childHeight + footerAndHeaderHeight)));
       expect(controller.isClosed, isFalse);
       expect(enabledLog, contains(true));
       expect(realOffset(), 0);
@@ -195,13 +213,17 @@ void main() async {
 
     testWidgets('ToggleSheet sheet build', (tester) async {
       double realOffset() {
-        return tester.state<ScrollableState>(find.byType(Scrollable)).position.pixels;
+        return tester
+            .state<ScrollableState>(find.byType(Scrollable))
+            .position
+            .pixels;
       }
 
       addTearDown(() {
         controller.dispose();
       });
-      await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
+      await tester.binding
+          .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
       await tester.pumpWidget(buildToggleSheetSheet());
       await tester.pumpAndSettle();
 
@@ -216,7 +238,10 @@ void main() async {
 
     testWidgets('ToggleSheet sheet openning animation', (tester) async {
       double realOffset() {
-        return tester.state<ScrollableState>(find.byType(Scrollable)).position.pixels;
+        return tester
+            .state<ScrollableState>(find.byType(Scrollable))
+            .position
+            .pixels;
       }
 
       addTearDown(() {
@@ -238,7 +263,8 @@ void main() async {
 
       expect(stateLog, isNot({'closed'}));
       expect(heightLog, contains(greaterThan(0)));
-      expect(heightLog, contains(lessThan(childCount * childHeight + footerAndHeaderHeight)));
+      expect(heightLog,
+          contains(lessThan(childCount * childHeight + footerAndHeaderHeight)));
       expect(controller.isClosed, isFalse);
       expect(enabledLog, contains(true));
       expect(realOffset(), 0);
@@ -269,13 +295,17 @@ void main() async {
 
     testWidgets('ToggleSheet sheet openning animation', (tester) async {
       double realOffset() {
-        return tester.state<ScrollableState>(find.byType(Scrollable)).position.pixels;
+        return tester
+            .state<ScrollableState>(find.byType(Scrollable))
+            .position
+            .pixels;
       }
 
       addTearDown(() {
         controller.dispose();
       });
-      await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
+      await tester.binding
+          .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
       await tester.pumpWidget(buildToggleSheetSheet());
       await tester.pumpAndSettle();
 
@@ -288,9 +318,13 @@ void main() async {
       expect(realOffset(), 0);
     });
 
-    testWidgets('ToggleSheet sheet openning and close animation', (tester) async {
+    testWidgets('ToggleSheet sheet openning and close animation',
+        (tester) async {
       double realOffset() {
-        return tester.state<ScrollableState>(find.byType(Scrollable)).position.pixels;
+        return tester
+            .state<ScrollableState>(find.byType(Scrollable))
+            .position
+            .pixels;
       }
 
       addTearDown(() {
@@ -312,7 +346,8 @@ void main() async {
 
       expect(stateLog, isNot({'closed'}));
       expect(heightLog, contains(greaterThan(0)));
-      expect(heightLog, contains(lessThan(childCount * childHeight + footerAndHeaderHeight)));
+      expect(heightLog,
+          contains(lessThan(childCount * childHeight + footerAndHeaderHeight)));
       expect(controller.isClosed, isFalse);
       expect(enabledLog, contains(true));
       expect(realOffset(), 0);
@@ -341,7 +376,8 @@ class ToggleSheetSheetTestWidget extends StatelessWidget {
           dragger: null,
           startConfig: ToggleSheetStart.closed,
           header: const PlaceholderContainer(text: 'Header'),
-          footer: const SizedBox(height: 50, child: PlaceholderContainer(text: 'Footer')),
+          footer: const SizedBox(
+              height: 50, child: PlaceholderContainer(text: 'Footer')),
           content: List.generate(
             childCount,
             (index) => PlaceholderContainer(

@@ -13,7 +13,8 @@ void main() {
         const SnapComponent.size(component: Components.header, size: 0.5),
         const SnapComponent.size(component: Components.footer),
       ];
-      final snappingModel = ComponentsSnappingModel(componentsDescriptions: components);
+      final snappingModel =
+          ComponentsSnappingModel(componentsDescriptions: components);
 
       final extent = MockMultiStateSheetExtent(
         availablePixels: 1000.0,
@@ -43,7 +44,8 @@ void main() {
       final components = [
         const SnapComponent.size(component: Components.content),
       ];
-      final snappingModel = ComponentsSnappingModel(componentsDescriptions: components);
+      final snappingModel =
+          ComponentsSnappingModel(componentsDescriptions: components);
 
       final extent = MockMultiStateSheetExtent(
         availablePixels: 0.0,
@@ -72,7 +74,8 @@ void main() {
       final components = [
         const SnapComponent.size(component: Components.content, size: 0.0),
       ];
-      final snappingModel = ComponentsSnappingModel(componentsDescriptions: components);
+      final snappingModel =
+          ComponentsSnappingModel(componentsDescriptions: components);
 
       final extent = MockMultiStateSheetExtent(
         availablePixels: 500.0,
@@ -100,7 +103,8 @@ void main() {
       final components = [
         const SnapComponent.size(component: Components.header, size: 0.5),
       ];
-      final snappingModel = ComponentsSnappingModel(componentsDescriptions: components);
+      final snappingModel =
+          ComponentsSnappingModel(componentsDescriptions: components);
 
       final extent = MockMultiStateSheetExtent(
         availablePixels: 1000.0,
@@ -127,7 +131,8 @@ void main() {
       final components = [
         const SnapComponent.offset(component: Components.footer, offset: 50.0),
       ];
-      final snappingModel = ComponentsSnappingModel(componentsDescriptions: components);
+      final snappingModel =
+          ComponentsSnappingModel(componentsDescriptions: components);
 
       final extent = MockMultiStateSheetExtent(
         availablePixels: 1000.0,
@@ -152,9 +157,11 @@ void main() {
     test('should handle SnapComponent.fractionOffset', () {
       // Arrange
       final components = [
-        const SnapComponent.fractionOffset(component: Components.content, fraction: 0.2),
+        const SnapComponent.fractionOffset(
+            component: Components.content, fraction: 0.2),
       ];
-      final snappingModel = ComponentsSnappingModel(componentsDescriptions: components);
+      final snappingModel =
+          ComponentsSnappingModel(componentsDescriptions: components);
 
       final extent = MockMultiStateSheetExtent(
         availablePixels: 1000.0,
@@ -173,15 +180,18 @@ void main() {
       final offsets = snappingModel.getOffsets(extent);
 
       // Assert
-      expect(offsets, SplayTreeSet.of([500.0])); // 1000 - (300 * 1.0 + 0.2 * 1000)
+      expect(
+          offsets, SplayTreeSet.of([500.0])); // 1000 - (300 * 1.0 + 0.2 * 1000)
     });
 
     test('should handle SnapComponent.position', () {
       // Arrange
       final components = [
-        const SnapComponent.position(component: Components.header, position: 300.0),
+        const SnapComponent.position(
+            component: Components.header, position: 300.0),
       ];
-      final snappingModel = ComponentsSnappingModel(componentsDescriptions: components);
+      final snappingModel =
+          ComponentsSnappingModel(componentsDescriptions: components);
 
       final extent = MockMultiStateSheetExtent(
         availablePixels: 1000.0,
@@ -206,9 +216,11 @@ void main() {
     test('should handle SnapComponent.fraction', () {
       // Arrange
       final components = [
-        const SnapComponent.fraction(component: Components.content, fraction: 0.6),
+        const SnapComponent.fraction(
+            component: Components.content, fraction: 0.6),
       ];
-      final snappingModel = ComponentsSnappingModel(componentsDescriptions: components);
+      final snappingModel =
+          ComponentsSnappingModel(componentsDescriptions: components);
 
       final extent = MockMultiStateSheetExtent(
         availablePixels: 1000.0,
@@ -238,7 +250,8 @@ void main() {
           map: (offset) => offset / 2,
         ),
       ];
-      final snappingModel = ComponentsSnappingModel(componentsDescriptions: components);
+      final snappingModel =
+          ComponentsSnappingModel(componentsDescriptions: components);
 
       final extent = MockMultiStateSheetExtent(
         availablePixels: 1000.0,
@@ -265,11 +278,13 @@ void main() {
       final components = [
         SnapComponent.merge(
           a: const SnapComponent.size(component: Components.header),
-          b: const SnapComponent.offset(component: Components.footer, offset: 50.0),
+          b: const SnapComponent.offset(
+              component: Components.footer, offset: 50.0),
           merge: (a, b) => a + b,
         ),
       ];
-      final snappingModel = ComponentsSnappingModel(componentsDescriptions: components);
+      final snappingModel =
+          ComponentsSnappingModel(componentsDescriptions: components);
 
       final extent = MockMultiStateSheetExtent(
         availablePixels: 1000.0,
@@ -288,7 +303,10 @@ void main() {
       final offsets = snappingModel.getOffsets(extent);
 
       // Assert
-      expect(offsets, SplayTreeSet.of([1000 - (200.0 + 150.0 + 50)])); // 1000 - (header + footer)
+      expect(
+          offsets,
+          SplayTreeSet.of(
+              [1000 - (200.0 + 150.0 + 50)])); // 1000 - (header + footer)
     });
   });
 }

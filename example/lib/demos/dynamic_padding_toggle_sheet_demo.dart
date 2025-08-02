@@ -11,10 +11,12 @@ class DynamicPaddingToggleSheetDemo extends StatefulWidget {
   const DynamicPaddingToggleSheetDemo({super.key});
 
   @override
-  State<DynamicPaddingToggleSheetDemo> createState() => _DynamicPaddingToggleSheetDemoState();
+  State<DynamicPaddingToggleSheetDemo> createState() =>
+      _DynamicPaddingToggleSheetDemoState();
 }
 
-class _DynamicPaddingToggleSheetDemoState extends State<DynamicPaddingToggleSheetDemo> {
+class _DynamicPaddingToggleSheetDemoState
+    extends State<DynamicPaddingToggleSheetDemo> {
   late ToggleSheetController controller;
 
   final shapeDelegateValue = ToggleSheetDelegate.func(
@@ -39,7 +41,8 @@ class _DynamicPaddingToggleSheetDemoState extends State<DynamicPaddingToggleShee
 
   final barrierColorDelegate = ToggleSheetDelegate.func(
     (controller) {
-      return Colors.black.withValues(alpha: 0.4 * (1 - controller.interpolation));
+      return Colors.black
+          .withValues(alpha: 0.4 * (1 - controller.interpolation));
     },
   );
 
@@ -114,7 +117,9 @@ class _DynamicPaddingToggleSheetDemoState extends State<DynamicPaddingToggleShee
                 child: Center(
                   child: GestureDetector(
                     child: Text(
-                      controller.isEnabled ? 'Sheet is being displayed' : 'Tap to open sheet',
+                      controller.isEnabled
+                          ? 'Sheet is being displayed'
+                          : 'Tap to open sheet',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
@@ -158,7 +163,8 @@ class _DynamicPaddingToggleSheetDemoState extends State<DynamicPaddingToggleShee
                     padding: const EdgeInsets.all(8.0),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        (context, index) => PlaceholderContainer(text: 'Content $index'),
+                        (context, index) =>
+                            PlaceholderContainer(text: 'Content $index'),
                         childCount: 20,
                       ),
                     ),

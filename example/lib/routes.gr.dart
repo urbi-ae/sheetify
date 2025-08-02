@@ -19,7 +19,7 @@ import 'package:example/menu_page.dart' as _i2;
 /// [_i1.DynamicPaddingToggleSheetDemo]
 class DynamicPaddingToggleSheetDemo extends _i5.PageRouteInfo<void> {
   const DynamicPaddingToggleSheetDemo({List<_i5.PageRouteInfo>? children})
-    : super(DynamicPaddingToggleSheetDemo.name, initialChildren: children);
+      : super(DynamicPaddingToggleSheetDemo.name, initialChildren: children);
 
   static const String name = 'DynamicPaddingToggleSheetDemo';
 
@@ -35,7 +35,7 @@ class DynamicPaddingToggleSheetDemo extends _i5.PageRouteInfo<void> {
 /// [_i2.MenuPage]
 class MenuRoute extends _i5.PageRouteInfo<void> {
   const MenuRoute({List<_i5.PageRouteInfo>? children})
-    : super(MenuRoute.name, initialChildren: children);
+      : super(MenuRoute.name, initialChildren: children);
 
   static const String name = 'MenuRoute';
 
@@ -51,7 +51,7 @@ class MenuRoute extends _i5.PageRouteInfo<void> {
 /// [_i3.MultiStateSheetDemo]
 class MultiStateSheetDemo extends _i5.PageRouteInfo<void> {
   const MultiStateSheetDemo({List<_i5.PageRouteInfo>? children})
-    : super(MultiStateSheetDemo.name, initialChildren: children);
+      : super(MultiStateSheetDemo.name, initialChildren: children);
 
   static const String name = 'MultiStateSheetDemo';
 
@@ -67,7 +67,7 @@ class MultiStateSheetDemo extends _i5.PageRouteInfo<void> {
 /// [_i4.ToggleSheetDemo]
 class ToggleSheetDemo extends _i5.PageRouteInfo<void> {
   const ToggleSheetDemo({List<_i5.PageRouteInfo>? children})
-    : super(ToggleSheetDemo.name, initialChildren: children);
+      : super(ToggleSheetDemo.name, initialChildren: children);
 
   static const String name = 'ToggleSheetDemo';
 

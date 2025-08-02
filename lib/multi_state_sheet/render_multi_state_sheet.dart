@@ -12,7 +12,9 @@ enum _MultiStateSheetSlot {
 ///
 /// This widget uses a [SlottedMultiChildRenderObjectWidget] to manage different slots like
 /// `top`, `header`, `footer`, `content`, and `outside`. Each slot is represented by a child widget.
-class _MultiStateSheetWidget<StateType> extends SlottedMultiChildRenderObjectWidget<_MultiStateSheetSlot, RenderBox> {
+class _MultiStateSheetWidget<StateType>
+    extends SlottedMultiChildRenderObjectWidget<_MultiStateSheetSlot,
+        RenderBox> {
   /// The controller managing the state and behavior of the sheet.
   final MultiStateSheetController<StateType> scrollController;
 
@@ -88,23 +90,25 @@ class _MultiStateSheetWidget<StateType> extends SlottedMultiChildRenderObjectWid
   Iterable<_MultiStateSheetSlot> get slots => _MultiStateSheetSlot.values;
 
   @override
-  SlottedContainerRenderObjectMixin<_MultiStateSheetSlot, RenderBox> createRenderObject(BuildContext context) =>
-      _RenderMultiStateSheet(
-        scrollController: scrollController,
-        topHeaderOffset: topHeaderOffset,
-        barrierColorDelegate: barrierColorDelegate,
-        backgroundColor: backgroundColor,
-        safeAreaColor: safeAreaColor,
-        shaper: shaper,
-        drawOutsideWidgetBehindBackgroundFill: drawOutsideWidgetBehindBackgroundFill,
-        offsetOutsideWidgetByTopheader: offsetOutsideWidgetByTopheader,
-        outsideOpacityDelegate: outsideOpacityDelegate,
-        viewBottomPadding: viewBottomPadding,
-        keepContentBehindFooter: keepContentBehindFooter,
-      );
+  SlottedContainerRenderObjectMixin<_MultiStateSheetSlot, RenderBox>
+      createRenderObject(BuildContext context) => _RenderMultiStateSheet(
+            scrollController: scrollController,
+            topHeaderOffset: topHeaderOffset,
+            barrierColorDelegate: barrierColorDelegate,
+            backgroundColor: backgroundColor,
+            safeAreaColor: safeAreaColor,
+            shaper: shaper,
+            drawOutsideWidgetBehindBackgroundFill:
+                drawOutsideWidgetBehindBackgroundFill,
+            offsetOutsideWidgetByTopheader: offsetOutsideWidgetByTopheader,
+            outsideOpacityDelegate: outsideOpacityDelegate,
+            viewBottomPadding: viewBottomPadding,
+            keepContentBehindFooter: keepContentBehindFooter,
+          );
 
   @override
-  void updateRenderObject(BuildContext context, covariant _RenderMultiStateSheet<StateType> renderObject) {
+  void updateRenderObject(BuildContext context,
+      covariant _RenderMultiStateSheet<StateType> renderObject) {
     renderObject
       ..scrollController = scrollController
       ..topHeaderOffset = topHeaderOffset
@@ -112,7 +116,8 @@ class _MultiStateSheetWidget<StateType> extends SlottedMultiChildRenderObjectWid
       ..backgroundColor = backgroundColor
       ..safeAreaColor = safeAreaColor
       ..shaper = shaper
-      ..drawOutsideWidgetBehindBackgroundFill = drawOutsideWidgetBehindBackgroundFill
+      ..drawOutsideWidgetBehindBackgroundFill =
+          drawOutsideWidgetBehindBackgroundFill
       ..offsetOutsideWidgetByTopheader = offsetOutsideWidgetByTopheader
       ..outsideOpacityDelegate = outsideOpacityDelegate
       ..viewBottomPadding = viewBottomPadding
@@ -174,7 +179,8 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
   RenderBox? get footer => childForSlot(_MultiStateSheetSlot.footer);
   RenderBox? get outside => childForSlot(_MultiStateSheetSlot.outside);
 
-  double get sheetHeightExtent => math.max(0.0, constraints.maxHeight - draggedSheetOffset - viewBottomPadding);
+  double get sheetHeightExtent => math.max(
+      0.0, constraints.maxHeight - draggedSheetOffset - viewBottomPadding);
 
   @override
   bool get sizedByParent => true;
@@ -199,19 +205,24 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
 
   @override
   double computeMinIntrinsicWidth(double height) {
-    return content != null ? math.max(content!.getMinIntrinsicWidth(height), 0) : 0.0;
+    return content != null
+        ? math.max(content!.getMinIntrinsicWidth(height), 0)
+        : 0.0;
   }
 
   @override
   double computeMaxIntrinsicWidth(double height) {
-    return content != null ? math.max(content!.getMaxIntrinsicWidth(height), 0) : 0.0;
+    return content != null
+        ? math.max(content!.getMaxIntrinsicWidth(height), 0)
+        : 0.0;
   }
 
   @override
   double computeMinIntrinsicHeight(double width) {
     return math.max(
       0,
-      content!.getMinIntrinsicHeight(width) + (header?.getMinIntrinsicHeight(width) ?? 0.0),
+      content!.getMinIntrinsicHeight(width) +
+          (header?.getMinIntrinsicHeight(width) ?? 0.0),
     );
   }
 
@@ -244,7 +255,8 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
     final isOpening = scrollController._extent.isAnimatingOpen;
 
     // Update dragged sheet offset based on the offset from controller's extent.
-    if (currentOffset != draggedSheetOffset && (isOpening || currentOffset <= maxOffset)) {
+    if (currentOffset != draggedSheetOffset &&
+        (isOpening || currentOffset <= maxOffset)) {
       if (hasSize && !scrollController._extent.isPreformingResize) {
         markNeedsLayout();
       }
@@ -252,7 +264,8 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
   }
 
   @override
-  Size computeDryLayout(BoxConstraints constraints) => Size(constraints.maxWidth, constraints.maxHeight);
+  Size computeDryLayout(BoxConstraints constraints) =>
+      Size(constraints.maxWidth, constraints.maxHeight);
 
   @override
   void performResize() {
@@ -271,9 +284,11 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
     /// Updates the `lastMaxOffset` of the scroll controller's extent behavior to the current `maxOffset`.
     ///
     /// This is used to keep track of the safe maximum offset value is valid or not.
-    scrollController._extent.behavior.lastMaxOffset = scrollController._extent.maxOffset;
+    scrollController._extent.behavior.lastMaxOffset =
+        scrollController._extent.maxOffset;
 
-    if (scrollController._extent.availablePixels == kStartOfTheViewport || viewBottomPadding > kStartOfTheViewport) {
+    if (scrollController._extent.availablePixels == kStartOfTheViewport ||
+        viewBottomPadding > kStartOfTheViewport) {
       scrollController._maxHeight = avaliableHeight;
     }
 
@@ -288,86 +303,130 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
     /// of the header for minimum displayed height of the bottom sheet.
     /// Then this flag is set to false, disable clipping and bottom sheet
     /// can go outside of bounding box of the viewport.
-    final shiftByHeader = !scrollController._extent.isAnimatingOpen && scrollController._extent.behavior.clipByHeader;
+    final shiftByHeader = !scrollController._extent.isAnimatingOpen &&
+        scrollController._extent.behavior.clipByHeader;
 
     // Layout header
-    final headerLayoutExtend = _layoutChild(header, constraints)?.height ?? kStartOfTheViewport;
+    final headerLayoutExtend =
+        _layoutChild(header, constraints)?.height ?? kStartOfTheViewport;
 
-    draggedSheetOffset = clampDouble(draggedSheetOffset, kStartOfTheViewport,
-        avaliableHeight - (shiftByHeader ? headerLayoutExtend : kStartOfTheViewport));
+    draggedSheetOffset = clampDouble(
+        draggedSheetOffset,
+        kStartOfTheViewport,
+        avaliableHeight -
+            (shiftByHeader ? headerLayoutExtend : kStartOfTheViewport));
 
-    var sheetFreeSpace =
-        clampDouble(sheetHeightExtent, (shiftByHeader ? headerLayoutExtend : kStartOfTheViewport), avaliableHeight);
-    assert(sheetFreeSpace >= kStartOfTheViewport, 'Max height should not be negative');
+    var sheetFreeSpace = clampDouble(
+        sheetHeightExtent,
+        (shiftByHeader ? headerLayoutExtend : kStartOfTheViewport),
+        avaliableHeight);
+    assert(sheetFreeSpace >= kStartOfTheViewport,
+        'Max height should not be negative');
 
     /// footerLayoutExtend
-    final footerLayoutExtend = _layoutChild(footer, constraints)?.height ?? kStartOfTheViewport;
+    final footerLayoutExtend =
+        _layoutChild(footer, constraints)?.height ?? kStartOfTheViewport;
 
-    var sheetContentSpace = math.max(kStartOfTheViewport,
-        sheetFreeSpace - headerLayoutExtend - (keepContentBehindFooter ? kStartOfTheViewport : footerLayoutExtend));
+    var sheetContentSpace = math.max(
+        kStartOfTheViewport,
+        sheetFreeSpace -
+            headerLayoutExtend -
+            (keepContentBehindFooter
+                ? kStartOfTheViewport
+                : footerLayoutExtend));
 
     /// Layout overflow header
-    final topLayoutExtend = _layoutChild(topHeader, constraints)?.height ?? kStartOfTheViewport;
+    final topLayoutExtend =
+        _layoutChild(topHeader, constraints)?.height ?? kStartOfTheViewport;
 
     /// Layout bottom sheet content sliver list
     var contentLayoutExtend =
-        _layoutChild(content, constraints, height: sheetContentSpace)?.height ?? kStartOfTheViewport;
+        _layoutChild(content, constraints, height: sheetContentSpace)?.height ??
+            kStartOfTheViewport;
 
     /// Update components height layout
-    final sheetOffsetAfterUpdatingComponentSizes = scrollController._updateComponents(
-          headerHeight: headerLayoutExtend,
-          contentHeight: contentLayoutExtend,
-          footerHeight: footerLayoutExtend,
-          topHeaderHeight: topLayoutExtend,
-        ) ??
-        draggedSheetOffset;
+    final sheetOffsetAfterUpdatingComponentSizes =
+        scrollController._updateComponents(
+              headerHeight: headerLayoutExtend,
+              contentHeight: contentLayoutExtend,
+              footerHeight: footerLayoutExtend,
+              topHeaderHeight: topLayoutExtend,
+            ) ??
+            draggedSheetOffset;
 
     /// Relayout the content because the offset of the sheet changed by updated components.
     if (sheetOffsetAfterUpdatingComponentSizes != draggedSheetOffset) {
       draggedSheetOffset = sheetOffsetAfterUpdatingComponentSizes;
 
       /// The drag offset is been corrected by the current state of the sheet, so we need to recalculate the the free space and content space.
-      sheetFreeSpace =
-          clampDouble(sheetHeightExtent, (shiftByHeader ? headerLayoutExtend : kStartOfTheViewport), avaliableHeight);
-      assert(sheetFreeSpace >= kStartOfTheViewport, 'Max height should not be negative');
+      sheetFreeSpace = clampDouble(
+          sheetHeightExtent,
+          (shiftByHeader ? headerLayoutExtend : kStartOfTheViewport),
+          avaliableHeight);
+      assert(sheetFreeSpace >= kStartOfTheViewport,
+          'Max height should not be negative');
 
-      sheetContentSpace = math.max(kStartOfTheViewport,
-          sheetFreeSpace - headerLayoutExtend - (keepContentBehindFooter ? kStartOfTheViewport : footerLayoutExtend));
+      sheetContentSpace = math.max(
+          kStartOfTheViewport,
+          sheetFreeSpace -
+              headerLayoutExtend -
+              (keepContentBehindFooter
+                  ? kStartOfTheViewport
+                  : footerLayoutExtend));
 
       contentLayoutExtend =
-          _layoutChild(content, constraints, height: sheetContentSpace)?.height ?? kStartOfTheViewport;
+          _layoutChild(content, constraints, height: sheetContentSpace)
+                  ?.height ??
+              kStartOfTheViewport;
     }
 
     /// If the sheet is should be open instantly, we need to recalculate the height of the sheet
     /// based on the widgets sizes which were layouted and enable sheet to it to be drawn at the first frame.
-    if (!scrollController.isEnabled && !scrollController._extent.isAnimatingOpen) {
-      draggedSheetOffset = clampDouble(scrollController._calculateInitialPositionAndSetEnabled(), kStartOfTheViewport,
-          avaliableHeight - (shiftByHeader ? headerLayoutExtend : kStartOfTheViewport));
+    if (!scrollController.isEnabled &&
+        !scrollController._extent.isAnimatingOpen) {
+      draggedSheetOffset = clampDouble(
+          scrollController._calculateInitialPositionAndSetEnabled(),
+          kStartOfTheViewport,
+          avaliableHeight -
+              (shiftByHeader ? headerLayoutExtend : kStartOfTheViewport));
 
       /// The drag offset is been corrected by the current state of the sheet, so we need to recalculate the the free space and content space.
-      sheetFreeSpace =
-          clampDouble(sheetHeightExtent, (shiftByHeader ? headerLayoutExtend : kStartOfTheViewport), avaliableHeight);
-      assert(sheetFreeSpace >= kStartOfTheViewport, 'Max height should not be negative');
+      sheetFreeSpace = clampDouble(
+          sheetHeightExtent,
+          (shiftByHeader ? headerLayoutExtend : kStartOfTheViewport),
+          avaliableHeight);
+      assert(sheetFreeSpace >= kStartOfTheViewport,
+          'Max height should not be negative');
 
-      sheetContentSpace = math.max(kStartOfTheViewport,
-          sheetFreeSpace - headerLayoutExtend - (keepContentBehindFooter ? kStartOfTheViewport : footerLayoutExtend));
+      sheetContentSpace = math.max(
+          kStartOfTheViewport,
+          sheetFreeSpace -
+              headerLayoutExtend -
+              (keepContentBehindFooter
+                  ? kStartOfTheViewport
+                  : footerLayoutExtend));
 
       /// Relayout the content because the height the content occupies has changed.
       contentLayoutExtend =
-          _layoutChild(content, constraints, height: sheetContentSpace)?.height ?? kStartOfTheViewport;
+          _layoutChild(content, constraints, height: sheetContentSpace)
+                  ?.height ??
+              kStartOfTheViewport;
     }
 
     if (scrollController.needsSetupBehavior) {
       scrollController._extent.behavior.setup(scrollController._extent);
     }
 
-    final footerOffsetPositionAbsolute = math.min(sheetFreeSpace - headerLayoutExtend, footerLayoutExtend);
+    final footerOffsetPositionAbsolute =
+        math.min(sheetFreeSpace - headerLayoutExtend, footerLayoutExtend);
     final offsetSheetFromTop = draggedSheetOffset;
 
     scrollController._actualOffset = draggedSheetOffset;
     // We make it to not call the delegate function if the value is already set.
     // It improves performance and avoid unnecessary calls.
-    final topOffset = topHeaderOffsetValue ?? topHeaderOffset?.getValue(scrollController) ?? kStartOfTheViewport;
+    final topOffset = topHeaderOffsetValue ??
+        topHeaderOffset?.getValue(scrollController) ??
+        kStartOfTheViewport;
 
     /// Layout outside widget
     final opacity = outsideOpacityDelegate?.getValue(scrollController);
@@ -375,19 +434,26 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
       outsideOpacity = Color.getAlphaFromOpacity(opacity.clamp(0, 1));
     }
     if (outsideOpacity > 0) {
-      final outsideSize =
-          (offsetSheetFromTop - (offsetOutsideWidgetByTopheader ? topLayoutExtend : kStartOfTheViewport))
-              .clamp(kStartOfTheViewport, avaliableHeight);
+      final outsideSize = (offsetSheetFromTop -
+              (offsetOutsideWidgetByTopheader
+                  ? topLayoutExtend
+                  : kStartOfTheViewport))
+          .clamp(kStartOfTheViewport, avaliableHeight);
       final _ = _layoutChild(outside, constraints, height: outsideSize);
       _positionChild(outside, constraints, kStartOfTheViewport);
     }
 
     /// Setup children's offsets
-    _positionChild(content, constraints, offsetSheetFromTop + headerLayoutExtend);
     _positionChild(
-        topHeader, constraints, math.max(kStartOfTheViewport, offsetSheetFromTop - topLayoutExtend - topOffset));
+        content, constraints, offsetSheetFromTop + headerLayoutExtend);
+    _positionChild(
+        topHeader,
+        constraints,
+        math.max(kStartOfTheViewport,
+            offsetSheetFromTop - topLayoutExtend - topOffset));
     _positionChild(header, constraints, offsetSheetFromTop);
-    _positionChild(footer, constraints, avaliableHeight - footerOffsetPositionAbsolute);
+    _positionChild(
+        footer, constraints, avaliableHeight - footerOffsetPositionAbsolute);
   }
 
   @override
@@ -435,8 +501,8 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
           ));
 
     void paintOutsideWidget() {
-      context.pushLayer(
-          OpacityLayer()..alpha = outsideOpacity, (context, offset) => doPaint(outside, context, offset), offset);
+      context.pushLayer(OpacityLayer()..alpha = outsideOpacity,
+          (context, offset) => doPaint(outside, context, offset), offset);
     }
 
     void paintSheet(PaintingContext context, Offset offset) {
@@ -491,7 +557,10 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
     context.canvas.drawRect(
       Rect.fromLTWH(
         offset.dx,
-        constraints.maxHeight - viewBottomPadding + offset.dy - safeAreaCorrection,
+        constraints.maxHeight -
+            viewBottomPadding +
+            offset.dy -
+            safeAreaCorrection,
         constraints.maxWidth,
         kBottomNavigationBarHeight + safeAreaCorrection,
       ),
@@ -514,7 +583,8 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
         continue;
       }
       final BoxParentData parentData = child.parentData! as BoxParentData;
-      final isHit = child.hitTest(result, position: position - parentData.offset);
+      final isHit =
+          child.hitTest(result, position: position - parentData.offset);
       if (isHit) {
         return isHit;
       }
@@ -522,15 +592,20 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
     return false;
   }
 
-  Size? _layoutChild(RenderBox? child, BoxConstraints constraints, {double? height}) {
+  Size? _layoutChild(RenderBox? child, BoxConstraints constraints,
+      {double? height}) {
     if (child == null) {
       return null;
     }
-    child.layout(constraints.copyWith(minHeight: 0, maxHeight: height ?? constraints.maxHeight), parentUsesSize: true);
+    child.layout(
+        constraints.copyWith(
+            minHeight: 0, maxHeight: height ?? constraints.maxHeight),
+        parentUsesSize: true);
     return child.size;
   }
 
-  void _positionChild(RenderBox? child, BoxConstraints constraints, double offset) {
+  void _positionChild(
+      RenderBox? child, BoxConstraints constraints, double offset) {
     if (child == null) {
       return;
     }

@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 class PlaceholderHeaderContainer extends SheetAnimatedWidget<FourStateSheet> {
   final String? text;
 
-  const PlaceholderHeaderContainer({required super.defaultState, super.key, this.text});
+  const PlaceholderHeaderContainer(
+      {required super.defaultState, super.key, this.text});
 
   @override
-  Widget build(BuildContext context, FourStateSheet state, double interpolation) {
+  Widget build(
+      BuildContext context, FourStateSheet state, double interpolation) {
     final double height;
 
     if (state == FourStateSheet.hidden) {

@@ -60,7 +60,8 @@ final class MultiSnappingBehavior extends SnappingBehavior {
   MultiSnappingBehavior({
     required this.models,
     super.clipByHeader,
-  }) : assert(models.isNotEmpty, 'At least one snapping model must be provided');
+  }) : assert(
+            models.isNotEmpty, 'At least one snapping model must be provided');
 
   @override
   SplayTreeSet<double>? performSetup<T>(MultiStateSheetExtent<T> extent) {

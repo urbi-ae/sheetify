@@ -51,15 +51,15 @@ To help enforce best practices, we provide a companion linter package: [`sheetif
 - Your application must contain an `analysis_options.yaml` with the following:
 ```yaml
 analyzer:
-	plugins:
-		- custom_lint
+  plugins:
+    - custom_lint
 ```
  
 - And needs a `custom_lint` and `sheetify_lint` packages as `dev_dependencies`:
 ```yaml
 dev_dependencies:
-	custom_lint: ^0.8.0
-	sheetify_lint: ^1.0.0
+  custom_lint: ^0.8.0
+  sheetify_lint: ^1.0.1
 ```
 
 ## 📐 Sheet Layout Structure

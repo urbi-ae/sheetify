@@ -18,7 +18,8 @@ typedef MultiStateSheetAnimatedWidgetBuilder<StateType> = Widget Function(
 ///
 /// This widget simplifies the creation of animated sheet widgets by
 /// delegating the build logic to a [MultiStateSheetAnimatedWidgetBuilder].
-final class MultiStateSheetBuilder<StateType> extends SheetAnimatedWidget<StateType> {
+final class MultiStateSheetBuilder<StateType>
+    extends SheetAnimatedWidget<StateType> {
   /// Constructs a [MultiStateSheetBuilder].
   ///
   /// - [builder]: The function responsible for building the component based on the
@@ -52,7 +53,8 @@ final class MultiStateSheetBuilder<StateType> extends SheetAnimatedWidget<StateT
 ///
 /// This class provides a structure for building sheet components that
 /// respond to state changes and animations.
-abstract class SheetAnimatedWidget<StateType> extends SheetAnimatedStatefulWidget<StateType> {
+abstract class SheetAnimatedWidget<StateType>
+    extends SheetAnimatedStatefulWidget<StateType> {
   /// The default state used when no state is available.
   final StateType defaultState;
 
@@ -73,21 +75,26 @@ abstract class SheetAnimatedWidget<StateType> extends SheetAnimatedStatefulWidge
   );
 
   @override
-  _SheetComponentState<StateType> createState() => _SheetComponentState<StateType>();
+  _SheetComponentState<StateType> createState() =>
+      _SheetComponentState<StateType>();
 }
 
 /// The state for a stateful sheet widget.
 ///
 /// This class provides the context to access the sheet's current state and interpolation.
-class _SheetComponentState<StateType> extends _SheetComponentBaseState<SheetAnimatedWidget<StateType>> {
+class _SheetComponentState<StateType>
+    extends _SheetComponentBaseState<SheetAnimatedWidget<StateType>> {
   @override
   Widget build(BuildContext context) {
     final state = MultiStateSheetNotifier.of<StateType>(context);
 
     return widget.build(
       context,
-      state?.state ?? widget.defaultState, // Use the notifier's state or fallback to the default.
-      state?.stateInterpolation ?? 0.0, // Default interpolation is `0.0` when unavailable.
+      state?.state ??
+          widget
+              .defaultState, // Use the notifier's state or fallback to the default.
+      state?.stateInterpolation ??
+          0.0, // Default interpolation is `0.0` when unavailable.
     );
   }
 }
@@ -107,4 +114,5 @@ abstract class SheetAnimatedStatefulWidget<StateType> extends StatefulWidget {
 ///
 /// This class provides the structure for managing the state of animated widgets
 /// in the sheet and allows access to the widget instance.
-abstract class _SheetComponentBaseState<T extends SheetAnimatedStatefulWidget<dynamic>> extends State<T> {}
+abstract class _SheetComponentBaseState<
+    T extends SheetAnimatedStatefulWidget<dynamic>> extends State<T> {}

@@ -18,7 +18,8 @@ class _ToggleSheetDemoState extends State<ToggleSheetDemo> {
   late ToggleSheetController controller;
 
   void createController() {
-    controller = ToggleSheetController(onClose: (controller) => controller.open());
+    controller =
+        ToggleSheetController(onClose: (controller) => controller.open());
     controller.addListener(updateState);
   }
 
@@ -56,13 +57,17 @@ class _ToggleSheetDemoState extends State<ToggleSheetDemo> {
                 if (!controller.isEnabled) {
                   Navigator.of(mainContext).push(TapThroughOverlayRoute(
                     builder: (context) {
-                      return Theme(data: Theme.of(mainContext), child: ToggleSheetPage(controller: controller));
+                      return Theme(
+                          data: Theme.of(mainContext),
+                          child: ToggleSheetPage(controller: controller));
                     },
                   ));
                 }
               },
               child: Text(
-                controller.isEnabled ? 'Sheet is being displayed' : 'Tap to open sheet',
+                controller.isEnabled
+                    ? 'Sheet is being displayed'
+                    : 'Tap to open sheet',
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
@@ -82,9 +87,12 @@ class ToggleSheetPage<T> extends StatefulWidget {
   State<ToggleSheetPage<T>> createState() => _ToggleSheetPageState<T>();
 }
 
-class _ToggleSheetPageState<T> extends State<ToggleSheetPage<T>> with TickerProviderStateMixin {
-  final barrierDelegate = ToggleSheetDelegate.func(
-      (controller) => Colors.black.withValues(alpha: Curves.easeIn.transform(controller.fraction.clamp(0, 1)) * 0.7));
+class _ToggleSheetPageState<T> extends State<ToggleSheetPage<T>>
+    with TickerProviderStateMixin {
+  final barrierDelegate = ToggleSheetDelegate.func((controller) => Colors.black
+      .withValues(
+          alpha:
+              Curves.easeIn.transform(controller.fraction.clamp(0, 1)) * 0.7));
 
   @override
   Widget build(BuildContext context) {

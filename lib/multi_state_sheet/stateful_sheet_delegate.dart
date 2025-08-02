@@ -1,6 +1,7 @@
 import 'package:sheetify/sheetify.dart';
 
-typedef StatefulFunctionDelegate<T, S> = T? Function(MultiStateSheetController<S> controller);
+typedef StatefulFunctionDelegate<T, S> = T? Function(
+    MultiStateSheetController<S> controller);
 
 /// A sealed class that represents a delegate for the [MultiStateSheet].
 sealed class StatefulSheetDelegate<T> {
@@ -15,7 +16,8 @@ sealed class StatefulSheetDelegate<T> {
   /// Avoid constructing it inline within `build()` to ensure consistency and performance.
   ///
   /// Returns an instance of [ToggleSheetDelegateValue] with the provided [value].
-  factory StatefulSheetDelegate.value(T value) => StatefulSheetDelegateValue<T>(value: value);
+  factory StatefulSheetDelegate.value(T value) =>
+      StatefulSheetDelegateValue<T>(value: value);
 
   /// Creates a [StatefulSheetDelegate] using a custom function that takes a [MultiStateSheetController]
   /// and returns an optional value of type [T]. This allows for dynamic control of the sheet's behavior
@@ -27,7 +29,8 @@ sealed class StatefulSheetDelegate<T> {
   ///
   /// The [function] parameter is a callback that receives the current [MultiStateSheetController]
   /// and returns a value of type [T] or null.
-  static StatefulSheetDelegate<T> func<T, S>(StatefulFunctionDelegate<T, S> function) =>
+  static StatefulSheetDelegate<T> func<T, S>(
+          StatefulFunctionDelegate<T, S> function) =>
       StatefulSheetDelegateFunction<T, S>(function: function);
 
   /// We need this method to get the value of the delegate if it is a static value.
@@ -61,7 +64,8 @@ sealed class StatefulSheetDelegate<T> {
   T? getValue<StateType>(MultiStateSheetController<StateType> controller) {
     return switch (this) {
       final StatefulSheetDelegateValue<T> value => value.value,
-      final StatefulSheetDelegateFunction<T, StateType> function => function.function(controller),
+      final StatefulSheetDelegateFunction<T, StateType> function =>
+        function.function(controller),
       _ => null,
     };
   }

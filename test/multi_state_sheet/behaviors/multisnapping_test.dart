@@ -79,7 +79,10 @@ void main() {
       final anchoredState = behavior.anchoredState(extent);
 
       // Assert
-      expect(anchoredState, behavior.snappingPixelOffsets.length - 1); // State index for offset 0.0
+      expect(
+          anchoredState,
+          behavior.snappingPixelOffsets.length -
+              1); // State index for offset 0.0
     });
 
     test('should calculate interpolation correctly between states', () {
@@ -98,7 +101,8 @@ void main() {
       );
 
       // Assert
-      expect(interpolation, closeTo(0.5, 0.01)); // Midway should give interpolation 0.5
+      expect(interpolation,
+          closeTo(0.5, 0.01)); // Midway should give interpolation 0.5
     });
 
     test('should determine snapping state for a given offset', () {
@@ -236,7 +240,8 @@ void main() {
       final lastOffsetBefore = behavior.getLastOffsetBefore(220.0);
 
       // Assert
-      expect(lastOffsetBefore, 200.0); // Last offset less than or equal to 220.0
+      expect(
+          lastOffsetBefore, 200.0); // Last offset less than or equal to 220.0
     });
 
     test('should compute correct state for exact snapping offset', () {

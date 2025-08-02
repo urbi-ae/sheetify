@@ -20,7 +20,9 @@ class Dragger extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(kDefaultRadius),
-          color: color ?? Theme.of(context).bottomSheetTheme.dragHandleColor ?? Colors.grey.shade800,
+          color: color ??
+              Theme.of(context).bottomSheetTheme.dragHandleColor ??
+              Colors.grey.shade800,
         ),
       ),
     );

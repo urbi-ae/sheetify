@@ -7,7 +7,9 @@ void main() {
   group('SizeSnappingBehavior', () {
     late SizeSnappingBehavior behavior;
 
-    test('should calculate snapping offsets correctly for valid state positions', () {
+    test(
+        'should calculate snapping offsets correctly for valid state positions',
+        () {
       // Arrange
       behavior = SizeSnappingBehavior(sizes: {100.0, 300.0, 500.0});
       final extent = MockMultiStateSheetExtent(
@@ -25,7 +27,8 @@ void main() {
       );
     });
 
-    test('should calculate correct minOffset and maxOffset for valid positions', () {
+    test('should calculate correct minOffset and maxOffset for valid positions',
+        () {
       // Arrange
       behavior = SizeSnappingBehavior(sizes: {150.0, 350.0, 550.0});
       final extent = MockMultiStateSheetExtent(
@@ -114,7 +117,8 @@ void main() {
         behavior.snappingPixelOffsets,
         [200.0], // 100.0 and 300.0 clamped by headerShiftHeight
       );
-      expect(behavior.maxOffset, 200.0); // Clamped to availablePixels - headerShiftHeight
+      expect(behavior.maxOffset,
+          200.0); // Clamped to availablePixels - headerShiftHeight
     });
   });
 }

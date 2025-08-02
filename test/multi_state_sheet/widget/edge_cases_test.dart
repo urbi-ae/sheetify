@@ -19,7 +19,8 @@ void main() {
         b: const SnapComponent.size(component: Components.footer),
         merge: (a, b) => a + b,
       ),
-      const SnapComponent.fractionOffset(component: Components.header, fraction: 0.7),
+      const SnapComponent.fractionOffset(
+          component: Components.header, fraction: 0.7),
     ])
   ]);
   late MultiStateSheetController<int> controller;
@@ -44,8 +45,10 @@ void main() {
         topHeader: const AnimatedStateSheetWidgetTemplate(
           key: ValueKey('Top header'),
         ),
-        header: const SizedBox(height: headerHeight, child: PlaceholderContainer(text: 'Header')),
-        footer: const SizedBox(height: footerHeight, child: PlaceholderContainer(text: 'Footer')),
+        header: const SizedBox(
+            height: headerHeight, child: PlaceholderContainer(text: 'Header')),
+        footer: const SizedBox(
+            height: footerHeight, child: PlaceholderContainer(text: 'Footer')),
         content: List.generate(
           itemsCount,
           (index) => PlaceholderContainer(
@@ -88,18 +91,21 @@ void main() {
       addTearDown(() {
         controller.dispose();
       });
-      await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
+      await tester.binding
+          .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
       await tester.pumpWidget(buildMultiStateSheet());
       await tester.pumpAndSettle();
 
-      expect(controller.state, equals(initialState)); // Should start in hidden state
+      expect(controller.state,
+          equals(initialState)); // Should start in hidden state
     });
 
     testWidgets('MultiStateSheet sheet opens when commanded', (tester) async {
       addTearDown(() {
         controller.dispose();
       });
-      await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
+      await tester.binding
+          .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
       await tester.pumpWidget(buildMultiStateSheet());
 
       controller.setState(1); // Half-open
@@ -113,7 +119,8 @@ void main() {
         controller.dispose();
       });
 
-      await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
+      await tester.binding
+          .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
       await tester.pumpWidget(buildMultiStateSheet());
       await tester.pumpAndSettle();
 
@@ -121,7 +128,8 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      expect(controller.sheetHeight, sheetHeight); // Should snap to expanded state
+      expect(
+          controller.sheetHeight, sheetHeight); // Should snap to expanded state
       expect(controller.state, 3); // Should snap to expanded state
     });
 
@@ -129,7 +137,8 @@ void main() {
       addTearDown(() {
         controller.dispose();
       });
-      await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
+      await tester.binding
+          .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
       await tester.pumpWidget(buildMultiStateSheet());
 
       controller.setState(3); // Start fully expanded
@@ -138,63 +147,84 @@ void main() {
       await tester.fling(find.text('Header'), const Offset(0, 900), 800);
       await tester.pumpAndSettle();
 
-      expect(controller.sheetHeight, headerHeight); // Should snap to hidden state
+      expect(
+          controller.sheetHeight, headerHeight); // Should snap to hidden state
       expect(controller.state, 0); // Should snap to hidden state
     });
 
-    void expectCorrectState({double offset = 0.0, String tag = '', double tollerance = 0.0}) {
-      expect(controller.viewportHeight, equals(sheetHeight - offset), reason: tag);
-      expect(controller.sheetHeight, moreOrLessEquals(headerHeight, epsilon: tollerance), reason: tag);
-      expect(controller.state, equals(initialState), reason: 'Should be initial state at $tag');
+    void expectCorrectState(
+        {double offset = 0.0, String tag = '', double tollerance = 0.0}) {
+      expect(controller.viewportHeight, equals(sheetHeight - offset),
+          reason: tag);
+      expect(controller.sheetHeight,
+          moreOrLessEquals(headerHeight, epsilon: tollerance),
+          reason: tag);
+      expect(controller.state, equals(initialState),
+          reason: 'Should be initial state at $tag');
     }
 
-    testWidgets('MultiStateSheet sheet handles viewport size changes, small to big to small to big', (tester) async {
+    testWidgets(
+        'MultiStateSheet sheet handles viewport size changes, small to big to small to big',
+        (tester) async {
       await tester.runAsync(() async {
         final bottomSheet = buildMultiStateSheet();
 
         /// Set initial small viewport size
-        await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight - 100));
+        await tester.binding
+            .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight - 100));
         await tester.pumpWidget(bottomSheet);
         await tester.pumpFrames(bottomSheet, Durations.long4);
 
         /// Set big viewport size
-        await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
+        await tester.binding
+            .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
         await tester.pumpFrames(bottomSheet, Durations.long3);
         expectCorrectState(tag: 'Resize while openning', tollerance: 10);
 
         /// Set small viewport size
-        await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight - 100));
+        await tester.binding
+            .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight - 100));
         await tester.pumpFrames(bottomSheet, Durations.short1);
         expectCorrectState(offset: 100, tag: 'Resize and check after a frame');
 
         /// Set bigger viewport size
-        await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight - 50));
+        await tester.binding
+            .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight - 50));
         await tester.pumpAndSettle();
-        expectCorrectState(offset: 50, tag: 'Resize and check after all settle');
+        expectCorrectState(
+            offset: 50, tag: 'Resize and check after all settle');
       });
     });
-    testWidgets('MultiStateSheet sheet handles viewport size changes, big to small to big to bigger', (tester) async {
+    testWidgets(
+        'MultiStateSheet sheet handles viewport size changes, big to small to big to bigger',
+        (tester) async {
       await tester.runAsync(() async {
         final bottomSheet = buildMultiStateSheet();
 
         /// Set initial big viewport size
-        await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
+        await tester.binding
+            .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
         await tester.pumpWidget(bottomSheet);
         await tester.pumpFrames(bottomSheet, Durations.long3);
-        expectCorrectState(tag: 'Resize while openning (big viewport size)', tollerance: 10);
+        expectCorrectState(
+            tag: 'Resize while openning (big viewport size)', tollerance: 10);
 
         /// Set small viewport size
-        await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight - 100));
+        await tester.binding
+            .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight - 100));
         await tester.pumpFrames(bottomSheet, Durations.long3);
-        expectCorrectState(offset: 100, tag: 'Resize while openning (small viewport size)');
+        expectCorrectState(
+            offset: 100, tag: 'Resize while openning (small viewport size)');
 
         /// Set bigger viewport size
-        await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight - 50));
+        await tester.binding
+            .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight - 50));
         await tester.pumpFrames(bottomSheet, Durations.long3);
         expectCorrectState(offset: 50, tag: 'Resize and check after a frames');
 
         /// Set bigger viewport size
-        await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
+        await tester.binding
+            .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
         await tester.pumpAndSettle();
         expectCorrectState(tag: 'Resize and check after all settle');
       });

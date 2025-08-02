@@ -15,7 +15,8 @@ abstract base class SnappingBehavior {
   final bool clipByHeader;
 
   /// Caches the closest offsets to optimize repeated calculations for a single frame.
-  final FrameStackHashMap<double, (double, double)> cachedClosestOffsets = FrameStackHashMap();
+  final FrameStackHashMap<double, (double, double)> cachedClosestOffsets =
+      FrameStackHashMap();
 
   /// Caches the state associated with a specific offset for optimized state retrieval.
   final FrameStackHashMap<double, int> cachedState = FrameStackHashMap();
@@ -76,7 +77,10 @@ abstract base class SnappingBehavior {
   /// Indicates if the snapping behavior requires setup or reinitialization.
   ///
   /// This is `true` when snapping offsets are not defined, empty, or sizes are missing.
-  bool get needsSetup => snappingOffsets == null || (snappingOffsets?.isEmpty ?? true) || !hasSizes;
+  bool get needsSetup =>
+      snappingOffsets == null ||
+      (snappingOffsets?.isEmpty ?? true) ||
+      !hasSizes;
 
   /// Gets the snapping offsets as a list of pixel values.
   ///
@@ -165,7 +169,8 @@ abstract base class SnappingBehavior {
     cachedState.clear();
     cachedStateFromOffset.clear();
 
-    headerShiftHeight = clipByHeader && (extent.currentState == 0 && extent.stateInterpolation == 0.0)
+    headerShiftHeight = clipByHeader &&
+            (extent.currentState == 0 && extent.stateInterpolation == 0.0)
         ? extent.componentSizes.header
         : 0.0;
 
@@ -183,7 +188,8 @@ abstract base class SnappingBehavior {
     // Update minimum and maximum offsets based on the calculated snapping offsets.
     minOffset = snappingPixelOffsets.firstOrNull ?? 0.0;
 
-    maxOffset = math.min(clippedMaxOffset, snappingPixelOffsets.lastOrNull ?? clippedMaxOffset);
+    maxOffset = math.min(
+        clippedMaxOffset, snappingPixelOffsets.lastOrNull ?? clippedMaxOffset);
   }
 
   /// Determines the anchored state for the current extent offset.
@@ -198,7 +204,8 @@ abstract base class SnappingBehavior {
   /// - [extent]: The current extent of the sheet.
   /// - [offset]: The current offset of the sheet.
   /// - Returns: A value between `0` (start of the state) and `1` (end of the state).
-  double getInterpolation<T>({required MultiStateSheetExtent<T> extent, required double offset}) {
+  double getInterpolation<T>(
+      {required MultiStateSheetExtent<T> extent, required double offset}) {
     final (firstOffset, lastOffset) = getClosestOffsets(offset, extent);
 
     return firstOffset != lastOffset
@@ -217,7 +224,8 @@ abstract base class SnappingBehavior {
   /// - [extent]: The current extent of the sheet.
   /// - [offset]: The offset value to evaluate.
   /// - Returns: The state index corresponding to the offset.
-  int getState<T>({required MultiStateSheetExtent<T> extent, required double offset}) =>
+  int getState<T>(
+          {required MultiStateSheetExtent<T> extent, required double offset}) =>
       cachedState.putIfAbsent(extent.offset, offset, () {
         final (firstOffset, lastOffset) = getClosestOffsets(offset, extent);
 
@@ -237,14 +245,16 @@ abstract base class SnappingBehavior {
     required MultiStateSheetExtent<T> extent,
     required double toleranceDistance,
   }) =>
-      snappingPixelOffsets.any((snapOffset) => (extent.offset - snapOffset).abs() <= toleranceDistance) ||
+      snappingPixelOffsets.any((snapOffset) =>
+          (extent.offset - snapOffset).abs() <= toleranceDistance) ||
       extent.offset >= extent.maxOffset;
 
   /// Gets the snapping offset for the specified state.
   ///
   /// - [state]: The index of the state.
   /// - Returns: The offset in pixels corresponding to the state.
-  double offsetFromState(int state) => snappingPixelOffsets.elementAtOrNull(stateToIndex(state)) ?? 0.0;
+  double offsetFromState(int state) =>
+      snappingPixelOffsets.elementAtOrNull(stateToIndex(state)) ?? 0.0;
 
   /// Converts a state index to an offset index.
   ///
@@ -253,7 +263,8 @@ abstract base class SnappingBehavior {
   /// - Throws: AssertionError if the state index is out of range.
   int stateToIndex(int state) {
     assert(
-      state >= 0 && state < snappingPixelOffsets.length || snappingPixelOffsets.isEmpty,
+      state >= 0 && state < snappingPixelOffsets.length ||
+          snappingPixelOffsets.isEmpty,
       'Provided state index is out of range for snapping positions. '
       'Please ensure unique offsets and valid states.\n'
       'State index: $state, Snapping offsets length: ${snappingPixelOffsets.length}\n'
@@ -272,7 +283,8 @@ abstract base class SnappingBehavior {
   ///
   /// - [offset]: The offset value to evaluate.
   /// - Returns: The index of the state corresponding to the offset.
-  int stateOfOffset(double offset) => stateToIndex(snappingPixelOffsets.indexOf(getFirstOffsetAfter(offset)));
+  int stateOfOffset(double offset) =>
+      stateToIndex(snappingPixelOffsets.indexOf(getFirstOffsetAfter(offset)));
 
   /// Gets the clamped position of the sheet for a given state.
   ///
@@ -283,7 +295,8 @@ abstract base class SnappingBehavior {
     required MultiStateSheetExtent<T> extent,
     required int state,
   }) =>
-      clampDouble(offsetFromState(state), extent.minOffset, extent.safeMaxOffset);
+      clampDouble(
+          offsetFromState(state), extent.minOffset, extent.safeMaxOffset);
 
   /// Finds the two closest snapping offsets to the given offset.
   ///
@@ -308,7 +321,8 @@ abstract base class SnappingBehavior {
   ///
   /// - [offset]: The current offset of the sheet.
   /// - Returns: The closest snapping offset above or equal to the given offset.
-  double getFirstOffsetAfter<T>(double offset) => snappingPixelOffsets.firstWhere(
+  double getFirstOffsetAfter<T>(double offset) =>
+      snappingPixelOffsets.firstWhere(
         (snapOffset) => snapOffset.roundDecimal() >= offset.roundDecimal(),
         orElse: () => snappingPixelOffsets.lastOrNull ?? 0.0,
       );
@@ -317,7 +331,8 @@ abstract base class SnappingBehavior {
   ///
   /// - [offset]: The current offset of the sheet.
   /// - Returns: The closest snapping offset below or equal to the given offset.
-  double getLastOffsetBefore<T>(double offset) => snappingPixelOffsets.lastWhere(
+  double getLastOffsetBefore<T>(double offset) =>
+      snappingPixelOffsets.lastWhere(
         (snapOffset) => snapOffset.roundDecimal() <= offset.roundDecimal(),
         orElse: () => snappingPixelOffsets.firstOrNull ?? 0.0,
       );
@@ -338,8 +353,10 @@ abstract base class SnappingBehavior {
           final firstPosition = getFirstOffsetAfter(offset);
           final lastPosition = getLastOffsetBefore(offset);
 
-          if ((offset - clampDouble(lastPosition, minPosition, maxPosition)).abs() >
-              (offset - clampDouble(firstPosition, minPosition, maxPosition)).abs()) {
+          if ((offset - clampDouble(lastPosition, minPosition, maxPosition))
+                  .abs() >
+              (offset - clampDouble(firstPosition, minPosition, maxPosition))
+                  .abs()) {
             return stateOfOffset(firstPosition);
           }
           return stateOfOffset(lastPosition);

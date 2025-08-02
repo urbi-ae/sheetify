@@ -2,7 +2,8 @@ import 'dart:ui';
 
 import 'package:sheetify/sheetify.dart';
 
-class MockMultiStateSheetExtent<StateType> implements MultiStateSheetExtent<StateType> {
+class MockMultiStateSheetExtent<StateType>
+    implements MultiStateSheetExtent<StateType> {
   @override
   double availablePixels;
 
@@ -94,16 +95,21 @@ class MockMultiStateSheetExtent<StateType> implements MultiStateSheetExtent<Stat
   SheetStateMapper<StateType> get stateMapper => throw UnimplementedError();
 
   @override
-  double? updateComponents(double topHeaderHeight, double headerHeight, double contentHeight, double footerHeight) {
+  double? updateComponents(double topHeaderHeight, double headerHeight,
+      double contentHeight, double footerHeight) {
     initialComponentSizes = SheetWidgetSizes(
-        topHeader: topHeaderHeight, header: headerHeight, content: contentHeight, footer: footerHeight);
+        topHeader: topHeaderHeight,
+        header: headerHeight,
+        content: contentHeight,
+        footer: footerHeight);
     componentSizes = initialComponentSizes;
 
     return offset;
   }
 
   @override
-  void updateSize(double newOffset, {bool isAnimating = false, bool notify = true}) {}
+  void updateSize(double newOffset,
+      {bool isAnimating = false, bool notify = true}) {}
 
   @override
   void updateState() {}

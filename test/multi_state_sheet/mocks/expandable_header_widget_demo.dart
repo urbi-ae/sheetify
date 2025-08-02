@@ -11,10 +11,12 @@ class ExpandableHeaderWidgetDemo extends StatefulWidget {
   });
 
   @override
-  State<ExpandableHeaderWidgetDemo> createState() => _ExpandableHeaderWidgetDemoState();
+  State<ExpandableHeaderWidgetDemo> createState() =>
+      _ExpandableHeaderWidgetDemoState();
 }
 
-class _ExpandableHeaderWidgetDemoState extends State<ExpandableHeaderWidgetDemo> {
+class _ExpandableHeaderWidgetDemoState
+    extends State<ExpandableHeaderWidgetDemo> {
   bool isExpanded = false;
 
   @override
@@ -28,7 +30,9 @@ class _ExpandableHeaderWidgetDemoState extends State<ExpandableHeaderWidgetDemo>
         defaultState: FourStateSheet.halfOpen,
         builder: (context, state, interpolation, _) {
           final sizeDelta = 50 * interpolation + state.index * 50;
-          final height = (widget.shrinkOnLowerState ? 150 - sizeDelta : sizeDelta) + (isExpanded ? 150 : 50);
+          final height =
+              (widget.shrinkOnLowerState ? 150 - sizeDelta : sizeDelta) +
+                  (isExpanded ? 150 : 50);
           return SizedBox(
               height: height,
               child: GestureDetector(
@@ -66,10 +70,12 @@ class PlaceholderContainer extends StatelessWidget {
 class PlaceholderHeaderContainer extends SheetAnimatedWidget<FourStateSheet> {
   final String? text;
 
-  const PlaceholderHeaderContainer({required super.defaultState, super.key, this.text});
+  const PlaceholderHeaderContainer(
+      {required super.defaultState, super.key, this.text});
 
   @override
-  Widget build(BuildContext context, FourStateSheet state, double interpolation) {
+  Widget build(
+      BuildContext context, FourStateSheet state, double interpolation) {
     final double height;
 
     if (state == FourStateSheet.hidden) {

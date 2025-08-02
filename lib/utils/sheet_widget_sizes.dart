@@ -22,7 +22,8 @@ class SheetWidgetSizes {
   });
 
   @override
-  int get hashCode => topHeader.hashCode ^ header.hashCode ^ content.hashCode ^ footer.hashCode;
+  int get hashCode =>
+      topHeader.hashCode ^ header.hashCode ^ content.hashCode ^ footer.hashCode;
 
   @override
   bool operator ==(Object other) {
@@ -42,7 +43,10 @@ class SheetWidgetSizes {
 
   /// Returns `true` if the value is considered zero, otherwise `false`.
   bool get isZero =>
-      topHeader == kZeroHeight && header == kZeroHeight && content == kZeroHeight && footer == kZeroHeight;
+      topHeader == kZeroHeight &&
+      header == kZeroHeight &&
+      content == kZeroHeight &&
+      footer == kZeroHeight;
 
   /// Creates a copy of this [SheetWidgetSizes] with the given fields replaced by new values.
   ///

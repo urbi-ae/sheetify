@@ -89,7 +89,8 @@ final class FourStateMapper implements SheetStateMapper<FourStateSheet> {
 
   @override
   FourStateSheet state(int state) {
-    return FourStateSheet.values.elementAtOrNull(state) ?? FourStateSheet.expanded;
+    return FourStateSheet.values.elementAtOrNull(state) ??
+        FourStateSheet.expanded;
   }
 
   @override
@@ -120,11 +121,14 @@ final class FourStateMapper implements SheetStateMapper<FourStateSheet> {
   }
 
   /// Delegate method for calculate barrier color inside sheet.
-  static const StatefulSheetDelegateFunction<Color?, FourStateSheet> barrierColorDelegate =
-      StatefulSheetDelegateFunction<Color?, FourStateSheet>(function: _barrierColorDelegate);
+  static const StatefulSheetDelegateFunction<Color?, FourStateSheet>
+      barrierColorDelegate =
+      StatefulSheetDelegateFunction<Color?, FourStateSheet>(
+          function: _barrierColorDelegate);
 
   /// Delegate method for calculate barrier color inside sheet.
-  static Color? _barrierColorDelegate(MultiStateSheetController<FourStateSheet> controller) {
+  static Color? _barrierColorDelegate(
+      MultiStateSheetController<FourStateSheet> controller) {
     final state = controller.state;
     final interpolation = controller.interpolation;
 
@@ -134,10 +138,12 @@ final class FourStateMapper implements SheetStateMapper<FourStateSheet> {
 
     const black = Color(0xff000000);
     if (state == FourStateSheet.open) {
-      return black.withAlpha((max(0.0, state.index - interpolation * 2 - 1) * 0.7 * 255).round());
+      return black.withAlpha(
+          (max(0.0, state.index - interpolation * 2 - 1) * 0.7 * 255).round());
     }
 
-    return black.withAlpha(((state.index + interpolation - 1) * 0.7 * 255).round());
+    return black
+        .withAlpha(((state.index + interpolation - 1) * 0.7 * 255).round());
   }
 }
 

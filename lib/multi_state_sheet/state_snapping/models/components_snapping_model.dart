@@ -39,7 +39,8 @@ final class ComponentsSnappingModel extends SnappingModel {
   /// This model is used inside the sheet [SnappingBehavior] UX objects.
   ComponentsSnappingModel({required this.componentsDescriptions});
 
-  double getOffsetFromDescriptor<T>(MultiStateSheetExtent<T> extent, SnapComponent descriptor) {
+  double getOffsetFromDescriptor<T>(
+      MultiStateSheetExtent<T> extent, SnapComponent descriptor) {
     if (extent.maxOffset <= 0.0) {
       return extent.maxOffset;
     }
@@ -50,7 +51,8 @@ final class ComponentsSnappingModel extends SnappingModel {
 
   @override
   SplayTreeSet<double> getOffsets<T>(MultiStateSheetExtent<T> extent) =>
-      SplayTreeSet.of(componentsDescriptions.map((descriptor) => getOffsetFromDescriptor(extent, descriptor)));
+      SplayTreeSet.of(componentsDescriptions
+          .map((descriptor) => getOffsetFromDescriptor(extent, descriptor)));
 }
 
 /// Abstract base class for snap components, providing a contract for calculating the size of components within a snapping behavior.
@@ -139,7 +141,9 @@ abstract class SnapComponent {
   /// - [extent]: The available space and configuration of the [MultiStateSheet].
   /// - [component]: The component whose base size is requested.
   /// - Returns the base size of the specified component.
-  double getComponentSize<T>(MultiStateSheetExtent<T> extent, Components component) => switch (component) {
+  double getComponentSize<T>(
+          MultiStateSheetExtent<T> extent, Components component) =>
+      switch (component) {
         Components.header => extent.initialComponentSizes.header,
         Components.top => extent.initialComponentSizes.topHeader,
         Components.content => extent.initialComponentSizes.content,
@@ -151,11 +155,14 @@ abstract class SnapComponent {
   /// - [extent]: The available space and configuration of the [MultiStateSheet].
   /// - [component]: The component whose offset from the top is requested.
   /// - Returns the offset of the specified component.
-  double getComponentOffsetFromTop<T>(MultiStateSheetExtent<T> extent, Components component) => switch (component) {
+  double getComponentOffsetFromTop<T>(
+          MultiStateSheetExtent<T> extent, Components component) =>
+      switch (component) {
         Components.header => 0.0,
         Components.top => -extent.initialComponentSizes.topHeader,
         Components.content => extent.initialComponentSizes.header,
-        Components.footer => extent.offset - extent.initialComponentSizes.footer,
+        Components.footer =>
+          extent.offset - extent.initialComponentSizes.footer,
       };
 }
 
@@ -239,7 +246,8 @@ class SnapComponentWithOffsetFraction extends SnapComponent {
 
   @override
   double getSize<T>(MultiStateSheetExtent<T> extent) => clampDouble(
-        getComponentSize(extent, component) * size + fraction * extent.availablePixels,
+        getComponentSize(extent, component) * size +
+            fraction * extent.availablePixels,
         extent.minOffset,
         extent.maxOffset,
       );
@@ -289,7 +297,8 @@ class SnapComponentAtFraction extends SnapComponent {
 
   @override
   double getSize<T>(MultiStateSheetExtent<T> extent) => clampDouble(
-        fraction * extent.availablePixels + getComponentOffsetFromTop(extent, component),
+        fraction * extent.availablePixels +
+            getComponentOffsetFromTop(extent, component),
         extent.minOffset,
         extent.maxOffset,
       );
@@ -313,7 +322,8 @@ class SnapComponentMap extends SnapComponent {
   String toString() => '$component mapped';
 
   @override
-  double getSize<T>(MultiStateSheetExtent<T> extent) => map(component.getSize(extent));
+  double getSize<T>(MultiStateSheetExtent<T> extent) =>
+      map(component.getSize(extent));
 }
 
 /// A snap component that merges the sizes of two components using a custom merge function.
@@ -337,5 +347,6 @@ class SnapComponentMerge extends SnapComponent {
   String toString() => '$a and $b merged';
 
   @override
-  double getSize<T>(MultiStateSheetExtent<T> extent) => merge(a.getSize(extent), b.getSize(extent));
+  double getSize<T>(MultiStateSheetExtent<T> extent) =>
+      merge(a.getSize(extent), b.getSize(extent));
 }

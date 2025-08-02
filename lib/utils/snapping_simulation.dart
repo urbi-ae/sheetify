@@ -24,12 +24,18 @@ class SnappingSimulation extends Simulation {
     required double forceMultiplier,
     super.tolerance,
   }) {
-    _pixelSnapPosition = _getSnapPosition(initialVelocity * forceMultiplier, pixelSnapPositions);
+    _pixelSnapPosition =
+        _getSnapPosition(initialVelocity * forceMultiplier, pixelSnapPositions);
     const mircosecondsInSecond = 1000000;
     duration = initialVelocity != 0
-        ? max(snapAnimationDuration.inMicroseconds / mircosecondsInSecond,
-            ((position - _pixelSnapPosition) / initialVelocity).abs() * durationMultiplier / mircosecondsInSecond)
-        : snapAnimationDuration.inMicroseconds / mircosecondsInSecond * durationMultiplier;
+        ? max(
+            snapAnimationDuration.inMicroseconds / mircosecondsInSecond,
+            ((position - _pixelSnapPosition) / initialVelocity).abs() *
+                durationMultiplier /
+                mircosecondsInSecond)
+        : snapAnimationDuration.inMicroseconds /
+            mircosecondsInSecond *
+            durationMultiplier;
 
     velocityPixelsPerSecond = (_pixelSnapPosition - position) / duration;
   }
@@ -44,7 +50,8 @@ class SnappingSimulation extends Simulation {
   }
 
   @override
-  bool isDone(double time) => (x(time) - _pixelSnapPosition).abs() <= tolerance.distance;
+  bool isDone(double time) =>
+      (x(time) - _pixelSnapPosition).abs() <= tolerance.distance;
 
   @override
   double x(double time) {
@@ -58,7 +65,8 @@ class SnappingSimulation extends Simulation {
     return newPosition;
   }
 
-  double _getSnapPosition(double initialVelocity, List<double> pixelSnapPositions) {
+  double _getSnapPosition(
+      double initialVelocity, List<double> pixelSnapPositions) {
     int nextStateIndex = -1;
     double velocity = initialVelocity;
     double distance = double.infinity;

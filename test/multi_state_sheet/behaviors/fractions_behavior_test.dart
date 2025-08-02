@@ -50,8 +50,10 @@ void main() {
       behavior.setup(extent);
 
       // Assert
-      expect(behavior.minOffset, 250.0); // Corresponds to largest fraction (1 - 0.75) * 1000
-      expect(behavior.maxOffset, 950.0); // Clamped to availablePixels - headerShiftHeight
+      expect(behavior.minOffset,
+          250.0); // Corresponds to largest fraction (1 - 0.75) * 1000
+      expect(behavior.maxOffset,
+          950.0); // Clamped to availablePixels - headerShiftHeight
     });
 
     test('should clamp snapping offsets within available space', () {
@@ -70,7 +72,8 @@ void main() {
         behavior.snappingPixelOffsets,
         [50.0, 400.0], // Offsets clamped within availablePixels
       );
-      expect(behavior.maxOffset, 400.0); // Clamped to availablePixels - headerShiftHeight
+      expect(behavior.maxOffset,
+          400.0); // Clamped to availablePixels - headerShiftHeight
     });
 
     test('should throw AssertionError when fractions are less than two', () {
@@ -104,10 +107,13 @@ void main() {
         [0.0, 750.0], // 0.0 maps to full size - header, 1.0 maps to 0
       );
       expect(behavior.minOffset, 0.0); // Smallest snapping position
-      expect(behavior.maxOffset, 750.0); // Clamped to availablePixels - headerShiftHeight
+      expect(behavior.maxOffset,
+          750.0); // Clamped to availablePixels - headerShiftHeight
     });
 
-    test('should correctly calculate snapping offsets when header shift height is large', () {
+    test(
+        'should correctly calculate snapping offsets when header shift height is large',
+        () {
       // Arrange
       behavior = FractionSnappingBehavior(fractions: {0.25, 0.5});
       final extent = MockMultiStateSheetExtent(
@@ -124,7 +130,8 @@ void main() {
         [400.0, 450.0], // Calculated offsets
       );
       expect(behavior.minOffset, 400.0); // Based on the largest fraction
-      expect(behavior.maxOffset, 450.0); // Clamped to availablePixels - headerShiftHeight
+      expect(behavior.maxOffset,
+          450.0); // Clamped to availablePixels - headerShiftHeight
     });
   });
 
@@ -147,7 +154,9 @@ void main() {
       behavior.setup(extent);
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position of hidden state', () {
         setUp(() async {
           extent
@@ -166,15 +175,18 @@ void main() {
         );
         test(
           'Test get position state hidden',
-          () => expect(behavior.statePosition(extent: extent, state: 0), avaliablePixels - 200),
+          () => expect(behavior.statePosition(extent: extent, state: 0),
+              avaliablePixels - 200),
         );
         test(
           'Test get position state half open',
-          () => expect(behavior.statePosition(extent: extent, state: 1), avaliablePixels - avaliablePixels / 3),
+          () => expect(behavior.statePosition(extent: extent, state: 1),
+              avaliablePixels - avaliablePixels / 3),
         );
         test(
           'Test get position state open',
-          () => expect(behavior.statePosition(extent: extent, state: 2), avaliablePixels - avaliablePixels * 3 / 4),
+          () => expect(behavior.statePosition(extent: extent, state: 2),
+              avaliablePixels - avaliablePixels * 3 / 4),
         );
         test(
           'Test get position state expanded',
@@ -183,7 +195,9 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position of hidden state', () {
         setUp(() {
           extent.updateComponents(0, 200, 0, 0);
@@ -196,11 +210,13 @@ void main() {
 
         test(
           'Test get position state half open',
-          () => expect(behavior.statePosition(extent: extent, state: 1), avaliablePixels - avaliablePixels / 3),
+          () => expect(behavior.statePosition(extent: extent, state: 1),
+              avaliablePixels - avaliablePixels / 3),
         );
         test(
           'Test get position state open',
-          () => expect(behavior.statePosition(extent: extent, state: 2), avaliablePixels - avaliablePixels * 3 / 4),
+          () => expect(behavior.statePosition(extent: extent, state: 2),
+              avaliablePixels - avaliablePixels * 3 / 4),
         );
         test(
           'Test get position state expanded',
@@ -209,7 +225,9 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position state hidden', () {
         setUp(() {
           extent.updateComponents(0, 200, 0, 0);
@@ -222,31 +240,45 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
                 .map((e) => clampDouble(
-                    ((1 - e) * avaliablePixels).roundDecimal().roundDecimal(), extent.minOffset, extent.maxOffset))
+                    ((1 - e) * avaliablePixels).roundDecimal().roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
-          () => expect(behavior.getInterpolation(extent: extent, offset: extent.offset), 0.0),
+          () => expect(
+              behavior.getInterpolation(extent: extent, offset: extent.offset),
+              0.0),
         );
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position state hidden but draggen for 50 pixels', () {
         setUp(() {
           extent.updateComponents(0, 200, 0, 0);
@@ -259,31 +291,46 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
                 .map((e) => clampDouble(
-                    ((1 - e) * avaliablePixels).roundDecimal().roundDecimal(), extent.minOffset, extent.maxOffset))
+                    ((1 - e) * avaliablePixels).roundDecimal().roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
-          () => expect(behavior.getInterpolation(extent: extent, offset: extent.offset), 0.0),
+          () => expect(
+              behavior.getInterpolation(extent: extent, offset: extent.offset),
+              0.0),
         );
       });
     });
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state hidden but draggen for 100 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state hidden but draggen for 100 pixels',
+          () {
         setUp(() {
           extent.updateComponents(0, 200, 0, 0);
           behavior
@@ -295,22 +342,32 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
                 .map((e) => clampDouble(
-                    ((1 - e) * avaliablePixels).roundDecimal().roundDecimal(), extent.minOffset, extent.maxOffset))
+                    ((1 - e) * avaliablePixels).roundDecimal().roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
@@ -322,8 +379,11 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state hidden but draggen for 150 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state hidden but draggen for 150 pixels',
+          () {
         setUp(() {
           extent.updateComponents(0, 200, 0, 0);
           behavior
@@ -335,31 +395,47 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
-          () => expect(behavior.getInterpolation(extent: extent, offset: extent.offset), 0.0),
+          () => expect(
+              behavior.getInterpolation(extent: extent, offset: extent.offset),
+              0.0),
         );
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state half open but draggen for 200 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state half open but draggen for 200 pixels',
+          () {
         setUp(() {
           extent.updateComponents(0, 200, 0, 0);
           behavior
@@ -371,31 +447,47 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
-          () => expect(behavior.getInterpolation(extent: extent, offset: extent.offset), 0.0),
+          () => expect(
+              behavior.getInterpolation(extent: extent, offset: extent.offset),
+              0.0),
         );
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state half open but draggen for 225 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state half open but draggen for 225 pixels',
+          () {
         setUp(() {
           extent.updateComponents(0, 200, 0, 0);
           behavior
@@ -407,21 +499,32 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
@@ -440,8 +543,11 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state half open but draggen for 230 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state half open but draggen for 230 pixels',
+          () {
         setUp(() {
           behavior
             ..setup(extent)
@@ -452,22 +558,33 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
 
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
@@ -479,7 +596,8 @@ void main() {
               1,
               clampDouble(
                 fractions.first,
-                (extent.availablePixels - extent.maxOffset) / extent.availablePixels,
+                (extent.availablePixels - extent.maxOffset) /
+                    extent.availablePixels,
                 1.0,
               ),
               fractions[1],
@@ -489,8 +607,11 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state half open but draggen for 300 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state half open but draggen for 300 pixels',
+          () {
         setUp(() {
           extent
             ..updateComponents(0, 200, 0, 0)
@@ -503,21 +624,32 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 1));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 1));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 1));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 1));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
@@ -534,7 +666,9 @@ void main() {
         );
       });
     });
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position state open but draggen for 500 pixels', () {
         setUp(() {
           extent
@@ -548,26 +682,39 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 2));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 1));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 2));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 1));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
           () => expect(
-            behavior.getInterpolation(extent: extent, offset: extent.offset).roundDecimal(),
+            behavior
+                .getInterpolation(extent: extent, offset: extent.offset)
+                .roundDecimal(),
             lerpBetween(
               1.0 - (extent.offset / extent.availablePixels),
               0,
@@ -580,7 +727,9 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position state open but draggen for 600 pixels', () {
         setUp(() {
           extent
@@ -594,22 +743,33 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 2));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 1));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 2));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 1));
 
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
@@ -627,7 +787,9 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position state open but draggen for 700 pixels', () {
         setUp(() {
           extent
@@ -641,26 +803,39 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 2));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 2));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 2));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 2));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
           () => expect(
-            behavior.getInterpolation(extent: extent, offset: extent.offset).roundDecimal(),
+            behavior
+                .getInterpolation(extent: extent, offset: extent.offset)
+                .roundDecimal(),
             lerpBetween(
               1.0 - (extent.offset / extent.availablePixels),
               0,
@@ -672,7 +847,9 @@ void main() {
         );
       });
     });
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position state open but draggen for 750 pixels', () {
         setUp(() {
           extent
@@ -686,26 +863,39 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 2));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 2));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 2));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 2));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
           () => expect(
-            behavior.getInterpolation(extent: extent, offset: extent.offset).roundDecimal(),
+            behavior
+                .getInterpolation(extent: extent, offset: extent.offset)
+                .roundDecimal(),
             lerpBetween(
               1.0 - (extent.offset / extent.availablePixels),
               0,
@@ -718,8 +908,11 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state expanded but draggen for 800 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state expanded but draggen for 800 pixels',
+          () {
         setUp(() {
           extent
             ..updateComponents(0, 200, 0, 0)
@@ -732,26 +925,39 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 3));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 2));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 3));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 2));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
           () => expect(
-            behavior.getInterpolation(extent: extent, offset: extent.offset).roundDecimal(),
+            behavior
+                .getInterpolation(extent: extent, offset: extent.offset)
+                .roundDecimal(),
             lerpBetween(
               1.0 - (extent.offset / extent.availablePixels),
               0,
@@ -764,8 +970,11 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state expanded but draggen for 850 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state expanded but draggen for 850 pixels',
+          () {
         setUp(() {
           extent
             ..updateComponents(0, 200, 0, 0)
@@ -778,26 +987,39 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 3));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 2));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 3));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 2));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
           () => expect(
-            behavior.getInterpolation(extent: extent, offset: extent.offset).roundDecimal(),
+            behavior
+                .getInterpolation(extent: extent, offset: extent.offset)
+                .roundDecimal(),
             lerpBetween(
               1.0 - (extent.offset / extent.availablePixels),
               0,
@@ -810,8 +1032,11 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state expanded but draggen for 900 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state expanded but draggen for 900 pixels',
+          () {
         setUp(() {
           extent
             ..updateComponents(0, 200, 0, 0)
@@ -824,21 +1049,32 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 3));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 3));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 3));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 3));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
@@ -872,7 +1108,9 @@ void main() {
       );
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position of hidden state', () {
         setUp(() {
           extent
@@ -886,11 +1124,13 @@ void main() {
 
         test(
           'Test get position state hidden',
-          () => expect(behavior.statePosition(extent: extent, state: 0), avaliablePixels - headerHeight),
+          () => expect(behavior.statePosition(extent: extent, state: 0),
+              avaliablePixels - headerHeight),
         );
         test(
           'Test get position state half open',
-          () => expect(behavior.statePosition(extent: extent, state: 1), avaliablePixels - avaliablePixels / 2),
+          () => expect(behavior.statePosition(extent: extent, state: 1),
+              avaliablePixels - avaliablePixels / 2),
         );
         test(
           'Test get position state open',
@@ -899,7 +1139,9 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position of hidden state', () {
         setUp(() {
           extent
@@ -913,7 +1155,8 @@ void main() {
 
         test(
           'Test get position state half open',
-          () => expect(behavior.statePosition(extent: extent, state: 1), avaliablePixels - avaliablePixels / 2),
+          () => expect(behavior.statePosition(extent: extent, state: 1),
+              avaliablePixels - avaliablePixels / 2),
         );
         test(
           'Test get position state open',
@@ -922,7 +1165,9 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position state hidden', () {
         setUp(() {
           extent.updateComponents(0, 200, 0, 0);
@@ -934,25 +1179,39 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
             'THEN get snapping positions',
-            () => expect(behavior.snappingPixelOffsets,
-                fractions.map((e) => clampDouble(e * avaliablePixels, extent.minOffset, extent.maxOffset))));
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
+            () => expect(
+                behavior.snappingPixelOffsets,
+                fractions.map((e) => clampDouble(
+                    e * avaliablePixels, extent.minOffset, extent.maxOffset))));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
 
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
-          () => expect(behavior.getInterpolation(extent: extent, offset: extent.offset), 0.0),
+          () => expect(
+              behavior.getInterpolation(extent: extent, offset: extent.offset),
+              0.0),
         );
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position state hidden but draggen for 50 pixels', () {
         setUp(() {
           extent
@@ -966,15 +1225,25 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
             'THEN get snapping positions',
-            () => expect(behavior.snappingPixelOffsets,
-                fractions.map((e) => clampDouble(e * avaliablePixels, extent.minOffset, extent.maxOffset))));
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+            () => expect(
+                behavior.snappingPixelOffsets,
+                fractions.map((e) => clampDouble(
+                    e * avaliablePixels, extent.minOffset, extent.maxOffset))));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
@@ -984,15 +1253,22 @@ void main() {
               1.0 - (extent.offset / extent.availablePixels),
               0,
               1,
-              clampDouble(fractions.first, (extent.availablePixels - extent.maxOffset) / extent.availablePixels, 1.0),
+              clampDouble(
+                  fractions.first,
+                  (extent.availablePixels - extent.maxOffset) /
+                      extent.availablePixels,
+                  1.0),
               fractions[1],
             ).roundDecimal(),
           ),
         );
       });
     });
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state hidden but draggen for 100 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state hidden but draggen for 100 pixels',
+          () {
         setUp(() {
           extent
             ..updateComponents(0, 200, 0, 0)
@@ -1005,21 +1281,32 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
@@ -1031,7 +1318,8 @@ void main() {
               1,
               clampDouble(
                 fractions.first,
-                (extent.availablePixels - extent.maxOffset) / extent.availablePixels,
+                (extent.availablePixels - extent.maxOffset) /
+                    extent.availablePixels,
                 1.0,
               ),
               fractions[1],
@@ -1041,8 +1329,11 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state hidden but draggen for 150 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state hidden but draggen for 150 pixels',
+          () {
         setUp(() {
           extent
             ..updateComponents(0, 200, 0, 0)
@@ -1055,21 +1346,32 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
@@ -1081,7 +1383,8 @@ void main() {
               1,
               clampDouble(
                 fractions.first,
-                (extent.availablePixels - extent.maxOffset) / extent.availablePixels,
+                (extent.availablePixels - extent.maxOffset) /
+                    extent.availablePixels,
                 1.0,
               ),
               fractions[1],
@@ -1091,8 +1394,11 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state half open but draggen for 200 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state half open but draggen for 200 pixels',
+          () {
         setUp(() {
           extent
             ..updateComponents(0, 200, 0, 0)
@@ -1105,21 +1411,32 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
@@ -1131,7 +1448,8 @@ void main() {
               1,
               clampDouble(
                 fractions.first,
-                (extent.availablePixels - extent.maxOffset) / extent.availablePixels,
+                (extent.availablePixels - extent.maxOffset) /
+                    extent.availablePixels,
                 1.0,
               ),
               fractions[1],
@@ -1141,8 +1459,11 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state half open but draggen for 300 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state half open but draggen for 300 pixels',
+          () {
         setUp(() {
           extent.updateComponents(0, 200, 0, 0);
           behavior
@@ -1154,21 +1475,32 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 0));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 0));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 0));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 0));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
@@ -1180,7 +1512,8 @@ void main() {
               1,
               clampDouble(
                 fractions.first,
-                (extent.availablePixels - extent.maxOffset) / extent.availablePixels,
+                (extent.availablePixels - extent.maxOffset) /
+                    extent.availablePixels,
                 1.0,
               ),
               fractions[1],
@@ -1189,7 +1522,9 @@ void main() {
         );
       });
     });
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position state open but draggen for 500 pixels', () {
         setUp(() {
           extent
@@ -1203,26 +1538,39 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 1));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 1));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 1));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 1));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
           () => expect(
-            behavior.getInterpolation(extent: extent, offset: extent.offset).roundDecimal(),
+            behavior
+                .getInterpolation(extent: extent, offset: extent.offset)
+                .roundDecimal(),
             lerpBetween(
               1.0 - (extent.offset / extent.availablePixels),
               0,
@@ -1235,7 +1583,9 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position state open but draggen for 600 pixels', () {
         setUp(() {
           extent
@@ -1249,27 +1599,40 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 1));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 1));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 1));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 1));
 
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
           () => expect(
-            behavior.getInterpolation(extent: extent, offset: extent.offset).roundDecimal(),
+            behavior
+                .getInterpolation(extent: extent, offset: extent.offset)
+                .roundDecimal(),
             lerpBetween(
               1.0 - (extent.offset / extent.availablePixels),
               0,
@@ -1282,7 +1645,9 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
       group('WHEN initial position state open but draggen for 700 pixels', () {
         setUp(() {
           extent
@@ -1296,21 +1661,32 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 2));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 1));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 2));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 1));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
@@ -1328,8 +1704,11 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state expanded but draggen for 800 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state expanded but draggen for 800 pixels',
+          () {
         setUp(() {
           extent
             ..updateComponents(0, 200, 0, 0)
@@ -1342,26 +1721,39 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 2));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 1));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 2));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 1));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
           () => expect(
-            behavior.getInterpolation(extent: extent, offset: extent.offset).roundDecimal(),
+            behavior
+                .getInterpolation(extent: extent, offset: extent.offset)
+                .roundDecimal(),
             lerpBetween(
               1.0 - (extent.offset / extent.availablePixels),
               0,
@@ -1374,8 +1766,11 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state expanded but draggen for 850 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state expanded but draggen for 850 pixels',
+          () {
         setUp(() {
           extent
             ..updateComponents(0, 200, 0, 0)
@@ -1388,26 +1783,39 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 2));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 1));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), false));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 2));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 1));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                false));
 
         test(
           'THEN get interpolation',
           () => expect(
-            behavior.getInterpolation(extent: extent, offset: extent.offset).roundDecimal(),
+            behavior
+                .getInterpolation(extent: extent, offset: extent.offset)
+                .roundDecimal(),
             lerpBetween(
               1.0 - (extent.offset / extent.availablePixels),
               0,
@@ -1420,8 +1828,11 @@ void main() {
       });
     });
 
-    group('GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels', () {
-      group('WHEN initial position state expanded but draggen for 900 pixels', () {
+    group(
+        'GIVEN fractionSnappingBehaviour with MultiStateSheet height $avaliablePixels',
+        () {
+      group('WHEN initial position state expanded but draggen for 900 pixels',
+          () {
         setUp(() {
           extent
             ..updateComponents(0, 200, 0, 0)
@@ -1434,26 +1845,39 @@ void main() {
 
         test('THEN get the min height', () => expect(behavior.minOffset, 0));
 
-        test('THEN get avaliable size', () => expect(behavior.avaliableSpace, avaliablePixels));
+        test('THEN get avaliable size',
+            () => expect(behavior.avaliableSpace, avaliablePixels));
         test(
           'THEN get snapping positions',
           () => expect(
             behavior.snappingPixelOffsets,
             fractions
-                .map((e) => clampDouble(((1 - e) * avaliablePixels).roundDecimal(), extent.minOffset, extent.maxOffset))
+                .map((e) => clampDouble(
+                    ((1 - e) * avaliablePixels).roundDecimal(),
+                    extent.minOffset,
+                    extent.maxOffset))
                 .toList()
                 .reversed,
           ),
         );
-        test('THEN get current state', () => expect(behavior.getState(extent: extent, offset: extent.offset), 2));
-        test('THEN get anchored state', () => expect(behavior.anchoredState(extent), 2));
-        test('THEN is at snap position',
-            () => expect(behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0), true));
+        test(
+            'THEN get current state',
+            () => expect(
+                behavior.getState(extent: extent, offset: extent.offset), 2));
+        test('THEN get anchored state',
+            () => expect(behavior.anchoredState(extent), 2));
+        test(
+            'THEN is at snap position',
+            () => expect(
+                behavior.isAtSnapOffset(extent: extent, toleranceDistance: 0),
+                true));
 
         test(
           'THEN get interpolation',
           () => expect(
-            behavior.getInterpolation(extent: extent, offset: extent.offset).roundDecimal(),
+            behavior
+                .getInterpolation(extent: extent, offset: extent.offset)
+                .roundDecimal(),
             1.0 -
                 lerpBetween(
                   1.0 - (extent.offset / extent.availablePixels),

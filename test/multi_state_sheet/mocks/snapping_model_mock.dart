@@ -8,5 +8,6 @@ class MockSnappingModel extends SnappingModel {
   MockSnappingModel(this._mockOffsets);
 
   @override
-  SplayTreeSet<double> getOffsets<T>(MultiStateSheetExtent<T> extent) => _mockOffsets;
+  SplayTreeSet<double> getOffsets<T>(MultiStateSheetExtent<T> extent) =>
+      _mockOffsets;
 }

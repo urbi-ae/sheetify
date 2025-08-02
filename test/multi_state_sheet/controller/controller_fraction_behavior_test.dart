@@ -27,7 +27,8 @@ void main() async {
         dragger: null,
         topHeader: const AnimatedStateSheetWidgetTemplate(),
         header: const PlaceholderContainer(text: 'Header'),
-        footer: const SizedBox(height: 100, child: PlaceholderContainer(text: 'Footer')),
+        footer: const SizedBox(
+            height: 100, child: PlaceholderContainer(text: 'Footer')),
         content: List.generate(
           20,
           (index) => PlaceholderContainer(
@@ -50,8 +51,10 @@ void main() async {
       stateMapper = const FourStateMapper();
       behavior = FractionSnappingBehavior(fractions: fractions.toSet());
 
-      controller =
-          MultiStateSheetController(behavior: behavior, stateMapper: stateMapper, initialState: FourStateSheet.hidden);
+      controller = MultiStateSheetController(
+          behavior: behavior,
+          stateMapper: stateMapper,
+          initialState: FourStateSheet.hidden);
 
       controller.addListener(() {
         stateLog.add(controller.state);
@@ -63,13 +66,17 @@ void main() async {
 
     testWidgets('MultiStateSheetController openning animation', (tester) async {
       double realOffset() {
-        return tester.state<ScrollableState>(find.byType(Scrollable)).position.pixels;
+        return tester
+            .state<ScrollableState>(find.byType(Scrollable))
+            .position
+            .pixels;
       }
 
       addTearDown(() {
         controller.dispose();
       });
-      await tester.binding.setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
+      await tester.binding
+          .setSurfaceSize(const Size(sheetHeight / 2, sheetHeight));
       await tester.pumpWidget(buildMultiStateSheet());
       await tester.pumpAndSettle();
 
@@ -83,9 +90,13 @@ void main() async {
       expect(controller.state, FourStateSheet.hidden);
     });
 
-    testWidgets('MultiStateSheetController set to half openned state', (tester) async {
+    testWidgets('MultiStateSheetController set to half openned state',
+        (tester) async {
       double realOffset() {
-        return tester.state<ScrollableState>(find.byType(Scrollable)).position.pixels;
+        return tester
+            .state<ScrollableState>(find.byType(Scrollable))
+            .position
+            .pixels;
       }
 
       addTearDown(() {
@@ -108,9 +119,13 @@ void main() async {
       expect(controller.state, FourStateSheet.halfOpen);
     });
 
-    testWidgets('MultiStateSheetController set to openned state', (tester) async {
+    testWidgets('MultiStateSheetController set to openned state',
+        (tester) async {
       double realOffset() {
-        return tester.state<ScrollableState>(find.byType(Scrollable)).position.pixels;
+        return tester
+            .state<ScrollableState>(find.byType(Scrollable))
+            .position
+            .pixels;
       }
 
       addTearDown(() {
@@ -122,7 +137,11 @@ void main() async {
       controller.setState(FourStateSheet.open);
       await tester.pumpAndSettle();
 
-      expect(stateLog, {FourStateSheet.hidden, FourStateSheet.halfOpen, FourStateSheet.open});
+      expect(stateLog, {
+        FourStateSheet.hidden,
+        FourStateSheet.halfOpen,
+        FourStateSheet.open
+      });
       expect(fractionLog, contains(moreOrLessEquals(3 / 4)));
       expect(heightLog, contains(0.0));
       expect(heightLog, contains(moreOrLessEquals(3 / 4 * sheetHeight)));
@@ -132,9 +151,13 @@ void main() async {
       expect(controller.state, FourStateSheet.open);
     });
 
-    testWidgets('MultiStateSheetController set to expanded state', (tester) async {
+    testWidgets('MultiStateSheetController set to expanded state',
+        (tester) async {
       double realOffset() {
-        return tester.state<ScrollableState>(find.byType(Scrollable)).position.pixels;
+        return tester
+            .state<ScrollableState>(find.byType(Scrollable))
+            .position
+            .pixels;
       }
 
       addTearDown(() {
@@ -146,7 +169,12 @@ void main() async {
       controller.setState(FourStateSheet.expanded);
       await tester.pumpAndSettle();
 
-      expect(stateLog, {FourStateSheet.hidden, FourStateSheet.halfOpen, FourStateSheet.open, FourStateSheet.expanded});
+      expect(stateLog, {
+        FourStateSheet.hidden,
+        FourStateSheet.halfOpen,
+        FourStateSheet.open,
+        FourStateSheet.expanded
+      });
       expect(fractionLog, contains(moreOrLessEquals(1.0)));
       expect(heightLog, contains(0.0));
       expect(heightLog, contains(sheetHeight));

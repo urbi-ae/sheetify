@@ -29,9 +29,11 @@ final class FractionSnappingBehavior<StateType> extends SnappingBehavior {
   FractionSnappingBehavior({
     required this.fractions,
     super.clipByHeader,
-  })  : assert(fractions.length >= 2, 'Fractions must contain at least 2 snapping states'),
+  })  : assert(fractions.length >= 2,
+            'Fractions must contain at least 2 snapping states'),
         model = FractionSnappingModel(fractions.toSet());
 
   @override
-  SplayTreeSet<double>? performSetup<T>(MultiStateSheetExtent<T> extent) => model.getOffsets(extent);
+  SplayTreeSet<double>? performSetup<T>(MultiStateSheetExtent<T> extent) =>
+      model.getOffsets(extent);
 }

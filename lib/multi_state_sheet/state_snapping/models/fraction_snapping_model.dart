@@ -35,6 +35,9 @@ final class FractionSnappingModel extends SnappingModel {
   /// - Returns a sorted set of snapping offsets, where each offset is a clamped value derived
   ///   from the fractions and the available pixels.
   @override
-  SplayTreeSet<double> getOffsets<T>(MultiStateSheetExtent<T> extent) => SplayTreeSet.of(fractions.map(
-      (ar) => clampDouble(((1 - ar) * extent.availablePixels).roundDecimal(), extent.minOffset, extent.safeMaxOffset)));
+  SplayTreeSet<double> getOffsets<T>(MultiStateSheetExtent<T> extent) =>
+      SplayTreeSet.of(fractions.map((ar) => clampDouble(
+          ((1 - ar) * extent.availablePixels).roundDecimal(),
+          extent.minOffset,
+          extent.safeMaxOffset)));
 }

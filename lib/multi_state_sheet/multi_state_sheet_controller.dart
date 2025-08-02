@@ -68,7 +68,8 @@ class MultiStateSheetExtent<StateType> {
     return maxOffset > minOffset ? maxOffset : availablePixels;
   }
 
-  double get safeMaxOffset => isAnimatingOpen ? maxOffset : behavior.safeMaxOffset;
+  double get safeMaxOffset =>
+      isAnimatingOpen ? maxOffset : behavior.safeMaxOffset;
 
   /// Current height offset for sheet visible view.
   ///
@@ -90,10 +91,13 @@ class MultiStateSheetExtent<StateType> {
   int get currentState => _state;
 
   /// The actual state of states to snap on, on which is [stateInterpolation] value relied on and at which it takes the starting point.
-  int get anchoredState => behavior.needsSetup ? initialState : behavior.anchoredState(this);
+  int get anchoredState =>
+      behavior.needsSetup ? initialState : behavior.anchoredState(this);
 
   bool get isAtMin =>
-      (behavior.isMaxOffsetFinalized ? behavior.maxOffset : availablePixels).roundDecimal() <= offset.roundDecimal();
+      (behavior.isMaxOffsetFinalized ? behavior.maxOffset : availablePixels)
+          .roundDecimal() <=
+      offset.roundDecimal();
 
   bool get isAtMax => minOffset.roundDecimal() >= offset.roundDecimal();
 
@@ -110,14 +114,17 @@ class MultiStateSheetExtent<StateType> {
     _interpolation = behavior.getInterpolation(extent: this, offset: _offset);
   }
 
-  void updateSize(double newOffset, {bool isAnimating = false, bool notify = true}) {
+  void updateSize(double newOffset,
+      {bool isAnimating = false, bool notify = true}) {
     _cancelActivity?.call();
     _cancelActivity = null;
 
     if (availablePixels == kStartOfTheViewport) {
       return;
     }
-    final double clampedOffset = isAnimating ? newOffset : clampDouble(newOffset, minOffset, safeMaxOffset);
+    final double clampedOffset = isAnimating
+        ? newOffset
+        : clampDouble(newOffset, minOffset, safeMaxOffset);
 
     if (_offset == clampedOffset) {
       return;
@@ -143,8 +150,10 @@ class MultiStateSheetExtent<StateType> {
         componentSizes.header != headerHeight ||
         componentSizes.content != contentHeight ||
         componentSizes.footer != footerHeight) {
-      final needsResetupClipping =
-          behavior.clipByHeader && behavior.headerShiftHeight != headerHeight && _state == 0 && _interpolation == 0.0;
+      final needsResetupClipping = behavior.clipByHeader &&
+          behavior.headerShiftHeight != headerHeight &&
+          _state == 0 &&
+          _interpolation == 0.0;
 
       componentSizes = SheetWidgetSizes(
         topHeader: topHeaderHeight,
@@ -160,8 +169,11 @@ class MultiStateSheetExtent<StateType> {
       /// It's could happen then components are changed their sizes on their own without the sheet height update.
       /// For example, then the component was waiting for the data to be loaded and change it's size then the data is loaded.
       final isComponentsUpdatedAtTheInitialState =
-          anchoredState == initialState && stateInterpolation == 0 && initialComponentSizes != componentSizes;
-      if (initialComponentSizes.isZero || isComponentsUpdatedAtTheInitialState) {
+          anchoredState == initialState &&
+              stateInterpolation == 0 &&
+              initialComponentSizes != componentSizes;
+      if (initialComponentSizes.isZero ||
+          isComponentsUpdatedAtTheInitialState) {
         initialComponentSizes = componentSizes;
         behavior.setup(this);
         _offset = behavior.statePosition(extent: this, state: initialState);
@@ -172,7 +184,9 @@ class MultiStateSheetExtent<StateType> {
       } else if (needsResetupClipping) {
         behavior.setup(this);
 
-        _offset = behavior.statePosition(extent: this, state: _state).clamp(minOffset, maxOffset);
+        _offset = behavior
+            .statePosition(extent: this, state: _state)
+            .clamp(minOffset, maxOffset);
         updateState();
         _doNotMarkNeedsLayout = true;
         Future(() => onOffsetChanged?.call());
@@ -270,11 +284,13 @@ class MultiStateSheetController<StateType> extends ScrollController {
     _extent = MultiStateSheetExtent(
         behavior: behavior,
         stateMapper: stateMapper,
-        initialState: initialState != null ? stateMapper.index(initialState) : 0,
+        initialState:
+            initialState != null ? stateMapper.index(initialState) : 0,
         availablePixels: kStartOfTheViewport,
         durationMultiplier: durationMultiplier,
         onOffsetChanged: _notifyHeightChanged,
-        onStateChanged: resetContentScrollOnHiddenState ? _resetScrollPosition : null,
+        onStateChanged:
+            resetContentScrollOnHiddenState ? _resetScrollPosition : null,
         forceMultiplier: forceMultiplier);
   }
 
@@ -302,7 +318,8 @@ class MultiStateSheetController<StateType> extends ScrollController {
 
   /// Gets the height of occupied space by the sheet based on its current offset.
   double get sheetHeight {
-    final clipper = _extent.behavior.clipByHeader ? _extent.componentSizes.header : 0.0;
+    final clipper =
+        _extent.behavior.clipByHeader ? _extent.componentSizes.header : 0.0;
     final maxOffset = _extent.availablePixels - clipper;
     final offsetFromTop = _extent.isAnimatingOpen
         ? _extent.offset
@@ -351,7 +368,8 @@ class MultiStateSheetController<StateType> extends ScrollController {
   SheetWidgetSizes get initialComponentSizes => _extent.initialComponentSizes;
 
   @override
-  _MultiStateSheetScrollPosition<StateType> get position => super.position as _MultiStateSheetScrollPosition<StateType>;
+  _MultiStateSheetScrollPosition<StateType> get position =>
+      super.position as _MultiStateSheetScrollPosition<StateType>;
 
   /// Resets controller for reuse with a new [MultiStateSheet]
   void reset() {
@@ -381,11 +399,13 @@ class MultiStateSheetController<StateType> extends ScrollController {
   /// Default duration is calculated base on the distance between current and new state.
   void setState(StateType newState, {Duration? duration, Curve? curve}) {
     final stateIndex = _extent.stateMapper.index(newState);
-    final newPosition = _extent.behavior.statePosition(extent: _extent, state: stateIndex);
-    final distanceDuration =
-        duration?.inMilliseconds ?? math.max((_extent.offset - newPosition).abs().round(), 150).toInt();
+    final newPosition =
+        _extent.behavior.statePosition(extent: _extent, state: stateIndex);
+    final distanceDuration = duration?.inMilliseconds ??
+        math.max((_extent.offset - newPosition).abs().round(), 150).toInt();
 
-    _startAnimation(_extent.offset, newPosition, curve ?? mainCurve, distanceDuration);
+    _startAnimation(
+        _extent.offset, newPosition, curve ?? mainCurve, distanceDuration);
   }
 
   @override
@@ -403,7 +423,8 @@ class MultiStateSheetController<StateType> extends ScrollController {
   void open() => _animateOpen(true);
 
   @override
-  ScrollPosition createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition? oldPosition) =>
+  ScrollPosition createScrollPosition(ScrollPhysics physics,
+          ScrollContext context, ScrollPosition? oldPosition) =>
       _MultiStateSheetScrollPosition(
         physics: physics,
         context: context,
@@ -443,7 +464,8 @@ class MultiStateSheetController<StateType> extends ScrollController {
   ///
   /// Resets inside [_RenderMultiStateSheet.onSheetOffsetChanges] method.
   bool get _doNotMarkNeedsLayout => _extent._doNotMarkNeedsLayout;
-  set _doNotMarkNeedsLayout(bool value) => _extent._doNotMarkNeedsLayout = value;
+  set _doNotMarkNeedsLayout(bool value) =>
+      _extent._doNotMarkNeedsLayout = value;
 
   /// Animation controller for managing height transitions.
   AnimationController? _heightAnimationController;
@@ -467,7 +489,8 @@ class MultiStateSheetController<StateType> extends ScrollController {
       ///
       /// Starts the animation from the current offset to the new position.
       if (_extent.isAnimatingOpen && !_isDragging) {
-        final newPosition = _extent.behavior.statePosition(extent: _extent, state: _extent.initialState);
+        final newPosition = _extent.behavior
+            .statePosition(extent: _extent, state: _extent.initialState);
         final duration = (_extent.offset - newPosition).abs().round();
 
         _startAnimation(_extent.offset, newPosition, mainCurve, duration);
@@ -493,7 +516,8 @@ class MultiStateSheetController<StateType> extends ScrollController {
   ///
   /// This method is internally used by render object to set the initial position of the sheet.
   double _calculateInitialPositionAndSetEnabled() {
-    final newPosition = _extent.behavior.statePosition(extent: _extent, state: _extent.initialState);
+    final newPosition = _extent.behavior
+        .statePosition(extent: _extent, state: _extent.initialState);
 
     _extent
       ..isEnabled = true
@@ -616,10 +640,12 @@ class MultiStateSheetController<StateType> extends ScrollController {
     final Simulation simulation = switch (_extent.behavior.shouldSnap) {
       true => SnappingSimulation(
           position: _extent.offset,
-          initialVelocity: details.velocity.pixelsPerSecond.dy / kVelocityCorrectionFactor,
+          initialVelocity:
+              details.velocity.pixelsPerSecond.dy / kVelocityCorrectionFactor,
           durationMultiplier: _extent.durationMultiplier,
           pixelSnapPositions: _extent.behavior.snappingPixelOffsetsClamped,
-          snapAnimationDuration: _extent.snapAnimationDuration ?? kDefaultSheetScrollDuration,
+          snapAnimationDuration:
+              _extent.snapAnimationDuration ?? kDefaultSheetScrollDuration,
           tolerance: position.physics.toleranceFor(position),
           forceMultiplier: _extent.forceMultiplier,
         ),
@@ -647,7 +673,8 @@ class MultiStateSheetController<StateType> extends ScrollController {
 
   /// Method used to animating sheet from not visable state to initial state position.
   void _animateOpen(bool animate) {
-    final newPosition = _extent.behavior.statePosition(extent: _extent, state: _extent.initialState);
+    final newPosition = _extent.behavior
+        .statePosition(extent: _extent, state: _extent.initialState);
     _extent
       ..isEnabled = true
       .._offset = _extent.availablePixels;
@@ -659,14 +686,16 @@ class MultiStateSheetController<StateType> extends ScrollController {
       return;
     }
 
-    final duration = math.max(kDefaultSheetScrollDuration.inMilliseconds, (_extent.offset - newPosition).abs().round());
+    final duration = math.max(kDefaultSheetScrollDuration.inMilliseconds,
+        (_extent.offset - newPosition).abs().round());
     _extent.isAnimatingOpen = true;
 
     _startAnimation(_extent.offset, newPosition, initialOpenCurve, duration);
   }
 
   /// Starts an animation to transition the sheet to a new position.
-  void _startAnimation(double startPosition, double position, Curve curve, int duration) {
+  void _startAnimation(
+      double startPosition, double position, Curve curve, int duration) {
     this.position._stopBallisticAnimation();
 
     _heightAnimationController?.stop();
@@ -686,13 +715,16 @@ class MultiStateSheetController<StateType> extends ScrollController {
   void _onHeightChanged() {
     final velocity = _heightAnimationController?.velocity ?? 0.0;
 
-    if (_extent.offset != _heightAnimationPosition && _heightAnimationPosition.isFinite) {
-      _extent.updateSize(_heightAnimationPosition, isAnimating: _extent.isAnimatingOpen);
+    if (_extent.offset != _heightAnimationPosition &&
+        _heightAnimationPosition.isFinite) {
+      _extent.updateSize(_heightAnimationPosition,
+          isAnimating: _extent.isAnimatingOpen);
     }
 
     /// Stops the animation if we trying to animate outside of the max safe offset
     if (velocity >= 0.0 &&
-        (_extent.safeMaxOffset < _heightAnimationPosition && _extent.offset <= _extent.safeMaxOffset ||
+        (_extent.safeMaxOffset < _heightAnimationPosition &&
+                _extent.offset <= _extent.safeMaxOffset ||
             state == 0 && interpolation == 0.0)) {
       _heightAnimationController?.stop(canceled: false);
     }
@@ -706,9 +738,11 @@ class MultiStateSheetController<StateType> extends ScrollController {
   }
 }
 
-class _MultiStateSheetScrollPosition<StateType> extends ScrollPositionWithSingleContext {
+class _MultiStateSheetScrollPosition<StateType>
+    extends ScrollPositionWithSingleContext {
   final MultiStateSheetExtent<StateType> Function() getExtent;
-  final Set<AnimationController> _ballisticControllers = <AnimationController>{};
+  final Set<AnimationController> _ballisticControllers =
+      <AnimationController>{};
   late final MultiStateSheetExtent<StateType> _extent = getExtent();
 
   VoidCallback? _dragCancelCallback;
@@ -752,7 +786,8 @@ class _MultiStateSheetScrollPosition<StateType> extends ScrollPositionWithSingle
   @override
   void applyUserOffset(double delta) {
     /// Check if the scroll position of the content list is within the bounds to control sheet height by scrolling.
-    final isSheetAtMaxAndScrollsUp = !_extent.isAtMin && _extent.isAtMax && delta < 0;
+    final isSheetAtMaxAndScrollsUp =
+        !_extent.isAtMin && _extent.isAtMax && delta < 0;
     final canContentScrollDown = !_extent.isAtMin && pixels > 0 && delta > 0;
     if (isSheetAtMaxAndScrollsUp || canContentScrollDown) {
       super.applyUserOffset(delta);
@@ -763,7 +798,8 @@ class _MultiStateSheetScrollPosition<StateType> extends ScrollPositionWithSingle
 
   @override
   void dispose() {
-    for (final AnimationController ballisticController in _ballisticControllers) {
+    for (final AnimationController ballisticController
+        in _ballisticControllers) {
       ballisticController.dispose();
     }
 
@@ -774,10 +810,17 @@ class _MultiStateSheetScrollPosition<StateType> extends ScrollPositionWithSingle
 
   @override
   void goBallistic(double velocity) {
-    final isDraggedByHeader = velocity == 0.0 && !shouldSnap && !_extent.isAtMax;
-    final isShouldScrollContentDown = velocity > 0.0 && _extent.isAtMax && listShouldScroll;
-    final isShouldScrollContentUp = velocity < 0.0 && !(_extent.isAtMin && _extent.isAtMax) && listShouldScroll;
-    if (isDraggedByHeader || isShouldScrollContentDown || isShouldScrollContentUp || !isScrollingNotifier.value) {
+    final isDraggedByHeader =
+        velocity == 0.0 && !shouldSnap && !_extent.isAtMax;
+    final isShouldScrollContentDown =
+        velocity > 0.0 && _extent.isAtMax && listShouldScroll;
+    final isShouldScrollContentUp = velocity < 0.0 &&
+        !(_extent.isAtMin && _extent.isAtMax) &&
+        listShouldScroll;
+    if (isDraggedByHeader ||
+        isShouldScrollContentDown ||
+        isShouldScrollContentUp ||
+        !isScrollingNotifier.value) {
       super.goBallistic(velocity);
       return;
     }
@@ -790,7 +833,8 @@ class _MultiStateSheetScrollPosition<StateType> extends ScrollPositionWithSingle
           initialVelocity: -velocity / kVelocityCorrectionFactor,
           durationMultiplier: _extent.durationMultiplier,
           pixelSnapPositions: _extent.behavior.snappingPixelOffsets,
-          snapAnimationDuration: _extent.snapAnimationDuration ?? kDefaultSheetScrollDuration,
+          snapAnimationDuration:
+              _extent.snapAnimationDuration ?? kDefaultSheetScrollDuration,
           tolerance: physics.toleranceFor(this),
           forceMultiplier: _extent.forceMultiplier,
         ),
@@ -801,7 +845,8 @@ class _MultiStateSheetScrollPosition<StateType> extends ScrollPositionWithSingle
         )
     };
 
-    final AnimationController ballisticController = AnimationController.unbounded(
+    final AnimationController ballisticController =
+        AnimationController.unbounded(
       debugLabel: objectRuntimeType(this, '_MultiStateSheetScrollPosition'),
       vsync: context.vsync,
     );
@@ -810,8 +855,10 @@ class _MultiStateSheetScrollPosition<StateType> extends ScrollPositionWithSingle
 
     void tick() {
       _extent.updateSize(ballisticController.value);
-      if ((velocity > 0 && _extent.isAtMax) || (velocity < 0 && _extent.isAtMin)) {
-        final physicsVelocity = ballisticController.velocity + (physics.toleranceFor(this).velocity);
+      if ((velocity > 0 && _extent.isAtMax) ||
+          (velocity < 0 && _extent.isAtMin)) {
+        final physicsVelocity = ballisticController.velocity +
+            (physics.toleranceFor(this).velocity);
         super.goBallistic(-physicsVelocity);
         ballisticController.stop();
       } else if (ballisticController.isCompleted) {
@@ -838,7 +885,8 @@ class _MultiStateSheetScrollPosition<StateType> extends ScrollPositionWithSingle
   }
 
   void _stopBallisticAnimation() {
-    for (final AnimationController ballisticController in _ballisticControllers) {
+    for (final AnimationController ballisticController
+        in _ballisticControllers) {
       ballisticController.stop();
     }
   }

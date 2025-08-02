@@ -1,6 +1,6 @@
 name: sheetify
 description: "A Flutter package that provides customizable bottom sheet widgets with snapping behaviors, gesture support, animation, and dynamic state control."
-version: 1.0.0
+version: 1.0.0+1
 
 repository: https://github.com/urbi-ae/sheetify
 homepage: https://github.com/urbi-ae/sheetify

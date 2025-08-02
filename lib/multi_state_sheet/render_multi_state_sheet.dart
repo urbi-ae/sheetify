@@ -487,12 +487,13 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
       painter.color = safeAreaColor!;
     }
 
+    const safeAreaCorrection = 1.0;
     context.canvas.drawRect(
       Rect.fromLTWH(
         offset.dx,
-        constraints.maxHeight - viewBottomPadding + offset.dy,
+        constraints.maxHeight - viewBottomPadding + offset.dy - safeAreaCorrection,
         constraints.maxWidth,
-        kBottomNavigationBarHeight,
+        kBottomNavigationBarHeight + safeAreaCorrection,
       ),
       painter,
     );

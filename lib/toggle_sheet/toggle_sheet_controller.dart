@@ -385,16 +385,21 @@ class ToggleSheetController extends ScrollController {
     if (_extent.minHeight != min && _extent.heightModel == null) {
       _extent.minHeight = min;
 
-      if (isEnabled && !_isAnimatingOpen && (!isClosed || clipByHeader) && !_isDragging) {
+      final isAnimating =
+          (_heightAnimationController?.isAnimating ?? false) || position._ballisticControllers.isNotEmpty;
+
+      final isDragging = _isDragging || position.isDragging;
+
+      if (isEnabled && !isAnimating && !isDragging && (!isClosed || clipByHeader)) {
         _extent._offset = isClosed ? _extent.maxHeight : _extent.minHeight;
         correctPosition = true;
 
-        instantOffset = _extent.offset;
+        instantOffset = _extent._offset;
       }
     }
 
     if (correctPosition) {
-      _startAnimation(_extent.offset, isClosed ? _extent.maxHeight : _extent.minHeight, Curves.linear, 1);
+      _startAnimation(_extent._offset, isClosed ? _extent.maxHeight : _extent.minHeight, Curves.linear, 1);
     }
 
     return instantOffset;
@@ -487,7 +492,7 @@ class ToggleSheetController extends ScrollController {
 
     _isDragging = false;
 
-    final Simulation simulation = SnappingSimulation(
+    final simulation = SnappingSimulation(
       position: _extent.offset,
       initialVelocity: details.velocity.pixelsPerSecond.dy / kVelocityCorrectionFactor,
       durationMultiplier: _extent.durationMultiplier,
@@ -588,6 +593,7 @@ class _ToggleSheetScrollPosition extends ScrollPositionWithSingleContext {
   late final ToggleSheetExtent _extent = getExtent();
 
   bool isInteractive;
+  bool isDragging = false;
 
   VoidCallback? _dragCancelCallback;
 
@@ -620,6 +626,9 @@ class _ToggleSheetScrollPosition extends ScrollPositionWithSingleContext {
 
   @override
   void beginActivity(ScrollActivity? newActivity) {
+    if (newActivity is DragScrollActivity) {
+      isDragging = true;
+    }
     _stopBallisticAnimation();
     super.beginActivity(newActivity);
   }
@@ -660,6 +669,7 @@ class _ToggleSheetScrollPosition extends ScrollPositionWithSingleContext {
 
     _dragCancelCallback?.call();
     _dragCancelCallback = null;
+    isDragging = false;
 
     final simulation = SnappingSimulation(
       position: _extent.offset,

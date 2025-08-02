@@ -32,7 +32,13 @@ class _MenuPageState extends State<MenuPage> {
                         context.router.push(page);
                       }
                     },
-                    child: Text(routeName.value),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12.0),
+                      child: Text(
+                        routeName.value,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
                 ),
               )

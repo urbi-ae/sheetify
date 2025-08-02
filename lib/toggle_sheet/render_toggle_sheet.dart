@@ -128,9 +128,7 @@ class _ToggleSheetWidget extends SlottedMultiChildRenderObjectWidget<_ToggleShee
 /// the height of the sheet, and adjusting for safe area padding.
 class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixin<_ToggleSheetSlot, RenderBox> {
   ToggleSheetController _scrollController;
-
   ToggleSheetController get scrollController => _scrollController;
-
   set scrollController(ToggleSheetController value) {
     if (_scrollController != value) {
       _scrollController = value;
@@ -139,9 +137,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   }
 
   ToggleSheetDelegate<Color?>? _backgroundColorDelegate;
-
   ToggleSheetDelegate<Color?>? get barrierColorDelegate => _backgroundColorDelegate;
-
   set barrierColorDelegate(ToggleSheetDelegate<Color?>? value) {
     if (_backgroundColorDelegate != value) {
       _backgroundColorDelegate = value;
@@ -150,9 +146,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   }
 
   ToggleSheetDelegate<double>? _outsideOpacityDelegate;
-
   ToggleSheetDelegate<double>? get outsideOpacityDelegate => _outsideOpacityDelegate;
-
   set outsideOpacityDelegate(ToggleSheetDelegate<double>? value) {
     if (_outsideOpacityDelegate != value) {
       _outsideOpacityDelegate = value;
@@ -161,9 +155,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   }
 
   ToggleSheetDelegate<ShapeBorder?>? _shaperBorderDelegate;
-
   ToggleSheetDelegate<ShapeBorder?>? get shaperBorderDelegate => _shaperBorderDelegate;
-
   set shaperBorderDelegate(ToggleSheetDelegate<ShapeBorder?>? value) {
     if (_shaperBorderDelegate != value) {
       _shaperBorderDelegate = value;
@@ -171,12 +163,17 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
     }
   }
 
-  ToggleSheetDelegate<EdgeInsets?>? paddingDelegate;
+  ToggleSheetDelegate<EdgeInsets?>? _paddingDelegate;
+  ToggleSheetDelegate<EdgeInsets?>? get paddingDelegate => _paddingDelegate;
+  set paddingDelegate(ToggleSheetDelegate<EdgeInsets?>? value) {
+    if (_paddingDelegate != value) {
+      _paddingDelegate = value;
+      markNeedsLayout();
+    }
+  }
 
   double? _topHeaderOffset;
-
   double? get topHeaderOffset => _topHeaderOffset;
-
   set topHeaderOffset(double? value) {
     if (_topHeaderOffset != value) {
       _topHeaderOffset = value;
@@ -185,9 +182,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   }
 
   Color _backgroundColor;
-
   Color get backgroundColor => _backgroundColor;
-
   set backgroundColor(Color value) {
     if (_backgroundColor != value) {
       _backgroundColor = value;
@@ -196,9 +191,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   }
 
   Color? _safeAreaColor;
-
   Color? get safeAreaColor => _safeAreaColor;
-
   set safeAreaColor(Color? value) {
     if (_safeAreaColor != value) {
       _safeAreaColor = value;
@@ -207,9 +200,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   }
 
   bool _drawOutsideWidgetBehindBackgroundFill;
-
   bool get drawOutsideWidgetBehindBackgroundFill => _drawOutsideWidgetBehindBackgroundFill;
-
   set drawOutsideWidgetBehindBackgroundFill(bool value) {
     if (_drawOutsideWidgetBehindBackgroundFill != value) {
       _drawOutsideWidgetBehindBackgroundFill = value;
@@ -218,9 +209,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
   }
 
   bool _offsetOutsideWidgetByTopheader;
-
   bool get offsetOutsideWidgetByTopheader => _offsetOutsideWidgetByTopheader;
-
   set offsetOutsideWidgetByTopheader(bool value) {
     if (_offsetOutsideWidgetByTopheader != value) {
       _offsetOutsideWidgetByTopheader = value;
@@ -256,11 +245,12 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
     Color? safeAreaColor,
     ToggleSheetDelegate<double>? outsideOpacityDelegate,
     ToggleSheetDelegate<ShapeBorder?>? shaperBorderDelegate,
-    this.paddingDelegate,
+    ToggleSheetDelegate<EdgeInsets?>? paddingDelegate,
     double? viewBottomPadding,
     bool offsetOutsideWidgetByTopheader = true,
     bool drawOutsideWidgetBehindBackgroundFill = false,
-  })  : _offsetOutsideWidgetByTopheader = offsetOutsideWidgetByTopheader,
+  })  : _paddingDelegate = paddingDelegate,
+        _offsetOutsideWidgetByTopheader = offsetOutsideWidgetByTopheader,
         _drawOutsideWidgetBehindBackgroundFill = drawOutsideWidgetBehindBackgroundFill,
         _safeAreaColor = safeAreaColor,
         _backgroundColor = backgroundColor,
@@ -385,7 +375,6 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
 
     innerPadding = paddingDelegate?.getValue(scrollController);
 
-    final topPadding = innerPadding?.bottom ?? 0.0;
     final bottomPadding = innerPadding?.bottom ?? 0.0;
     final leftPadding = innerPadding?.left ?? 0.0;
     final horizontalPadding = innerPadding?.horizontal ?? 0.0;
@@ -427,9 +416,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
                     ? correctedConstraints.maxHeight - heightModel.getHeight(correctedConstraints.maxHeight)
                     : correctedConstraints.maxHeight) -
                 footerLayoutExtend -
-                headerLayoutExtend -
-                topPadding -
-                bottomPadding,
+                headerLayoutExtend,
           ),
         )?.height ??
         0.0;
@@ -449,7 +436,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
 
     if (isFirstFrame || isPreformingResize || isContentSizeUpdated) {
       draggedSheetOffset = scrollController._updateHeightBoundings(
-            avaliableHeight - sheetChildrenSize - viewBottomPadding + bottomPadding,
+            avaliableHeight - sheetChildrenSize,
             avaliableHeight,
           ) ??
           draggedSheetOffset;
@@ -462,7 +449,7 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
 
     draggedSheetOffset = clampDouble(
       draggedSheetOffset,
-      scrollController._extent.minHeight + topPadding,
+      scrollController._extent.minHeight,
       scrollController._extent.maxHeight - bottomPadding + viewBottomPadding,
     );
 
@@ -500,7 +487,8 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
     /// Layout outside widget
     if (outsideOpacity > 0) {
       final _ = _layoutChild(outside, constraints,
-          height: draggedSheetOffset - (offsetOutsideWidgetByTopheader ? topLayoutExtend : kStartOfTheViewport));
+          height: math.max(
+              draggedSheetOffset - (offsetOutsideWidgetByTopheader ? topLayoutExtend : kStartOfTheViewport), 0.0));
       _positionChild(outside, constraints, kStartOfTheViewport);
     }
   }
@@ -525,6 +513,12 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
     final leftPadding = innerPadding?.left ?? 0.0;
     final rightPadding = innerPadding?.right ?? 0.0;
     final horizontalPadding = innerPadding?.horizontal ?? 0.0;
+
+    draggedSheetOffset = clampDouble(
+      draggedSheetOffset,
+      scrollController._extent.minHeight + bottomPadding,
+      scrollController._extent.maxHeight - bottomPadding + viewBottomPadding,
+    );
 
     final painter = Paint()
       ..color = backgroundColor
@@ -572,12 +566,13 @@ class _RenderToggleSheet extends RenderBox with SlottedContainerRenderObjectMixi
       final hasSafeArea = safeAreaColor != null;
       if (hasSafeArea) {
         painter.color = safeAreaColor!;
+        const safeAreaCorrection = 1.0;
         context.canvas.drawRect(
           Rect.fromLTWH(
             offset.dx + leftPadding,
-            constraints.maxHeight + offset.dy,
+            constraints.maxHeight + offset.dy - safeAreaCorrection,
             constraints.maxWidth - rightPadding,
-            viewBottomPadding,
+            viewBottomPadding + safeAreaCorrection,
           ),
           painter,
         );

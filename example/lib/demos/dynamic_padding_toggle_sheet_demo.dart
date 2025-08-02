@@ -17,6 +17,32 @@ class DynamicPaddingToggleSheetDemo extends StatefulWidget {
 class _DynamicPaddingToggleSheetDemoState extends State<DynamicPaddingToggleSheetDemo> {
   late ToggleSheetController controller;
 
+  final shapeDelegateValue = ToggleSheetDelegate.func(
+    (controller) => RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: const Radius.circular(kDefaultRadius),
+        bottom: Radius.circular(kDefaultRadius * controller.interpolation),
+      ),
+    ),
+  );
+
+  late final paddingDelegate = ToggleSheetDelegate.func(
+    (controller) {
+      final padding = MediaQuery.viewPaddingOf(context);
+      return EdgeInsets.only(
+        bottom: (padding.bottom + 16.0) * (controller.interpolation),
+        left: 16.0 * controller.interpolation,
+        right: 16.0 * controller.interpolation,
+      );
+    },
+  );
+
+  final barrierColorDelegate = ToggleSheetDelegate.func(
+    (controller) {
+      return Colors.black.withValues(alpha: 0.4 * (1 - controller.interpolation));
+    },
+  );
+
   void createController() {
     controller = ToggleSheetController(
       clipByHeader: true,
@@ -76,8 +102,6 @@ class _DynamicPaddingToggleSheetDemoState extends State<DynamicPaddingToggleShee
       ]),
     );
 
-    final padding = MediaQuery.viewPaddingOf(context);
-
     return Material(
       color: Colors.teal,
       child: Center(
@@ -102,31 +126,14 @@ class _DynamicPaddingToggleSheetDemoState extends State<DynamicPaddingToggleShee
               child: ToggleSheet(
                 startConfig: ToggleSheetStart.closed,
                 backgroundColor: Colors.white,
-                safeAreaColor: Colors.white,
+                safeAreaColor: Colors.red,
                 hitTestBehavior: HitTestBehavior.opaque,
                 topHeader: topHeader,
                 topHeaderOffset: -50,
                 outside: outside,
-                shapeBorderDelegate: ToggleSheetDelegate.func(
-                  (controller) => RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: const Radius.circular(kDefaultRadius),
-                      bottom: Radius.circular(kDefaultRadius * controller.interpolation),
-                    ),
-                  ),
-                ),
-                paddingDelegate: ToggleSheetDelegate.func(
-                  (controller) => EdgeInsets.only(
-                    bottom: (padding.bottom + 16.0) * (controller.interpolation),
-                    left: 16.0 * controller.interpolation,
-                    right: 16.0 * controller.interpolation,
-                  ),
-                ),
-                barrierColorDelegate: ToggleSheetDelegate.func(
-                  (controller) {
-                    return Colors.black.withValues(alpha: 0.4 * (1 - controller.interpolation));
-                  },
-                ),
+                shapeBorderDelegate: shapeDelegateValue,
+                paddingDelegate: paddingDelegate,
+                barrierColorDelegate: barrierColorDelegate,
                 scrollController: controller,
                 offsetOutsideWidgetByTopheader: false,
                 header: const PlaceholderContainer(text: 'Header'),

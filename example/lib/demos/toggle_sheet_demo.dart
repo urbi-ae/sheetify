@@ -83,6 +83,9 @@ class ToggleSheetPage<T> extends StatefulWidget {
 }
 
 class _ToggleSheetPageState<T> extends State<ToggleSheetPage<T>> with TickerProviderStateMixin {
+  final barrierDelegate = ToggleSheetDelegate.func(
+      (controller) => Colors.black.withValues(alpha: Curves.easeIn.transform(controller.fraction.clamp(0, 1)) * 0.7));
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -116,8 +119,7 @@ class _ToggleSheetPageState<T> extends State<ToggleSheetPage<T>> with TickerProv
               ),
             ]),
           ),
-          barrierColorDelegate: ToggleSheetDelegate.func((controller) =>
-              Colors.black.withValues(alpha: Curves.easeIn.transform(controller.fraction.clamp(0, 1)) * 0.7)),
+          barrierColorDelegate: barrierDelegate,
           scrollController: widget.controller,
           offsetOutsideWidgetByTopheader: false,
           header: Column(

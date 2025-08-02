@@ -44,6 +44,24 @@ Then import it:
 import 'package:sheetify/sheetify.dart';
 ```
 
+### Lint Rules with `sheetify_lint`
+
+To help enforce best practices, we provide a companion linter package: [`sheetify_lint`](https://pub.dev/packages/sheetify_lint).
+
+- Your application must contain an `analysis_options.yaml` with the following:
+```yaml
+analyzer:
+	plugins:
+		- custom_lint
+```
+ 
+- And needs a `custom_lint` and `sheetify_lint` packages as `dev_dependencies`:
+```yaml
+dev_dependencies:
+	custom_lint: ^0.8.0
+	sheetify_lint: ^1.0.0
+```
+
 ## 📐 Sheet Layout Structure
 Here's how the layout inside a `MultiStateSheet` or `ToggleSheet` is structured:
 ![Sheetify Layout Diagram](example/media/sheet_layout_diagram.png)

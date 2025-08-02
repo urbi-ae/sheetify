@@ -61,6 +61,17 @@ class MultiStateSheetPage<T> extends StatefulWidget {
 }
 
 class _MultiStateSheetPageState<T> extends State<MultiStateSheetPage<T>> with TickerProviderStateMixin {
+  final outsideOpacityDelegate = StatefulSheetDelegate.func((MultiStateSheetController<FourStateSheet> controller) {
+    final isSheetCoversHalfOfTheScreen = controller.fraction > 0.4;
+    final isSheetStateOpen = controller.state == FourStateSheet.open;
+    final isSheetScrolledForHalfOfTheState = controller.interpolation > 0.4;
+
+    final isFull =
+        (!controller.isEnabled && isSheetStateOpen && isSheetScrolledForHalfOfTheState) || isSheetCoversHalfOfTheScreen;
+
+    return !isFull ? 1.0 : max(0.0, 1 - (controller.fraction - 0.4) * 9);
+  });
+
   @override
   Widget build(BuildContext context) {
     final outside = Align(
@@ -102,17 +113,6 @@ class _MultiStateSheetPageState<T> extends State<MultiStateSheetPage<T>> with Ti
           color: Colors.grey,
         ));
 
-    final outsideOpacityDelegate = StatefulSheetDelegate.func((MultiStateSheetController<FourStateSheet> controller) {
-      final isSheetCoversHalfOfTheScreen = controller.fraction > 0.4;
-      final isSheetStateOpen = controller.state == FourStateSheet.open;
-      final isSheetScrolledForHalfOfTheState = controller.interpolation > 0.4;
-
-      final isFull = (!controller.isEnabled && isSheetStateOpen && isSheetScrolledForHalfOfTheState) ||
-          isSheetCoversHalfOfTheScreen;
-
-      return !isFull ? 1.0 : max(0.0, 1 - (controller.fraction - 0.4) * 9);
-    });
-
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -124,6 +124,7 @@ class _MultiStateSheetPageState<T> extends State<MultiStateSheetPage<T>> with Ti
             resizeToAvoidViewPadding: true,
             hitTestBehavior: HitTestBehavior.opaque,
             backgroundColor: Colors.white,
+            safeAreaColor: Colors.grey,
             topHeader: const AnimatedStateSheetWidgetTemplate(),
             header: header,
             footer: footer,

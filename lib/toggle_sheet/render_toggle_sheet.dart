@@ -54,6 +54,9 @@ class _ToggleSheetWidget
   /// Padding for the bottom of the viewport to accommodate UI elements like keyboard.
   final double? viewBottomPadding;
 
+  /// Padding for the bottom part of safe area around the sheet.
+  final double? safeAreaBottomPadding;
+
   const _ToggleSheetWidget({
     required this.scrollController,
     required this.backgroundColor,
@@ -69,6 +72,7 @@ class _ToggleSheetWidget
     this.offsetOutsideWidgetByTopheader = true,
     this.drawOutsideWidgetBehindBackgroundFill = false,
     this.viewBottomPadding,
+    this.safeAreaBottomPadding,
     this.shapeBorderDelegate,
     this.paddingDelegate,
     super.key,
@@ -100,6 +104,7 @@ class _ToggleSheetWidget
       outsideOpacityDelegate: outsideOpacityDelegate,
       safeAreaColor: safeAreaColor,
       viewBottomPadding: viewBottomPadding,
+      safeAreaBottomPadding: safeAreaBottomPadding,
       offsetOutsideWidgetByTopheader: offsetOutsideWidgetByTopheader,
       drawOutsideWidgetBehindBackgroundFill:
           drawOutsideWidgetBehindBackgroundFill,
@@ -115,6 +120,7 @@ class _ToggleSheetWidget
       ..barrierColorDelegate = barrierColorDelegate
       ..backgroundColor = backgroundColor
       ..safeAreaColor = safeAreaColor
+      ..safeAreaBottomPadding = safeAreaBottomPadding
       ..viewBottomPadding = viewBottomPadding
       ..draggedSheetOffset = scrollController._extent.offset
       ..outsideOpacityDelegate = outsideOpacityDelegate
@@ -236,6 +242,15 @@ class _RenderToggleSheet extends RenderBox
     }
   }
 
+  double? _safeAreaBottomPadding;
+  double get safeAreaBottomPadding => _safeAreaBottomPadding ?? 0.0;
+  set safeAreaBottomPadding(double? value) {
+    if (_safeAreaBottomPadding != value) {
+      _safeAreaBottomPadding = value;
+      markNeedsPaint();
+    }
+  }
+
   EdgeInsets? innerPadding;
   double _draggedSheetHeight = 0.0;
   double get draggedSheetOffset => _draggedSheetHeight;
@@ -257,6 +272,7 @@ class _RenderToggleSheet extends RenderBox
     ToggleSheetDelegate<ShapeBorder?>? shaperBorderDelegate,
     ToggleSheetDelegate<EdgeInsets?>? paddingDelegate,
     double? viewBottomPadding,
+    double? safeAreaBottomPadding,
     bool offsetOutsideWidgetByTopheader = true,
     bool drawOutsideWidgetBehindBackgroundFill = false,
   })  : _paddingDelegate = paddingDelegate,
@@ -270,6 +286,7 @@ class _RenderToggleSheet extends RenderBox
         _outsideOpacityDelegate = outsideOpacityDelegate,
         _backgroundColorDelegate = backgroundColorDelegate,
         _scrollController = scrollController,
+        _safeAreaBottomPadding = safeAreaBottomPadding,
         _viewBottomPadding = viewBottomPadding;
 
   // Slot getters for accessing child render objects.
@@ -381,7 +398,7 @@ class _RenderToggleSheet extends RenderBox
     draggedSheetOffset = scrollController._extent.offset;
 
     // Calculate available space for the sheet.
-    final avaliableHeight = constraints.maxHeight;
+    final avaliableHeight = constraints.maxHeight - viewBottomPadding;
     assert(
       avaliableHeight != double.infinity,
       'ToggleSheet: `constraints.maxHeight` is infinite. '
@@ -402,6 +419,7 @@ class _RenderToggleSheet extends RenderBox
     final correctedConstraints = constraints.copyWith(
       minWidth: constraints.maxWidth - horizontalPadding,
       maxWidth: constraints.maxWidth - horizontalPadding,
+      maxHeight: avaliableHeight,
     );
 
     // Layout header
@@ -460,9 +478,8 @@ class _RenderToggleSheet extends RenderBox
 
     final isFirstFrame = scrollController._extent.availablePixels == 0;
     final isPreformingResize = scrollController._isPreformingResize;
-    final isContentSizeUpdated =
-        avaliableHeight - sheetChildrenSize - viewBottomPadding !=
-            scrollController._extent.minHeight;
+    final isContentSizeUpdated = avaliableHeight - sheetChildrenSize !=
+        scrollController._extent.minHeight;
 
     if (isFirstFrame || isPreformingResize || isContentSizeUpdated) {
       draggedSheetOffset = scrollController._updateHeightBoundings(
@@ -480,11 +497,13 @@ class _RenderToggleSheet extends RenderBox
     draggedSheetOffset = clampDouble(
       draggedSheetOffset,
       scrollController._extent.minHeight,
-      scrollController._extent.maxHeight - bottomPadding + viewBottomPadding,
+      scrollController._extent.maxHeight -
+          bottomPadding +
+          safeAreaBottomPadding,
     );
 
     final footerOffsetPositionAbsolute = math.min(
-      sheetHeightExtent - headerLayoutExtend + viewBottomPadding,
+      sheetHeightExtent - headerLayoutExtend,
       footerLayoutExtend + viewBottomPadding,
     );
 
@@ -552,7 +571,9 @@ class _RenderToggleSheet extends RenderBox
     draggedSheetOffset = clampDouble(
       draggedSheetOffset,
       scrollController._extent.minHeight + bottomPadding,
-      scrollController._extent.maxHeight - bottomPadding + viewBottomPadding,
+      scrollController._extent.maxHeight -
+          bottomPadding +
+          safeAreaBottomPadding,
     );
 
     final painter = Paint()
@@ -567,14 +588,13 @@ class _RenderToggleSheet extends RenderBox
     }
 
     /// A `Path` object used to clip sheet layer and background.
-
     final Path path =
         shaperBorderDelegate?.getValue(scrollController)?.getOuterPath(
                   Rect.fromLTWH(
                     kStartOfTheViewport + leftPadding,
                     draggedSheetOffset,
                     constraints.maxWidth - horizontalPadding,
-                    sheetHeightExtent - bottomPadding + viewBottomPadding,
+                    sheetHeightExtent - bottomPadding + safeAreaBottomPadding,
                   ),
                 ) ??
             (Path()
@@ -584,7 +604,7 @@ class _RenderToggleSheet extends RenderBox
                     kStartOfTheViewport + leftPadding,
                     draggedSheetOffset,
                     constraints.maxWidth - horizontalPadding,
-                    sheetHeightExtent - bottomPadding + viewBottomPadding,
+                    sheetHeightExtent - bottomPadding + safeAreaBottomPadding,
                   ),
                   topLeft: const Radius.circular(kDefaultRadius),
                   topRight: const Radius.circular(kDefaultRadius),
@@ -598,7 +618,7 @@ class _RenderToggleSheet extends RenderBox
       doPaint(header, context, offset);
       doPaint(footer, context, offset);
 
-      /// Paint safe area
+      /// Paint safe area padding at the bottom of the sheet.
       final hasSafeArea = safeAreaColor != null;
       if (hasSafeArea) {
         painter.color = safeAreaColor!;
@@ -606,9 +626,12 @@ class _RenderToggleSheet extends RenderBox
         context.canvas.drawRect(
           Rect.fromLTWH(
             offset.dx + leftPadding,
-            constraints.maxHeight + offset.dy - safeAreaCorrection,
+            constraints.maxHeight -
+                viewBottomPadding +
+                offset.dy -
+                safeAreaCorrection,
             constraints.maxWidth - rightPadding,
-            viewBottomPadding + safeAreaCorrection,
+            safeAreaBottomPadding + safeAreaCorrection,
           ),
           painter,
         );
@@ -645,7 +668,7 @@ class _RenderToggleSheet extends RenderBox
           offset.dx + leftPadding,
           draggedSheetOffset,
           constraints.maxWidth - rightPadding,
-          sheetHeightExtent + viewBottomPadding,
+          sheetHeightExtent + viewBottomPadding + safeAreaBottomPadding,
         ),
         path,
         paintSheet,

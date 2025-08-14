@@ -333,7 +333,8 @@ class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>>
                 controller._dragUpdate(details, context),
             onVerticalDragEnd: (details) =>
                 controller._dragEnd(details, context),
-            behavior: widget.hitTestBehavior,
+            behavior:
+                widget.keepContentBehindFooter ? null : widget.hitTestBehavior,
             child: widgetFooter,
           );
 

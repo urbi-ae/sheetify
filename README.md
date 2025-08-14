@@ -36,7 +36,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  sheetify: ^1.0.0
+  sheetify: ^1.0.1
   ```
   
 Then import it:

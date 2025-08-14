@@ -30,7 +30,7 @@ class _DynamicPaddingToggleSheetDemoState
 
   late final paddingDelegate = ToggleSheetDelegate.func(
     (controller) {
-      final padding = MediaQuery.viewPaddingOf(context);
+      final padding = MediaQuery.paddingOf(context);
       return EdgeInsets.only(
         bottom: (padding.bottom + 16.0) * (controller.interpolation),
         left: 16.0 * controller.interpolation,

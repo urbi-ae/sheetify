@@ -493,7 +493,7 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
                 kStartOfTheViewport,
                 draggedSheetOffset,
                 constraints.maxWidth,
-                sheetHeightExtent,
+                sheetHeightExtent + viewBottomPadding,
               ),
               topLeft: const Radius.circular(kDefaultRadius),
               topRight: const Radius.circular(kDefaultRadius),

@@ -29,6 +29,8 @@ class MultiStateSheetExtent<StateType> {
   /// Resets inside [_RenderMultiStateSheet.onSheetOffsetChanges] method.
   bool _doNotMarkNeedsLayout = false;
 
+  AnimationController? _safeAreaAnimationController;
+
   late double _offset = behavior.statePosition(
     extent: this,
     state: initialState,
@@ -128,6 +130,14 @@ class MultiStateSheetExtent<StateType> {
 
     if (_offset == clampedOffset) {
       return;
+    }
+
+    if (_offset < availablePixels &&
+        clampedOffset == availablePixels &&
+        _safeAreaAnimationController?.value == 0.0) {
+      _safeAreaAnimationController?.animateTo(1.0, curve: Curves.easeOut);
+    } else if (clampedOffset < availablePixels) {
+      _safeAreaAnimationController?.value = 0.0;
     }
 
     _offset = clampedOffset;
@@ -412,8 +422,7 @@ class MultiStateSheetController<StateType> extends ScrollController {
   void attach(ScrollPosition position) {
     if (position.hasPixels &&
         position is _MultiStateSheetScrollPosition &&
-        position._extent.availablePixels > 0 &&
-        position._extent.offset > 0) {
+        position._extent.availablePixels > 0.0) {
       _extent.isEnabled = true;
     }
     super.attach(position);
@@ -443,6 +452,9 @@ class MultiStateSheetController<StateType> extends ScrollController {
     _heightAnimationController?.stop();
     _heightAnimationController?.removeListener(_onHeightChanged);
     _heightAnimationController?.dispose();
+    _extent._safeAreaAnimationController?.stop();
+    _extent._safeAreaAnimationController?.dispose();
+    _extent._safeAreaAnimationController = null;
     _heightAnimationController = null;
     super.dispose();
   }
@@ -456,6 +468,7 @@ class MultiStateSheetController<StateType> extends ScrollController {
 
   double _actualOffset = 0.0;
   bool _isDragging = false;
+  bool _forceRepaint = false;
 
   /// Tracks whether the layout needs to be updated.
   ///
@@ -669,6 +682,8 @@ class MultiStateSheetController<StateType> extends ScrollController {
   void _initAnimation(TickerProvider vsync) {
     _heightAnimationController = AnimationController.unbounded(vsync: vsync);
     _heightAnimationController?.addListener(_onHeightChanged);
+    _extent._safeAreaAnimationController = AnimationController(
+        value: 1.0, vsync: vsync, duration: Durations.medium1);
   }
 
   /// Method used to animating sheet from not visable state to initial state position.
@@ -683,6 +698,14 @@ class MultiStateSheetController<StateType> extends ScrollController {
       _extent
         ..isAnimatingOpen = false
         ..updateSize(newPosition, isAnimating: _extent.isAnimatingOpen);
+      return;
+    }
+
+    /// If the sheet is already at the desired position, force a repaint and notify listeners.
+    /// This handles cases where the sheet is opened to its initial position without animation and isEnabled is still false.
+    if (_extent.offset == newPosition) {
+      _forceRepaint = true;
+      _notifyHeightChanged();
       return;
     }
 

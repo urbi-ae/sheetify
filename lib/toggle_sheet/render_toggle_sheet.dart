@@ -299,6 +299,9 @@ class _RenderToggleSheet extends RenderBox
   double get sheetHeightExtent =>
       math.max(0.0, constraints.maxHeight - draggedSheetOffset);
 
+  AnimationController? get safeAreaAnimationController =>
+      scrollController._extent._safeAreaAnimationController;
+
   @override
   bool get sizedByParent => true;
 
@@ -352,11 +355,13 @@ class _RenderToggleSheet extends RenderBox
   void attach(covariant PipelineOwner owner) {
     super.attach(owner);
     scrollController.addListener(onSheetOffsetChanges);
+    safeAreaAnimationController?.addListener(markNeedsPaint);
   }
 
   @override
   void detach() {
     scrollController.removeListener(onSheetOffsetChanges);
+    safeAreaAnimationController?.removeListener(markNeedsPaint);
     super.detach();
   }
 
@@ -617,25 +622,6 @@ class _RenderToggleSheet extends RenderBox
       doPaint(content, context, offset);
       doPaint(header, context, offset);
       doPaint(footer, context, offset);
-
-      /// Paint safe area padding at the bottom of the sheet.
-      final hasSafeArea = safeAreaColor != null;
-      if (hasSafeArea) {
-        painter.color = safeAreaColor!;
-        const safeAreaCorrection = 1.0;
-        context.canvas.drawRect(
-          Rect.fromLTWH(
-            offset.dx + leftPadding,
-            constraints.maxHeight -
-                viewBottomPadding +
-                offset.dy -
-                safeAreaCorrection,
-            constraints.maxWidth - rightPadding,
-            safeAreaBottomPadding + safeAreaCorrection,
-          ),
-          painter,
-        );
-      }
     }
 
     /// Paint the outside widget behind the background fill color.
@@ -673,6 +659,27 @@ class _RenderToggleSheet extends RenderBox
         path,
         paintSheet,
         oldLayer: layer as ClipPathLayer?,
+      );
+    }
+
+    /// Paint safe area padding at the bottom of the sheet.
+    final hasSafeArea = safeAreaColor != null;
+    if (hasSafeArea) {
+      painter.color = safeAreaColor!;
+      const safeAreaCorrection = 1.0;
+      context.canvas.drawRect(
+        Rect.fromLTWH(
+          offset.dx + leftPadding,
+          constraints.maxHeight -
+              viewBottomPadding +
+              offset.dy -
+              safeAreaCorrection +
+              kBottomNavigationBarHeight *
+                  (safeAreaAnimationController?.value ?? 0.0),
+          constraints.maxWidth - rightPadding,
+          safeAreaBottomPadding + safeAreaCorrection,
+        ),
+        painter,
       );
     }
   }

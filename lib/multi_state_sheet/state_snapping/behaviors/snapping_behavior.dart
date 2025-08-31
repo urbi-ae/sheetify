@@ -5,6 +5,13 @@ part of 'package:sheetify/multi_state_sheet/multi_state_sheet.dart';
 /// The snapping behavior determines how the sheet transitions between
 /// different states based on user interactions and animations. It provides
 /// snapping offsets, state calculations, and interpolation between states.
+///
+/// See also:
+/// - [ComponentsSnappingBehavior]: A snapping behavior based on the size of sheet components.
+/// - [FractionSnappingBehavior]: A snapping behavior based on fractions of the viewport height.
+/// - [SizeSnappingBehavior]: A snapping behavior based on sheet sizes in pixels.
+/// - [MultiSnappingBehavior]: A snapping behavior that combines multiple snapping models.
+/// - [SnappingModel]: The base class for defining snapping models used by snapping behaviors.
 abstract base class SnappingBehavior {
   /// Determines whether the header should clip max offset of the sheet.
   ///

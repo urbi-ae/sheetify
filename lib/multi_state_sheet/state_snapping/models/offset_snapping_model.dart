@@ -15,15 +15,21 @@ final class OffsetSnappingModel extends SnappingModel {
 
   /// Constructs a [OffsetSnappingModel] with the specified [offsets].
   ///
-  /// - [Offsets]: A set of pixel values representing snapping positions.
+  /// - [offsets]: A set of pixel values representing snapping positions.
   ///   These values should typically be greater than or equal to `0.0` and less than or
   ///   equal to the maximum pixel height of the sheet's viewport.
   ///
   /// ### Usage Example:
   /// ```dart
-  /// // Define snapping positions at 100px, 300px, and 600px from the bottom of the viewport.
-  /// final snappingModel = OffsetSnappingModel({100.0, 300.0, 600.0});
+  /// // Define sheet height snapping positions at 100px, 300px, and 600px with a viewport size of 800px.
+  /// final snappingModel = OffsetSnappingModel({200.0, 500.0, 700.0});
   /// ```
+  /// #### Explanation:
+  /// Given a viewport height of 800px:
+  /// - An offset of 700px means the sheet will snap to a position 100px from the bottom (800 - 700 = 100).
+  /// - An offset of 500px means the sheet will snap to a position 300px from the bottom (800 - 500 = 300).
+  /// - An offset of 200px means the sheet will snap to a position 600px from the bottom (800 - 200 = 600).
+  /// This allows for intuitive placement of the sheet at specific offset from the top of the screen.
   const OffsetSnappingModel(this.offsets);
 
   /// Calculates snapping offsets based on Offsetd pixel positions.

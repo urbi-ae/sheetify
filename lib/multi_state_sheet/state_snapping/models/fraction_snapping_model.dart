@@ -24,8 +24,8 @@ final class FractionSnappingModel extends SnappingModel {
   ///
   /// ### Usage Example:
   /// ```dart
-  /// // Define snapping positions at 25%, 50%, and 75% of the viewport height.
-  /// final snappingModel = FractionSnappingModel({0.25, 0.5, 0.75});
+  /// // Define sheet height snapping positions at 20%, 50%, and 75% of the viewport height.
+  /// final snappingModel = FractionSnappingModel({0.2, 0.5, 0.75});
   /// ```
   FractionSnappingModel(this.fractions);
 

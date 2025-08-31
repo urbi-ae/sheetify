@@ -7,6 +7,12 @@ import 'package:sheetify/sheetify.dart';
 /// This abstract class provides the foundation for calculating snapping offsets
 /// based on the state of the sheet and its components.
 /// Implementations define how snapping positions are determined.
+///
+/// See also:
+/// - [FractionSnappingModel]: A snapping model based on fractions of the viewport height.
+/// - [SizeSnappingModel]: A snapping model based on sheet sizes in pixels.
+/// - [OffsetSnappingModel]: A snapping model based on fixed pixel offsets from the top of the viewport.
+/// - [ComponentsSnappingModel]: A snapping model based on the sizes of specific sheet components.
 abstract class SnappingModel {
   /// Default constructor for a snapping model.
   const SnappingModel();

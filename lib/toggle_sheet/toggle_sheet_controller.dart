@@ -27,6 +27,8 @@ class ToggleSheetExtent {
   ToggleSheetHeightModel? heightModel;
   SheetWidgetSizes componentSizes;
 
+  AnimationController? _safeAreaAnimationController;
+
   double? get fixedHeightOffset {
     final model = heightModel;
     if (model != null) {
@@ -88,18 +90,27 @@ class ToggleSheetExtent {
     if (availablePixels == kStartOfTheViewport) {
       return;
     }
-    final double clampedHeight = isAnimating
+    final double clampedOffset = isAnimating
         ? math.max(minHeight, newHeight)
         : clampDouble(newHeight, minHeight, maxHeight);
 
-    if (_offset == clampedHeight) {
+    if (_offset == clampedOffset) {
       return;
     }
 
-    _offset = clampedHeight;
+    if (!isClosed &&
+        _offset < availablePixels &&
+        clampedOffset == availablePixels &&
+        _safeAreaAnimationController?.value == 0.0) {
+      _safeAreaAnimationController?.animateTo(1.0, curve: Curves.easeOut);
+    } else if (clampedOffset < availablePixels) {
+      _safeAreaAnimationController?.value = 0.0;
+    }
 
-    if (clampedHeight <= maxHeight) {
-      isClosed = clampedHeight >= maxHeight;
+    _offset = clampedOffset;
+
+    if (clampedOffset <= maxHeight) {
+      isClosed = clampedOffset >= maxHeight;
     }
 
     if (notify) {
@@ -360,6 +371,9 @@ class ToggleSheetController extends ScrollController {
     _heightAnimationController?.stop();
     _heightAnimationController?.removeListener(_onHeightChanged);
     _heightAnimationController?.dispose();
+    _extent._safeAreaAnimationController?.stop();
+    _extent._safeAreaAnimationController?.dispose();
+    _extent._safeAreaAnimationController = null;
     _heightAnimationController = null;
 
     super.dispose();
@@ -563,6 +577,8 @@ class ToggleSheetController extends ScrollController {
   void _initAnimation(TickerProvider vsync) {
     _heightAnimationController = AnimationController.unbounded(vsync: vsync);
     _heightAnimationController?.addListener(_onHeightChanged);
+    _extent._safeAreaAnimationController = AnimationController(
+        vsync: vsync, duration: Durations.medium1, value: 1.0);
   }
 
   void _startAnimation(

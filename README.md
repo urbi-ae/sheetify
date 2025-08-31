@@ -36,7 +36,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  sheetify: ^1.0.1
+  sheetify: ^1.0.2
   ```
   
 Then import it:
@@ -192,7 +192,12 @@ class FadingHeader extends SheetValueNotifierWidget<FourStateSheet> {
 |├─ `SizeSnappingBehavior`| Snaps the sheet to specific heights (in logical pixels).
 |├─ `FractionSnappingBehavior`|Snaps to a percentage of the viewport height.
 |├─ `ComponentsSnappingBehavior`|Calculates snap points based on the height of header/footer/components.
-|└─ `MultiSnappingBehavior`|Composes multiple snapping strategies for complex layouts.
+| └─ `MultiSnappingBehavior` | Composes multiple snapping models for complex sheet positions. Useful when you want to mix different snapping strategies in the same sheet. |
+| &nbsp;&nbsp;&nbsp;&nbsp; **Snapping Models** | Models used inside `MultiSnappingBehavior` to define snapping positions: |
+| &nbsp;&nbsp;&nbsp;&nbsp; ├─ `SizeSnappingModel` | Defines snap points as absolute sizes (in pixels) of the sheet. Example: `{100, 300, 600}` → snap to 100px, 300px, or 600px height. |
+| &nbsp;&nbsp;&nbsp;&nbsp; ├─ `OffsetSnappingModel` | Defines snap points as offsets from the **top** of the viewport. Example: `{200, 500, 700}` on an 800px viewport → sheet heights 600px, 300px, 100px. |
+| &nbsp;&nbsp;&nbsp;&nbsp; ├─ `FractionSnappingModel` | Defines snap points as fractions of the viewport height. Example: `{0.2, 0.5, 0.75}` → snap to 20%, 50%, or 75% of screen height. |
+| &nbsp;&nbsp;&nbsp;&nbsp; └─ `ComponentsSnappingModel` | Defines snap points based on the layout components of the sheet (`header`, `top`, `content`, `footer`). Example: snap directly to align with the footer height. |
 |**`SheetStateMapper<T>`**|Maps a logical state (e.g. `FourStateSheet.open`) to a snap index and vice versa. Required for `MultiStateSheetController`. Also defines animation delegates like `barrierColorDelegate`.
 |**`ToggleSheetHeightModel`**|defines the maximum height of a ToggleSheet, allowing it to maintain a consistent layout regardless of its content.
 |├─ `ToggleSnappingConfig.fixed(double height)`|Sets the sheet height to an exact pixel value.

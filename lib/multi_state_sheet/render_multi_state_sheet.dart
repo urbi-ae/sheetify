@@ -185,6 +185,9 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
   @override
   bool get sizedByParent => true;
 
+  AnimationController? get safeAreaAnimationController =>
+      scrollController._extent._safeAreaAnimationController;
+
   // The returned list is ordered for hit testing.
   @override
   Iterable<RenderBox> get children {
@@ -235,11 +238,13 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
   void attach(covariant PipelineOwner owner) {
     super.attach(owner);
     scrollController.addListener(onSheetOffsetChanges);
+    safeAreaAnimationController?.addListener(markNeedsPaint);
   }
 
   @override
   void detach() {
     scrollController.removeListener(onSheetOffsetChanges);
+    safeAreaAnimationController?.removeListener(markNeedsPaint);
     super.detach();
   }
 
@@ -260,6 +265,11 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
       if (hasSize && !scrollController._extent.isPreformingResize) {
         markNeedsLayout();
       }
+    }
+
+    if (scrollController._forceRepaint) {
+      scrollController._forceRepaint = false;
+      markNeedsPaint();
     }
   }
 
@@ -560,7 +570,9 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
         constraints.maxHeight -
             viewBottomPadding +
             offset.dy -
-            safeAreaCorrection,
+            safeAreaCorrection +
+            kBottomNavigationBarHeight *
+                (safeAreaAnimationController?.value ?? 0.0),
         constraints.maxWidth,
         kBottomNavigationBarHeight + safeAreaCorrection,
       ),

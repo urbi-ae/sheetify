@@ -351,15 +351,20 @@ class _RenderToggleSheet extends RenderBox
     return computeMinIntrinsicHeight(width);
   }
 
+  StreamSubscription<double>? _insetStream;
+
   @override
   void attach(covariant PipelineOwner owner) {
     super.attach(owner);
+    _insetStream =
+        KeyboardInsets.insets.listen((value) => viewBottomPadding = value);
     scrollController.addListener(onSheetOffsetChanges);
     safeAreaAnimationController?.addListener(markNeedsPaint);
   }
 
   @override
   void detach() {
+    _insetStream?.cancel();
     scrollController.removeListener(onSheetOffsetChanges);
     safeAreaAnimationController?.removeListener(markNeedsPaint);
     super.detach();
@@ -573,6 +578,9 @@ class _RenderToggleSheet extends RenderBox
     final rightPadding = innerPadding?.right ?? 0.0;
     final horizontalPadding = innerPadding?.horizontal ?? 0.0;
 
+    final safeAreaDelta = safeAreaAnimationController?.value ?? 0.0;
+    final isSafeAreaVisible = safeAreaDelta < 1.0;
+
     draggedSheetOffset = clampDouble(
       draggedSheetOffset,
       scrollController._extent.minHeight + bottomPadding,
@@ -588,7 +596,12 @@ class _RenderToggleSheet extends RenderBox
     void doPaint(RenderBox? child, PaintingContext context, Offset offset) {
       if (child != null) {
         final BoxParentData parentData = child.parentData! as BoxParentData;
-        context.paintChild(child, parentData.offset + offset);
+        context.paintChild(
+          child,
+          parentData.offset +
+              offset +
+              Offset(0.0, safeAreaDelta * safeAreaBottomPadding),
+        );
       }
     }
 
@@ -622,6 +635,29 @@ class _RenderToggleSheet extends RenderBox
       doPaint(content, context, offset);
       doPaint(header, context, offset);
       doPaint(footer, context, offset);
+
+      /// Paint safe area padding at the bottom of the sheet.
+      final hasSafeArea = safeAreaColor != null;
+      if (hasSafeArea) {
+        painter.color = safeAreaColor!;
+        const safeAreaCorrection = 1.0;
+
+        context.canvas.drawRect(
+          Rect.fromLTWH(
+            offset.dx + leftPadding,
+            constraints.maxHeight -
+                viewBottomPadding +
+                offset.dy -
+                safeAreaCorrection +
+                kBottomNavigationBarHeight * safeAreaDelta,
+            constraints.maxWidth - rightPadding,
+            viewBottomPadding > 0
+                ? 0.0
+                : safeAreaBottomPadding + safeAreaCorrection,
+          ),
+          painter,
+        );
+      }
     }
 
     /// Paint the outside widget behind the background fill color.
@@ -643,13 +679,16 @@ class _RenderToggleSheet extends RenderBox
     }
 
     /// Paint the top header widget above the background fill color.
-    doPaint(topHeader, context, offset);
+    if (isSafeAreaVisible) {
+      doPaint(topHeader, context, offset);
+    }
 
     /// Paint the sheet as the clip path to the current layer.
-    if (draggedSheetOffset < constraints.maxHeight) {
+    if (draggedSheetOffset - safeAreaBottomPadding < constraints.maxHeight &&
+        isSafeAreaVisible) {
       layer = context.pushClipPath(
         needsCompositing,
-        offset,
+        offset + Offset(0.0, safeAreaDelta * safeAreaBottomPadding),
         Rect.fromLTWH(
           offset.dx + leftPadding,
           draggedSheetOffset,
@@ -659,27 +698,6 @@ class _RenderToggleSheet extends RenderBox
         path,
         paintSheet,
         oldLayer: layer as ClipPathLayer?,
-      );
-    }
-
-    /// Paint safe area padding at the bottom of the sheet.
-    final hasSafeArea = safeAreaColor != null;
-    if (hasSafeArea) {
-      painter.color = safeAreaColor!;
-      const safeAreaCorrection = 1.0;
-      context.canvas.drawRect(
-        Rect.fromLTWH(
-          offset.dx + leftPadding,
-          constraints.maxHeight -
-              viewBottomPadding +
-              offset.dy -
-              safeAreaCorrection +
-              kBottomNavigationBarHeight *
-                  (safeAreaAnimationController?.value ?? 0.0),
-          constraints.maxWidth - rightPadding,
-          safeAreaBottomPadding + safeAreaCorrection,
-        ),
-        painter,
       );
     }
   }

@@ -9,7 +9,7 @@ Thanks for your interest in contributing to **Sheetify** — a modular, customiz
 Start by forking the repository, then clone it:
 
 ```bash
-git clone https://github.com/your-username/sheetify.git
+git clone https://github.com/urbi-ae/sheetify.git
 cd sheetify
 ```
 

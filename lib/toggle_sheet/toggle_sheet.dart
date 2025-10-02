@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui';
 
@@ -6,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:keyboard_insets/keyboard_insets.dart';
 import 'package:sheetify/sheetify.dart';
 import 'package:sheetify/utils/constants.dart';
 import 'package:sheetify/utils/math_helper.dart';
@@ -361,11 +363,11 @@ class _StatelessSheetState extends State<ToggleSheet>
           }
         }),
         child: Builder(builder: (context) {
-          final double? viewBottomPadding =
-              switch (widget.resizeToAvoidBottomPadding) {
-            true => MediaQuery.viewInsetsOf(context).bottom,
-            _ => null,
-          };
+          // final double? viewBottomPadding =
+          //     switch (widget.resizeToAvoidBottomPadding) {
+          //   true => MediaQuery.viewInsetsOf(context).bottom,
+          //   _ => null,
+          // };
 
           final safeAreaPadding =
               widget.useSafeArea ? MediaQuery.paddingOf(context).bottom : null;
@@ -384,7 +386,7 @@ class _StatelessSheetState extends State<ToggleSheet>
                 Colors.transparent,
             shapeBorderDelegate: widget.shapeBorderDelegate,
             paddingDelegate: widget.paddingDelegate,
-            viewBottomPadding: viewBottomPadding,
+            viewBottomPadding: 0.0,
             safeAreaBottomPadding: safeAreaPadding,
             drawOutsideWidgetBehindBackgroundFill:
                 widget.drawOutsideWidgetBehindBackground,

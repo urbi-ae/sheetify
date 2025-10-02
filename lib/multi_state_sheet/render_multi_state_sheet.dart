@@ -234,15 +234,24 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
     return computeMinIntrinsicHeight(width);
   }
 
+  StreamSubscription<double>? _insetStream;
+
   @override
   void attach(covariant PipelineOwner owner) {
     super.attach(owner);
+    _insetStream = KeyboardInsets.insets.listen((value) {
+      if (viewBottomPadding != value) {
+        viewBottomPadding = value;
+        markNeedsLayout();
+      }
+    });
     scrollController.addListener(onSheetOffsetChanges);
     safeAreaAnimationController?.addListener(markNeedsPaint);
   }
 
   @override
   void detach() {
+    _insetStream?.cancel();
     scrollController.removeListener(onSheetOffsetChanges);
     safeAreaAnimationController?.removeListener(markNeedsPaint);
     super.detach();
@@ -574,7 +583,9 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
             kBottomNavigationBarHeight *
                 (safeAreaAnimationController?.value ?? 0.0),
         constraints.maxWidth,
-        kBottomNavigationBarHeight + safeAreaCorrection,
+        viewBottomPadding > 0.0
+            ? 0.0
+            : kBottomNavigationBarHeight + safeAreaCorrection,
       ),
       painter,
     );

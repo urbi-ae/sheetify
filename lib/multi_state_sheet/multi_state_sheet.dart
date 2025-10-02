@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:math' as math;
 import 'dart:ui';
@@ -7,6 +8,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:keyboard_insets/keyboard_insets.dart';
 import 'package:sheetify/sheetify.dart';
 import 'package:sheetify/utils/constants.dart';
 import 'package:sheetify/utils/frame_stack_hash_map.dart';
@@ -351,15 +353,15 @@ class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>>
         child: _MultiStateSheetNotifierContainer<StateType>(
           controller: controller,
           child: Builder(builder: (context) {
-            final viewBottomPadding = switch (widget.resizeToAvoidViewPadding) {
-              true => MediaQuery.viewInsetsOf(context).bottom,
-              _ => 0.0,
-            };
+            // final viewBottomPadding = switch (widget.resizeToAvoidViewPadding) {
+            //   true => MediaQuery.viewInsetsOf(context).bottom,
+            //   _ => 0.0,
+            // };
 
             final multiStateSheetWidget = _MultiStateSheetWidget<StateType>(
               key: ValueKey(controller.hashCode),
               scrollController: controller,
-              viewBottomPadding: viewBottomPadding,
+              viewBottomPadding: 0.0,
               safeAreaColor: widget.safeAreaColor,
               topHeaderOffset: widget.topHeaderOffset,
               drawOutsideWidgetBehindBackgroundFill:

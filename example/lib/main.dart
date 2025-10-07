@@ -126,7 +126,7 @@ class _MultiStateSheetPageState<T> extends State<MultiStateSheetPage<T>>
           child: MultiStateSheet<FourStateSheet>(
             scrollController: widget.controller,
             barrierColorDelegate: FourStateMapper.barrierColorDelegate,
-            resizeToAvoidViewPadding: true,
+            resizeToAvoidBottomPadding: true,
             hitTestBehavior: HitTestBehavior.opaque,
             backgroundColor: Colors.white,
             safeAreaColor: Colors.grey,

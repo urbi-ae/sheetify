@@ -51,11 +51,11 @@ class _ToggleSheetWidget
   /// Determines if the layout of the [outside] widget should account for the [topHeader].
   final bool offsetOutsideWidgetByTopheader;
 
-  /// Padding for the bottom of the viewport to accommodate UI elements like keyboard.
-  final double? viewBottomPadding;
-
   /// Padding for the bottom part of safe area around the sheet.
   final double? safeAreaBottomPadding;
+
+  /// Whether to resize the sheet to avoid bottom padding (e.g., keyboard).
+  final bool resizeToAvoidBottomPadding;
 
   const _ToggleSheetWidget({
     required this.scrollController,
@@ -71,10 +71,10 @@ class _ToggleSheetWidget
     this.topHeaderOffset = 0.0,
     this.offsetOutsideWidgetByTopheader = true,
     this.drawOutsideWidgetBehindBackgroundFill = false,
-    this.viewBottomPadding,
     this.safeAreaBottomPadding,
     this.shapeBorderDelegate,
     this.paddingDelegate,
+    this.resizeToAvoidBottomPadding = true,
     super.key,
   });
 
@@ -103,11 +103,11 @@ class _ToggleSheetWidget
       backgroundColorDelegate: barrierColorDelegate,
       outsideOpacityDelegate: outsideOpacityDelegate,
       safeAreaColor: safeAreaColor,
-      viewBottomPadding: viewBottomPadding,
       safeAreaBottomPadding: safeAreaBottomPadding,
       offsetOutsideWidgetByTopheader: offsetOutsideWidgetByTopheader,
       drawOutsideWidgetBehindBackgroundFill:
           drawOutsideWidgetBehindBackgroundFill,
+      resizeToAvoidBottomPadding: resizeToAvoidBottomPadding,
       paddingDelegate: paddingDelegate,
     );
   }
@@ -121,12 +121,12 @@ class _ToggleSheetWidget
       ..backgroundColor = backgroundColor
       ..safeAreaColor = safeAreaColor
       ..safeAreaBottomPadding = safeAreaBottomPadding
-      ..viewBottomPadding = viewBottomPadding
       ..draggedSheetOffset = scrollController._extent.offset
       ..outsideOpacityDelegate = outsideOpacityDelegate
       ..drawOutsideWidgetBehindBackgroundFill =
           drawOutsideWidgetBehindBackgroundFill
       ..paddingDelegate = paddingDelegate
+      ..resizeToAvoidBottomPadding = resizeToAvoidBottomPadding
       ..shaperBorderDelegate = shapeBorderDelegate;
 
     super.updateRenderObject(context, renderObject);
@@ -251,6 +251,22 @@ class _RenderToggleSheet extends RenderBox
     }
   }
 
+  bool _resizeToAvoidBottomPadding;
+  bool get resizeToAvoidBottomPadding => _resizeToAvoidBottomPadding;
+  set resizeToAvoidBottomPadding(bool value) {
+    if (_resizeToAvoidBottomPadding != value) {
+      _resizeToAvoidBottomPadding = value;
+      if (value) {
+        _insetStream =
+            KeyboardInsets.insets.listen((value) => viewBottomPadding = value);
+      } else {
+        _insetStream?.cancel();
+        _insetStream = null;
+        viewBottomPadding = 0.0;
+      }
+    }
+  }
+
   EdgeInsets? innerPadding;
   double _draggedSheetHeight = 0.0;
   double get draggedSheetOffset => _draggedSheetHeight;
@@ -275,6 +291,7 @@ class _RenderToggleSheet extends RenderBox
     double? safeAreaBottomPadding,
     bool offsetOutsideWidgetByTopheader = true,
     bool drawOutsideWidgetBehindBackgroundFill = false,
+    bool resizeToAvoidBottomPadding = true,
   })  : _paddingDelegate = paddingDelegate,
         _offsetOutsideWidgetByTopheader = offsetOutsideWidgetByTopheader,
         _drawOutsideWidgetBehindBackgroundFill =
@@ -287,7 +304,8 @@ class _RenderToggleSheet extends RenderBox
         _backgroundColorDelegate = backgroundColorDelegate,
         _scrollController = scrollController,
         _safeAreaBottomPadding = safeAreaBottomPadding,
-        _viewBottomPadding = viewBottomPadding;
+        _viewBottomPadding = viewBottomPadding,
+        _resizeToAvoidBottomPadding = resizeToAvoidBottomPadding;
 
   // Slot getters for accessing child render objects.
   RenderBox? get topHeader => childForSlot(_ToggleSheetSlot.topHeader);
@@ -356,8 +374,10 @@ class _RenderToggleSheet extends RenderBox
   @override
   void attach(covariant PipelineOwner owner) {
     super.attach(owner);
-    _insetStream =
-        KeyboardInsets.insets.listen((value) => viewBottomPadding = value);
+    if (resizeToAvoidBottomPadding) {
+      _insetStream =
+          KeyboardInsets.insets.listen((value) => viewBottomPadding = value);
+    }
     scrollController.addListener(onSheetOffsetChanges);
     safeAreaAnimationController?.addListener(markNeedsPaint);
   }

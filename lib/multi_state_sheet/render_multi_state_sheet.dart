@@ -49,11 +49,11 @@ class _MultiStateSheetWidget<StateType>
   /// Determines if the layout of the [outside] widget should account for the [topHeader].
   final bool offsetOutsideWidgetByTopheader;
 
-  /// Padding for the bottom of the viewport to accommodate UI elements like keyboard.
-  final double? viewBottomPadding;
-
   /// Determines if the content should be kept behind the footer and not cut by it.
   final bool keepContentBehindFooter;
+
+  /// Whether to resize the sheet to avoid bottom padding (e.g., keyboard).
+  final bool resizeToAvoidBottomPadding;
 
   const _MultiStateSheetWidget({
     required this.scrollController,
@@ -67,11 +67,11 @@ class _MultiStateSheetWidget<StateType>
     this.barrierColorDelegate,
     this.outsideOpacityDelegate,
     this.safeAreaColor,
-    this.viewBottomPadding,
     this.backgroundColor = Colors.transparent,
     this.drawOutsideWidgetBehindBackgroundFill = false,
     this.offsetOutsideWidgetByTopheader = true,
     this.keepContentBehindFooter = false,
+    this.resizeToAvoidBottomPadding = true,
     super.key,
   });
 
@@ -102,8 +102,8 @@ class _MultiStateSheetWidget<StateType>
                 drawOutsideWidgetBehindBackgroundFill,
             offsetOutsideWidgetByTopheader: offsetOutsideWidgetByTopheader,
             outsideOpacityDelegate: outsideOpacityDelegate,
-            viewBottomPadding: viewBottomPadding,
             keepContentBehindFooter: keepContentBehindFooter,
+            resizeToAvoidBottomPadding: resizeToAvoidBottomPadding,
           );
 
   @override
@@ -120,7 +120,7 @@ class _MultiStateSheetWidget<StateType>
           drawOutsideWidgetBehindBackgroundFill
       ..offsetOutsideWidgetByTopheader = offsetOutsideWidgetByTopheader
       ..outsideOpacityDelegate = outsideOpacityDelegate
-      ..viewBottomPadding = viewBottomPadding
+      ..resizeToAvoidBottomPadding = resizeToAvoidBottomPadding
       ..keepContentBehindFooter = keepContentBehindFooter;
 
     super.updateRenderObject(context, renderObject);
@@ -154,6 +154,22 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
     }
   }
 
+  bool _resizeToAvoidBottomPadding;
+  bool get resizeToAvoidBottomPadding => _resizeToAvoidBottomPadding;
+  set resizeToAvoidBottomPadding(bool value) {
+    if (_resizeToAvoidBottomPadding != value) {
+      _resizeToAvoidBottomPadding = value;
+      if (value) {
+        _insetStream =
+            KeyboardInsets.insets.listen((value) => viewBottomPadding = value);
+      } else {
+        _insetStream?.cancel();
+        _insetStream = null;
+        viewBottomPadding = 0.0;
+      }
+    }
+  }
+
   double draggedSheetOffset = 0.0;
   int outsideOpacity = 255;
 
@@ -168,9 +184,11 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
     this.drawOutsideWidgetBehindBackgroundFill = false,
     this.offsetOutsideWidgetByTopheader = true,
     this.keepContentBehindFooter = false,
+    bool resizeToAvoidBottomPadding = true,
     double? viewBottomPadding,
   })  : draggedSheetOffset = scrollController._extent.offset,
-        _viewBottomPadding = viewBottomPadding;
+        _viewBottomPadding = viewBottomPadding,
+        _resizeToAvoidBottomPadding = resizeToAvoidBottomPadding;
 
   // Slot getters for accessing child render objects.
   RenderBox? get topHeader => childForSlot(_MultiStateSheetSlot.topHeader);
@@ -239,12 +257,14 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
   @override
   void attach(covariant PipelineOwner owner) {
     super.attach(owner);
-    _insetStream = KeyboardInsets.insets.listen((value) {
-      if (viewBottomPadding != value) {
-        viewBottomPadding = value;
-        markNeedsLayout();
-      }
-    });
+    if (resizeToAvoidBottomPadding) {
+      _insetStream = KeyboardInsets.insets.listen((value) {
+        if (viewBottomPadding != value) {
+          viewBottomPadding = value;
+          markNeedsLayout();
+        }
+      });
+    }
     scrollController.addListener(onSheetOffsetChanges);
     safeAreaAnimationController?.addListener(markNeedsPaint);
   }

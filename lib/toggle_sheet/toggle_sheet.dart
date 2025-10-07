@@ -363,12 +363,6 @@ class _StatelessSheetState extends State<ToggleSheet>
           }
         }),
         child: Builder(builder: (context) {
-          // final double? viewBottomPadding =
-          //     switch (widget.resizeToAvoidBottomPadding) {
-          //   true => MediaQuery.viewInsetsOf(context).bottom,
-          //   _ => null,
-          // };
-
           final safeAreaPadding =
               widget.useSafeArea ? MediaQuery.paddingOf(context).bottom : null;
 
@@ -386,8 +380,8 @@ class _StatelessSheetState extends State<ToggleSheet>
                 Colors.transparent,
             shapeBorderDelegate: widget.shapeBorderDelegate,
             paddingDelegate: widget.paddingDelegate,
-            viewBottomPadding: 0.0,
             safeAreaBottomPadding: safeAreaPadding,
+            resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
             drawOutsideWidgetBehindBackgroundFill:
                 widget.drawOutsideWidgetBehindBackground,
             topHeader: topHeader,

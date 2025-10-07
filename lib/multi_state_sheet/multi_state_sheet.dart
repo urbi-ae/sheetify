@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:math' as math;
 import 'dart:ui';
@@ -7,6 +8,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:keyboard_insets/keyboard_insets.dart';
 import 'package:sheetify/sheetify.dart';
 import 'package:sheetify/utils/constants.dart';
 import 'package:sheetify/utils/frame_stack_hash_map.dart';
@@ -180,7 +182,7 @@ class MultiStateSheet<StateType> extends StatefulWidget {
   /// whose height is defined by the ambient [MediaQuery]'s [MediaQueryData.viewInsets] property.
   ///
   /// This will affect viewport constraints and pixel offsets for all sheet states.
-  final bool resizeToAvoidViewPadding;
+  final bool resizeToAvoidBottomPadding;
 
   /// Determines whether the widget should respect the safe area insets (such as notches, status bars, and navigation bars).
   ///
@@ -218,7 +220,7 @@ class MultiStateSheet<StateType> extends StatefulWidget {
     this.outsideOpacityDelegate,
     this.drawOutsideWidgetBehindBarrier = false,
     this.offsetOutsideWidgetByTopheader = true,
-    this.resizeToAvoidViewPadding = false,
+    this.resizeToAvoidBottomPadding = false,
     this.useSafeArea = true,
     super.key,
   });
@@ -351,15 +353,9 @@ class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>>
         child: _MultiStateSheetNotifierContainer<StateType>(
           controller: controller,
           child: Builder(builder: (context) {
-            final viewBottomPadding = switch (widget.resizeToAvoidViewPadding) {
-              true => MediaQuery.viewInsetsOf(context).bottom,
-              _ => 0.0,
-            };
-
             final multiStateSheetWidget = _MultiStateSheetWidget<StateType>(
               key: ValueKey(controller.hashCode),
               scrollController: controller,
-              viewBottomPadding: viewBottomPadding,
               safeAreaColor: widget.safeAreaColor,
               topHeaderOffset: widget.topHeaderOffset,
               drawOutsideWidgetBehindBackgroundFill:
@@ -372,6 +368,7 @@ class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>>
                   Colors.transparent,
               barrierColorDelegate: widget.barrierColorDelegate,
               keepContentBehindFooter: widget.keepContentBehindFooter,
+              resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
               shaper: shaperBorder,
               outside: widget.outside,
               topHeader: topHeader,

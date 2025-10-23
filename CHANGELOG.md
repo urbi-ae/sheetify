@@ -1,3 +1,8 @@
+## 1.1.0
+[ToggleSheet] - The `keyboard insets` package is now used to better track the keyboard height and respond appropriately to its animations.
+[MultiStateSheet] - The `keyboard insets` package is now used to better track the keyboard height and respond appropriately to its animations.
+[Package] - Exports the `keyboard insets` package API for managing the lifecycle of a persistent safe area.
+
 ## 1.0.2
 [ToggleSheet] - Animate hiding of safe zone rectangle.
 [MultiStateSheet] - Animate hiding of safe zone rectangle 

@@ -143,7 +143,9 @@ class _RenderToggleSheet extends RenderBox
   ToggleSheetController get scrollController => _scrollController;
   set scrollController(ToggleSheetController value) {
     if (_scrollController != value) {
+      _scrollController.removeListener(onSheetOffsetChanges);
       _scrollController = value;
+      _scrollController.addListener(onSheetOffsetChanges);
       markNeedsLayout();
     }
   }
@@ -287,7 +289,6 @@ class _RenderToggleSheet extends RenderBox
     ToggleSheetDelegate<double>? outsideOpacityDelegate,
     ToggleSheetDelegate<ShapeBorder?>? shaperBorderDelegate,
     ToggleSheetDelegate<EdgeInsets?>? paddingDelegate,
-    double? viewBottomPadding,
     double? safeAreaBottomPadding,
     bool offsetOutsideWidgetByTopheader = true,
     bool drawOutsideWidgetBehindBackgroundFill = false,
@@ -304,7 +305,6 @@ class _RenderToggleSheet extends RenderBox
         _backgroundColorDelegate = backgroundColorDelegate,
         _scrollController = scrollController,
         _safeAreaBottomPadding = safeAreaBottomPadding,
-        _viewBottomPadding = viewBottomPadding,
         _resizeToAvoidBottomPadding = resizeToAvoidBottomPadding;
 
   // Slot getters for accessing child render objects.
@@ -428,7 +428,8 @@ class _RenderToggleSheet extends RenderBox
     draggedSheetOffset = scrollController._extent.offset;
 
     // Calculate available space for the sheet.
-    final avaliableHeight = constraints.maxHeight - viewBottomPadding;
+    final avaliableHeight = constraints.maxHeight -
+        math.max(0.0, viewBottomPadding - safeAreaBottomPadding);
     assert(
       avaliableHeight != double.infinity,
       'ToggleSheet: `constraints.maxHeight` is infinite. '
@@ -534,7 +535,8 @@ class _RenderToggleSheet extends RenderBox
 
     final footerOffsetPositionAbsolute = math.min(
       sheetHeightExtent - headerLayoutExtend,
-      footerLayoutExtend + viewBottomPadding,
+      footerLayoutExtend +
+          math.max(0.0, viewBottomPadding - safeAreaBottomPadding),
     );
 
     /// Setup children's offsets
@@ -560,7 +562,9 @@ class _RenderToggleSheet extends RenderBox
     _positionChild(
       footer,
       correctedConstraints,
-      avaliableHeight - footerOffsetPositionAbsolute + viewBottomPadding,
+      avaliableHeight -
+          footerOffsetPositionAbsolute +
+          math.max(0.0, viewBottomPadding - safeAreaBottomPadding),
       padding: leftPadding,
     );
 
@@ -666,12 +670,12 @@ class _RenderToggleSheet extends RenderBox
           Rect.fromLTWH(
             offset.dx + leftPadding,
             constraints.maxHeight -
-                viewBottomPadding +
+                math.max(0.0, viewBottomPadding - safeAreaBottomPadding) +
                 offset.dy -
                 safeAreaCorrection +
                 kBottomNavigationBarHeight * safeAreaDelta,
             constraints.maxWidth - rightPadding,
-            viewBottomPadding > 0
+            math.max(0.0, viewBottomPadding - safeAreaBottomPadding) > 0
                 ? 0.0
                 : safeAreaBottomPadding + safeAreaCorrection,
           ),

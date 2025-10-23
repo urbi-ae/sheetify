@@ -7,7 +7,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:keyboard_insets/keyboard_insets.dart';
 import 'package:sheetify/sheetify.dart';
 import 'package:sheetify/utils/constants.dart';
 import 'package:sheetify/utils/math_helper.dart';
@@ -191,10 +190,34 @@ class ToggleSheet extends StatefulWidget {
   /// Otherwise, set `maintainBottomViewPadding: true`.
   final bool resizeToAvoidBottomPadding;
 
-  /// Determines whether the widget should respect the safe area insets (such as notches, status bars, and navigation bars).
+  /// Determines whether the widget should respect the safe area insets
+  /// (such as notches, status bars, and navigation bars).
   ///
-  /// When set to `true`, the widget's content will avoid system UI intrusions by applying appropriate padding.
-  /// When set to `false`, the content may extend into areas covered by system UI elements.
+  /// When set to `true`, the widget’s content avoids system UI intrusions
+  /// by applying appropriate padding based on the current safe area.
+  ///
+  /// ---
+  ///
+  /// ### Keyboard Insets Integration
+  /// When combined with the [`keyboard_insets`](https://pub.dev/packages/keyboard_insets) package,
+  /// this flag ensures that the bottom padding remains **stable during keyboard animations**,
+  /// preventing visual jumps when the keyboard appears or hides.
+  ///
+  /// If this flag sets to `true` make sure to handle its lifecycle properly:
+  ///
+  /// ```dart
+  /// @override
+  /// void initState() {
+  ///   super.initState();
+  ///   PersistentSafeAreaBottom.startObservingSafeArea();
+  /// }
+  ///
+  /// @override
+  /// void dispose() {
+  ///   PersistentSafeAreaBottom.stopObservingSafeArea();
+  ///   super.dispose();
+  /// }
+  /// ```
   final bool useSafeArea;
 
   /// Creates a [ToggleSheet] widget.
@@ -362,40 +385,40 @@ class _StatelessSheetState extends State<ToggleSheet>
             Navigator.of(context).pop();
           }
         }),
-        child: Builder(builder: (context) {
-          final safeAreaPadding =
-              widget.useSafeArea ? MediaQuery.paddingOf(context).bottom : null;
+        child: ValueListenableBuilder(
+            valueListenable:
+                PersistentSafeAreaBottom.notifier ?? ValueNotifier(0.0),
+            builder: (context, safeAreaBottom, child) {
+              final toggleSheetWidget = _ToggleSheetWidget(
+                key: ValueKey(controller.hashCode),
+                scrollController: controller,
+                topHeaderOffset: widget.topHeaderOffset,
+                safeAreaColor: widget.safeAreaColor,
+                offsetOutsideWidgetByTopheader:
+                    widget.offsetOutsideWidgetByTopheader,
+                outsideOpacityDelegate: widget.outsideOpacityDelegate,
+                barrierColorDelegate: widget.barrierColorDelegate,
+                backgroundColor: widget.backgroundColor ??
+                    Theme.of(context).bottomSheetTheme.backgroundColor ??
+                    Colors.transparent,
+                shapeBorderDelegate: widget.shapeBorderDelegate,
+                paddingDelegate: widget.paddingDelegate,
+                safeAreaBottomPadding: safeAreaBottom,
+                resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
+                drawOutsideWidgetBehindBackgroundFill:
+                    widget.drawOutsideWidgetBehindBackground,
+                topHeader: topHeader,
+                outside: widget.outside,
+                footer: footer,
+                header: header,
+                content: content,
+              );
+              if (widget.useSafeArea) {
+                return PersistentSafeArea(child: toggleSheetWidget);
+              }
 
-          final toggleSheetWidget = _ToggleSheetWidget(
-            key: ValueKey(controller.hashCode),
-            scrollController: controller,
-            topHeaderOffset: widget.topHeaderOffset,
-            safeAreaColor: widget.safeAreaColor,
-            offsetOutsideWidgetByTopheader:
-                widget.offsetOutsideWidgetByTopheader,
-            outsideOpacityDelegate: widget.outsideOpacityDelegate,
-            barrierColorDelegate: widget.barrierColorDelegate,
-            backgroundColor: widget.backgroundColor ??
-                Theme.of(context).bottomSheetTheme.backgroundColor ??
-                Colors.transparent,
-            shapeBorderDelegate: widget.shapeBorderDelegate,
-            paddingDelegate: widget.paddingDelegate,
-            safeAreaBottomPadding: safeAreaPadding,
-            resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
-            drawOutsideWidgetBehindBackgroundFill:
-                widget.drawOutsideWidgetBehindBackground,
-            topHeader: topHeader,
-            outside: widget.outside,
-            footer: footer,
-            header: header,
-            content: content,
-          );
-          if (widget.useSafeArea) {
-            return SafeArea(child: toggleSheetWidget);
-          }
-
-          return toggleSheetWidget;
-        }),
+              return toggleSheetWidget;
+            }),
       ),
     );
   }

@@ -79629,7 +79629,8 @@ o=p.a(A.q.prototype.gS.call(r))
 n=r.ar
 if(n==null)n=0
 m=r.aI
-o=o.d-Math.max(0,n-m)+b.b-1+56*l.f
+n=Math.max(0,n-m)
+o=o.d-n+b.b-1+m*l.f
 p=p.a(A.q.prototype.gS.call(r))
 n=r.ar
 if(n==null)n=0
@@ -79794,10 +79795,11 @@ r=b?Math.max(o.gdZ(0),a):A.A(a,o.gdZ(0),o.gdc(0))
 q=o.w
 if(q===r)return
 p=!1
-if(!o.r)if(q<s)if(r===s){q=o.Q
+if(!o.e)if(!o.r)if(q<s)if(r===s){q=o.Q
 if(q==null)q=null
 else{q=q.x
 q===$&&A.a()}q=q===0}else q=p
+else q=p
 else q=p
 else q=p
 if(q){s=o.Q

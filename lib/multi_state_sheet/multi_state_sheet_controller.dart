@@ -132,7 +132,8 @@ class MultiStateSheetExtent<StateType> {
       return;
     }
 
-    if (_offset < availablePixels &&
+    if (!behavior.clipByHeader &&
+        _offset < availablePixels &&
         clampedOffset == availablePixels &&
         _safeAreaAnimationController?.value == 0.0) {
       _safeAreaAnimationController?.animateTo(1.0, curve: Curves.easeOut);

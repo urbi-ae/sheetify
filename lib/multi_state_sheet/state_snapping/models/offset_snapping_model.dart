@@ -39,8 +39,6 @@ final class OffsetSnappingModel extends SnappingModel {
   ///   of the sheet's configuration.
   @override
   SplayTreeSet<double> getOffsets<T>(MultiStateSheetExtent<T> extent) =>
-      SplayTreeSet.of(offsets.map((offset) {
-        print(['get offsets', offset, extent.minOffset, extent.safeMaxOffset]);
-        return clampDouble(offset, extent.minOffset, extent.safeMaxOffset);
-      }));
+      SplayTreeSet.of(offsets.map((offset) =>
+          clampDouble(offset, extent.minOffset, extent.safeMaxOffset)));
 }

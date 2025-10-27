@@ -605,14 +605,6 @@ class _RenderMultiStateSheet<StateType> extends RenderBox
       _positionChild(outside, constraints, kStartOfTheViewport);
     }
 
-    print([
-      avaliableHeight,
-      draggedSheetOffset.ceil(),
-      scrollController._extent.behavior.snappingPixelOffsetsClamped,
-      scrollController._extent.minOffset,
-      scrollController._extent.maxOffset,
-    ]);
-
     /// Setup children's offsets
     _positionChild(
         content, constraints, offsetSheetFromTop + headerLayoutExtend);

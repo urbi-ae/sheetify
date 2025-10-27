@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:sheetify/sheetify.dart';
 
 void main() {
+  PersistentSafeAreaBottom.startObserving();
+
   runApp(const MyApp());
 }
 
@@ -39,9 +41,10 @@ MultiStateSheetController<FourStateSheet> createMultiStateSheetController() =>
     MultiStateSheetController(
       stateMapper: const FourStateMapper(),
       initialState: FourStateSheet.halfOpen,
-      behavior: MultiSnappingBehavior(models: [
-        FractionSnappingModel({0, .95}),
-        SizeSnappingModel({500.0}),
+      behavior: MultiSnappingBehavior(clipByHeader: false, models: [
+        OffsetSnappingModel({50}),
+        FractionSnappingModel({0}),
+        SizeSnappingModel({350.0}),
         ComponentsSnappingModel(componentsDescriptions: [
           SnapComponent.merge(
             a: const SnapComponent.size(component: Components.header),
@@ -115,7 +118,7 @@ class _MultiStateSheetPageState<T> extends State<MultiStateSheetPage<T>>
         height: 100,
         child: PlaceholderContainer(
           text: 'Footer',
-          color: Colors.grey,
+          color: Colors.amber,
         ));
 
     return Center(
@@ -126,7 +129,7 @@ class _MultiStateSheetPageState<T> extends State<MultiStateSheetPage<T>>
           child: MultiStateSheet<FourStateSheet>(
             scrollController: widget.controller,
             barrierColorDelegate: FourStateMapper.barrierColorDelegate,
-            resizeToAvoidViewPadding: true,
+            resizeToAvoidBottomPadding: true,
             hitTestBehavior: HitTestBehavior.opaque,
             backgroundColor: Colors.white,
             safeAreaColor: Colors.grey,

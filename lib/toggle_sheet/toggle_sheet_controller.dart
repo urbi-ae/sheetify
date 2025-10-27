@@ -1,7 +1,6 @@
 part of 'package:sheetify/toggle_sheet/toggle_sheet.dart';
 
-typedef ToggleSheetOnCloseCallback = void Function(
-    ToggleSheetController controller);
+typedef ToggleSheetOnCloseCallback = void Function(ToggleSheetController controller);
 
 /// A class that represents the extent (size) of a toggle sheet.
 ///
@@ -52,8 +51,7 @@ class ToggleSheetExtent {
   double _minHeight = 0.0;
 
   /// Height in pixels from the top of the bounding box at which the sheet starts to draw.
-  double get minHeight =>
-      math.min(fixedHeightOffset ?? _minHeight, availablePixels);
+  double get minHeight => math.min(fixedHeightOffset ?? _minHeight, availablePixels);
 
   /// Height in pixels from the top of the bounding box at which the sheet starts to draw.
   set minHeight(double value) {
@@ -63,8 +61,7 @@ class ToggleSheetExtent {
   }
 
   /// Height in pixels from the top of the bounding box at which the sheet ends to draw.
-  double get maxHeight =>
-      availablePixels - (clipByHeader ? (componentSizes.header) : 0.0);
+  double get maxHeight => availablePixels - (clipByHeader ? (componentSizes.header) : 0.0);
 
   /// Current height offset for sheet visible view.
   ///
@@ -82,23 +79,22 @@ class ToggleSheetExtent {
 
   void addPixelDelta(double delta) => updateSize(offset + delta);
 
-  void updateSize(double newHeight,
-      {bool isAnimating = false, bool notify = true}) {
+  void updateSize(double newHeight, {bool isAnimating = false, bool notify = true}) {
     _cancelActivity?.call();
     _cancelActivity = null;
 
     if (availablePixels == kStartOfTheViewport) {
       return;
     }
-    final double clampedOffset = isAnimating
-        ? math.max(minHeight, newHeight)
-        : clampDouble(newHeight, minHeight, maxHeight);
+    final double clampedOffset =
+        isAnimating ? math.max(minHeight, newHeight) : clampDouble(newHeight, minHeight, maxHeight);
 
     if (_offset == clampedOffset) {
       return;
     }
 
-    if (!isClosed &&
+    if (!clipByHeader &&
+        !isClosed &&
         _offset < availablePixels &&
         clampedOffset == availablePixels &&
         _safeAreaAnimationController?.value == 0.0) {
@@ -217,14 +213,13 @@ class ToggleSheetController extends ScrollController {
   /// Calculated based on the difference between the total available pixels
   /// and the current offset.
   double get sheetHeight {
-    final offsetFromTop =
-        _isAnimatingOpen || _extent.maxHeight <= _extent.minHeight
-            ? _extent.offset
-            : clampDouble(
-                _extent.offset,
-                _extent.minHeight,
-                _extent.maxHeight,
-              );
+    final offsetFromTop = _isAnimatingOpen || _extent.maxHeight <= _extent.minHeight
+        ? _extent.offset
+        : clampDouble(
+            _extent.offset,
+            _extent.minHeight,
+            _extent.maxHeight,
+          );
 
     return _isEnabled ? _extent.availablePixels - offsetFromTop : 0.0;
   }
@@ -265,8 +260,7 @@ class ToggleSheetController extends ScrollController {
   SheetWidgetSizes get componentSizes => _extent.componentSizes;
 
   @override
-  _ToggleSheetScrollPosition get position =>
-      super.position as _ToggleSheetScrollPosition;
+  _ToggleSheetScrollPosition get position => super.position as _ToggleSheetScrollPosition;
 
   //--------------------------------------------------------------------------------------//
   //                                  Public API Methods                                  //
@@ -293,10 +287,8 @@ class ToggleSheetController extends ScrollController {
   void close({Duration? duration}) {
     if (isEnabled) {
       final newPosition = viewportHeight;
-      final _duration = duration?.inMilliseconds ??
-          math.max((_extent.offset - newPosition).abs().round(), 150).toInt();
-      _startAnimation(
-          _extent.offset, newPosition, Curves.easeOutExpo, _duration);
+      final _duration = duration?.inMilliseconds ?? math.max((_extent.offset - newPosition).abs().round(), 150).toInt();
+      _startAnimation(_extent.offset, newPosition, Curves.easeOutExpo, _duration);
     }
   }
 
@@ -339,8 +331,7 @@ class ToggleSheetController extends ScrollController {
   }
 
   @override
-  ScrollPosition createScrollPosition(ScrollPhysics physics,
-          ScrollContext context, ScrollPosition? oldPosition) =>
+  ScrollPosition createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition? oldPosition) =>
       _ToggleSheetScrollPosition(
         physics: physics,
         context: context,
@@ -409,15 +400,12 @@ class ToggleSheetController extends ScrollController {
     if (_extent.minHeight != min && _extent.heightModel == null) {
       _extent.minHeight = min;
 
-      final isAnimating = (_heightAnimationController?.isAnimating ?? false) ||
-          position._ballisticControllers.isNotEmpty;
+      final isAnimating =
+          (_heightAnimationController?.isAnimating ?? false) || position._ballisticControllers.isNotEmpty;
 
       final isDragging = _isDragging || position.isDragging;
 
-      if (isEnabled &&
-          !isAnimating &&
-          !isDragging &&
-          (!isClosed || clipByHeader)) {
+      if (isEnabled && !isAnimating && !isDragging && (!isClosed || clipByHeader)) {
         _extent._offset = isClosed ? _extent.maxHeight : _extent.minHeight;
         correctPosition = true;
 
@@ -426,8 +414,7 @@ class ToggleSheetController extends ScrollController {
     }
 
     if (correctPosition) {
-      _startAnimation(_extent._offset,
-          isClosed ? _extent.maxHeight : _extent.minHeight, Curves.linear, 1);
+      _startAnimation(_extent._offset, isClosed ? _extent.maxHeight : _extent.minHeight, Curves.linear, 1);
     }
 
     return instantOffset;
@@ -437,9 +424,8 @@ class ToggleSheetController extends ScrollController {
   ///
   /// This method is internally used by render object to set the initial position of the sheet.
   double? _calculateInitialPositionAndSetEnabled() {
-    final newPosition = _isStartsClosed
-        ? _extent.availablePixels
-        : _extent.heightModel?.getHeight(_extent.availablePixels);
+    final newPosition =
+        _isStartsClosed ? _extent.availablePixels : _extent.heightModel?.getHeight(_extent.availablePixels);
 
     _isEnabled = true;
     _isPreformingResize = false;
@@ -477,9 +463,7 @@ class ToggleSheetController extends ScrollController {
   void _dragUpdate(DragUpdateDetails details, BuildContext context) {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       if (positions.isNotEmpty) {
-        ScrollUpdateNotification(
-                context: context, metrics: position, dragDetails: details)
-            .dispatch(context);
+        ScrollUpdateNotification(context: context, metrics: position, dragDetails: details).dispatch(context);
       }
     });
 
@@ -488,8 +472,7 @@ class ToggleSheetController extends ScrollController {
     }
 
     if (details.localPosition.dy > 0.0) {
-      final delta = (details.localPosition.dy - (_lastPosition ?? 0.0)) -
-          (_appliedDelta ?? 0.0);
+      final delta = (details.localPosition.dy - (_lastPosition ?? 0.0)) - (_appliedDelta ?? 0.0);
       _appliedDelta = (_appliedDelta ?? 0) + delta;
 
       /// Check for scrolling direction based on the delta from start to current drag position
@@ -526,12 +509,10 @@ class ToggleSheetController extends ScrollController {
 
     final simulation = SnappingSimulation(
       position: _extent.offset,
-      initialVelocity:
-          details.velocity.pixelsPerSecond.dy / kVelocityCorrectionFactor,
+      initialVelocity: details.velocity.pixelsPerSecond.dy / kVelocityCorrectionFactor,
       durationMultiplier: _extent.durationMultiplier,
       pixelSnapPositions: [_extent.minHeight, _extent.maxHeight],
-      snapAnimationDuration:
-          _extent.snapAnimationDuration ?? kDefaultSheetScrollDuration,
+      snapAnimationDuration: _extent.snapAnimationDuration ?? kDefaultSheetScrollDuration,
       tolerance: position.physics.toleranceFor(position),
       forceMultiplier: _extent.forceMultiplier,
     );
@@ -561,8 +542,7 @@ class ToggleSheetController extends ScrollController {
     _extent._offset = _extent.availablePixels;
 
     final _duration = duration?.inMilliseconds ??
-        math.max(kDefaultSheetScrollDuration.inMilliseconds,
-                (_extent.offset - newPosition).abs().round()) +
+        math.max(kDefaultSheetScrollDuration.inMilliseconds, (_extent.offset - newPosition).abs().round()) +
             _extent.minHeight.round();
     _isAnimatingOpen = true;
 
@@ -577,12 +557,10 @@ class ToggleSheetController extends ScrollController {
   void _initAnimation(TickerProvider vsync) {
     _heightAnimationController = AnimationController.unbounded(vsync: vsync);
     _heightAnimationController?.addListener(_onHeightChanged);
-    _extent._safeAreaAnimationController = AnimationController(
-        vsync: vsync, duration: Durations.medium1, value: 1.0);
+    _extent._safeAreaAnimationController = AnimationController(vsync: vsync, duration: Durations.medium1, value: 1.0);
   }
 
-  void _startAnimation(
-      double startPosition, double position, Curve curve, int duration) {
+  void _startAnimation(double startPosition, double position, Curve curve, int duration) {
     this.position._stopBallisticAnimation();
     _heightAnimationController?.stop();
     _heightAnimationController?.value = startPosition;
@@ -613,10 +591,8 @@ class ToggleSheetController extends ScrollController {
 
   void _onHeightChanged() {
     final oldOffset = _extent.offset;
-    if (oldOffset != _heightAnimationPosition &&
-        _heightAnimationPosition.isFinite) {
-      _extent.updateSize(_heightAnimationPosition,
-          isAnimating: _isAnimatingOpen);
+    if (oldOffset != _heightAnimationPosition && _heightAnimationPosition.isFinite) {
+      _extent.updateSize(_heightAnimationPosition, isAnimating: _isAnimatingOpen);
     }
   }
 
@@ -629,8 +605,7 @@ class ToggleSheetController extends ScrollController {
 
 class _ToggleSheetScrollPosition extends ScrollPositionWithSingleContext {
   final ToggleSheetExtent Function() getExtent;
-  final Set<AnimationController> _ballisticControllers =
-      <AnimationController>{};
+  final Set<AnimationController> _ballisticControllers = <AnimationController>{};
   late final ToggleSheetExtent _extent = getExtent();
 
   bool isInteractive;
@@ -677,8 +652,7 @@ class _ToggleSheetScrollPosition extends ScrollPositionWithSingleContext {
   @override
   void applyUserOffset(double delta) {
     /// Check if the scroll position of the content list is within the bounds to control sheet height by scrolling.
-    final isSheetAtMaxAndScrollsUp =
-        !_extent.isAtMin && _extent.isAtMax && delta < 0;
+    final isSheetAtMaxAndScrollsUp = !_extent.isAtMin && _extent.isAtMax && delta < 0;
     final canContentScrollDown = !_extent.isAtMin && pixels > 0 && delta > 0;
     if (isSheetAtMaxAndScrollsUp || canContentScrollDown) {
       super.applyUserOffset(delta);
@@ -691,8 +665,7 @@ class _ToggleSheetScrollPosition extends ScrollPositionWithSingleContext {
 
   @override
   void dispose() {
-    for (final AnimationController ballisticController
-        in _ballisticControllers) {
+    for (final AnimationController ballisticController in _ballisticControllers) {
       ballisticController.dispose();
     }
 
@@ -703,15 +676,9 @@ class _ToggleSheetScrollPosition extends ScrollPositionWithSingleContext {
 
   @override
   void goBallistic(double velocity) {
-    final isShouldScrollContentDown =
-        velocity > 0.0 && _extent.isAtMax && listShouldScroll;
-    final isShouldScrollContentUp = velocity < 0.0 &&
-        !(_extent.isAtMin && _extent.isAtMax) &&
-        listShouldScroll;
-    if (!isInteractive ||
-        isShouldScrollContentDown ||
-        isShouldScrollContentUp ||
-        !isScrollingNotifier.value) {
+    final isShouldScrollContentDown = velocity > 0.0 && _extent.isAtMax && listShouldScroll;
+    final isShouldScrollContentUp = velocity < 0.0 && !(_extent.isAtMin && _extent.isAtMax) && listShouldScroll;
+    if (!isInteractive || isShouldScrollContentDown || isShouldScrollContentUp || !isScrollingNotifier.value) {
       super.goBallistic(velocity);
       return;
     }
@@ -725,14 +692,12 @@ class _ToggleSheetScrollPosition extends ScrollPositionWithSingleContext {
       initialVelocity: -velocity,
       durationMultiplier: _extent.durationMultiplier,
       pixelSnapPositions: [_extent.minHeight, _extent.maxHeight],
-      snapAnimationDuration:
-          _extent.snapAnimationDuration ?? kDefaultSheetScrollDuration,
+      snapAnimationDuration: _extent.snapAnimationDuration ?? kDefaultSheetScrollDuration,
       forceMultiplier: _extent.forceMultiplier,
       tolerance: physics.toleranceFor(this),
     );
 
-    final AnimationController ballisticController =
-        AnimationController.unbounded(
+    final AnimationController ballisticController = AnimationController.unbounded(
       debugLabel: objectRuntimeType(this, '_ToggleSheetScrollPosition'),
       vsync: context.vsync,
     );
@@ -742,10 +707,8 @@ class _ToggleSheetScrollPosition extends ScrollPositionWithSingleContext {
     void tick() {
       _extent.updateSize(ballisticController.value);
 
-      if ((velocity > 0 && _extent.isAtMax) ||
-          (velocity < 0 && _extent.isAtMin)) {
-        final physicsVelocity = ballisticController.velocity +
-            (physics.toleranceFor(this).velocity);
+      if ((velocity > 0 && _extent.isAtMax) || (velocity < 0 && _extent.isAtMin)) {
+        final physicsVelocity = ballisticController.velocity + (physics.toleranceFor(this).velocity);
         super.goBallistic(-physicsVelocity);
 
         if (ballisticController.isDismissed) {
@@ -778,8 +741,7 @@ class _ToggleSheetScrollPosition extends ScrollPositionWithSingleContext {
   }
 
   void _stopBallisticAnimation() {
-    for (final AnimationController ballisticController
-        in _ballisticControllers) {
+    for (final AnimationController ballisticController in _ballisticControllers) {
       if (ballisticController.isDismissed) {
         ballisticController
           ..stop()

@@ -30,13 +30,29 @@ You can also **create custom** ****``SnappingBehavior``**** and ****``SnappingMo
 -   🧱 **Composable UI** — Modular architecture to build complex layouts.
 -   🤲 **Both modal and persistent use cases supported**.
 
+----
+
+> 🧩 **Keyboard Insets Integration**  
+> The `sheetify` package includes built-in integration with the [keyboard_insets](https://pub.dev/packages/keyboard_insets) plugin.  
+> It exports the plugin’s API and widgets to handle automatic layout adjustments when the keyboard appears or animates.
+>
+>This integration provides a persistent safe area via the `PersistentSafeAreaBottom` API class, ensures sheets to adapt smoothly to keyboard height changes.
+>
+> Additionally, `sheetify` exposes native observer lifecycle control through:
+> -   `PersistentSafeAreaBottom.startObserving()` — Starts the native keyboard animation observer.    
+>-   `PersistentSafeAreaBottom.stopObserving()` — Stops the native keyboard animation observer.
+>
+> Together, these APIs ensure your sheets stay visually consistent and responsive during keyboard transitions.
+
+----
+
 ## 📦 Getting Started
 
 Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  sheetify: ^1.0.2
+  sheetify: ^1.1.1
   ```
   
 Then import it:

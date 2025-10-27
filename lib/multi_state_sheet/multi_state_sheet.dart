@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:math' as math;
 import 'dart:ui';
@@ -180,12 +181,36 @@ class MultiStateSheet<StateType> extends StatefulWidget {
   /// whose height is defined by the ambient [MediaQuery]'s [MediaQueryData.viewInsets] property.
   ///
   /// This will affect viewport constraints and pixel offsets for all sheet states.
-  final bool resizeToAvoidViewPadding;
+  final bool resizeToAvoidBottomPadding;
 
-  /// Determines whether the widget should respect the safe area insets (such as notches, status bars, and navigation bars).
+  /// Determines whether the widget should respect the safe area insets
+  /// (such as notches, status bars, and navigation bars).
   ///
-  /// When set to `true`, the widget's content will avoid system UI intrusions by applying appropriate padding.
-  /// When set to `false`, the content may extend into areas covered by system UI elements.
+  /// When set to `true`, the widget’s content avoids system UI intrusions
+  /// by applying appropriate padding based on the current safe area.
+  ///
+  /// ---
+  ///
+  /// ### Keyboard Insets Integration
+  /// When combined with the [`keyboard_insets`](https://pub.dev/packages/keyboard_insets) package,
+  /// this flag ensures that the bottom padding remains **stable during keyboard animations**,
+  /// preventing visual jumps when the keyboard appears or hides.
+  ///
+  /// If this flag sets to `true` make sure to handle its lifecycle properly:
+  ///
+  /// ```dart
+  /// @override
+  /// void initState() {
+  ///   super.initState();
+  ///   PersistentSafeAreaBottom.startObservingSafeArea();
+  /// }
+  ///
+  /// @override
+  /// void dispose() {
+  ///   PersistentSafeAreaBottom.stopObservingSafeArea();
+  ///   super.dispose();
+  /// }
+  /// ```
   final bool useSafeArea;
 
   /// Creates a [MultiStateSheet] widget, which displays a sheet that supports
@@ -218,7 +243,7 @@ class MultiStateSheet<StateType> extends StatefulWidget {
     this.outsideOpacityDelegate,
     this.drawOutsideWidgetBehindBarrier = false,
     this.offsetOutsideWidgetByTopheader = true,
-    this.resizeToAvoidViewPadding = false,
+    this.resizeToAvoidBottomPadding = false,
     this.useSafeArea = true,
     super.key,
   });
@@ -350,41 +375,40 @@ class _MultiStateSheetState<StateType> extends State<MultiStateSheet<StateType>>
         }),
         child: _MultiStateSheetNotifierContainer<StateType>(
           controller: controller,
-          child: Builder(builder: (context) {
-            final viewBottomPadding = switch (widget.resizeToAvoidViewPadding) {
-              true => MediaQuery.viewInsetsOf(context).bottom,
-              _ => 0.0,
-            };
+          child: ValueListenableBuilder(
+              valueListenable:
+                  PersistentSafeAreaBottom.notifier ?? ValueNotifier(0.0),
+              builder: (context, safeAreaBottom, _) {
+                final multiStateSheetWidget = _MultiStateSheetWidget<StateType>(
+                  key: ValueKey(controller.hashCode),
+                  scrollController: controller,
+                  safeAreaColor: widget.safeAreaColor,
+                  topHeaderOffset: widget.topHeaderOffset,
+                  drawOutsideWidgetBehindBackgroundFill:
+                      widget.drawOutsideWidgetBehindBarrier,
+                  offsetOutsideWidgetByTopheader:
+                      widget.offsetOutsideWidgetByTopheader,
+                  outsideOpacityDelegate: widget.outsideOpacityDelegate,
+                  backgroundColor: widget.backgroundColor ??
+                      Theme.of(context).bottomSheetTheme.backgroundColor ??
+                      Colors.transparent,
+                  barrierColorDelegate: widget.barrierColorDelegate,
+                  keepContentBehindFooter: widget.keepContentBehindFooter,
+                  safeAreaBottomPadding: safeAreaBottom,
+                  resizeToAvoidBottomPadding: widget.resizeToAvoidBottomPadding,
+                  shaper: shaperBorder,
+                  outside: widget.outside,
+                  topHeader: topHeader,
+                  footer: footer,
+                  header: header,
+                  content: content,
+                );
+                if (widget.useSafeArea) {
+                  return PersistentSafeArea(child: multiStateSheetWidget);
+                }
 
-            final multiStateSheetWidget = _MultiStateSheetWidget<StateType>(
-              key: ValueKey(controller.hashCode),
-              scrollController: controller,
-              viewBottomPadding: viewBottomPadding,
-              safeAreaColor: widget.safeAreaColor,
-              topHeaderOffset: widget.topHeaderOffset,
-              drawOutsideWidgetBehindBackgroundFill:
-                  widget.drawOutsideWidgetBehindBarrier,
-              offsetOutsideWidgetByTopheader:
-                  widget.offsetOutsideWidgetByTopheader,
-              outsideOpacityDelegate: widget.outsideOpacityDelegate,
-              backgroundColor: widget.backgroundColor ??
-                  Theme.of(context).bottomSheetTheme.backgroundColor ??
-                  Colors.transparent,
-              barrierColorDelegate: widget.barrierColorDelegate,
-              keepContentBehindFooter: widget.keepContentBehindFooter,
-              shaper: shaperBorder,
-              outside: widget.outside,
-              topHeader: topHeader,
-              footer: footer,
-              header: header,
-              content: content,
-            );
-            if (widget.useSafeArea) {
-              return SafeArea(child: multiStateSheetWidget);
-            }
-
-            return multiStateSheetWidget;
-          }),
+                return multiStateSheetWidget;
+              }),
         ),
       ),
     );

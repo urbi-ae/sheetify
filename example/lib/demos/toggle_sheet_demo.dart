@@ -133,18 +133,10 @@ class _ToggleSheetPageState<T> extends State<ToggleSheetPage<T>>
           header: Column(
             children: [
               const PlaceholderContainer(text: 'Header'),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Input Field',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
             ],
           ),
-          footer: SizedBox(
+          footer: Container(
+            color: Colors.amber,
             height: 100,
             child: GestureDetector(
               onTap: () {

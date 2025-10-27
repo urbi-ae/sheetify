@@ -1,6 +1,7 @@
 ## 1.1.0
 [ToggleSheet] - The `keyboard insets` package is now used to better track the keyboard height and respond appropriately to its animations.
 [MultiStateSheet] - The `keyboard insets` package is now used to better track the keyboard height and respond appropriately to its animations.
+[MultiStateSheet] - Fix an issue where safe area would animate when a sheet was visible by the header clipping.
 [Package] - Exports the `keyboard insets` package API for managing the lifecycle of a persistent safe area.
 
 ## 1.0.2

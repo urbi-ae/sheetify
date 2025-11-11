@@ -78519,7 +78519,7 @@ q===$&&A.a()
 s=q.ch
 if(q.cy)r=q.gbD()
 else r=q.c.x>=s?q.gbD():A.A(q.gbD(),q.c.x,s)
-return q.CW?q.ch-r:0},
+return q.CW?Math.max(0,q.ch-r):0},
 gak(a){return this.$ti.i("f3<1>").a(A.cG.prototype.gak.call(this,0))},
 eR(a){var s,r=this.ch
 r===$&&A.a()
@@ -79820,7 +79820,7 @@ r=p.CW
 if(s){r===$&&A.a()
 q=r.w}else{r===$&&A.a()
 q=A.A(r.w,r.gdZ(0),r.gdc(0))}if(p.cx){r===$&&A.a()
-s=r.x-q}else s=0
+s=Math.max(0,r.x-q)}else s=0
 return s},
 gt7(){var s=this.CW
 s===$&&A.a()

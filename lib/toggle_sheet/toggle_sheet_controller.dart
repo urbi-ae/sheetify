@@ -227,7 +227,9 @@ class ToggleSheetController extends ScrollController {
                 _extent.maxHeight,
               );
 
-    return _isEnabled ? _extent.availablePixels - offsetFromTop : 0.0;
+    return _isEnabled
+        ? math.max(0.0, _extent.availablePixels - offsetFromTop)
+        : 0.0;
   }
 
   /// The total viewport height available to the sheet.

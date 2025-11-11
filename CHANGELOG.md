@@ -1,3 +1,7 @@
+## 1.1.2
+[ToggleSheetController] - Clip sheetHeight to be non negative.
+[MultiStateSheetController] - Clip sheetHeight to be non negative.
+
 ## 1.1.1
 [ToggleSheet] - Fix an issue where safe area would animate when a sheet was visible by the header clipping.
 

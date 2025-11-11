@@ -338,7 +338,9 @@ class MultiStateSheetController<StateType> extends ScrollController {
             ? _extent.offset
             : clampDouble(_extent.offset, _extent.minOffset, maxOffset);
 
-    return _extent.isEnabled ? _extent.availablePixels - offsetFromTop : 0.0;
+    return _extent.isEnabled
+        ? math.max(0.0, _extent.availablePixels - offsetFromTop)
+        : 0.0;
   }
 
   /// Returns the offset from the top of the screen to the top of the sheet.

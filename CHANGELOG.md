@@ -1,3 +1,6 @@
+## 1.1.3
+[Dependencies] - update `keyboard insets` package.
+
 ## 1.1.2
 [ToggleSheetController] - Clip sheetHeight to be non negative.
 [MultiStateSheetController] - Clip sheetHeight to be non negative.
